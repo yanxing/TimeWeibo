@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/background"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:clipToPadding="true"
+              android:background="@color/titleBarColorGreen"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp">
+
+        <LinearLayout
+            android:id="@+id/back_layout"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/back_img"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="12dp"
+                android:background="@mipmap/goback_normal"/>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="40dp"
+                android:gravity="left"
+                android:maxLines="1"
+                android:text="@string/title"
+                android:textSize="18sp"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/right_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:text="@string/menu"
+            android:textSize="18sp"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/right_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+</LinearLayout>

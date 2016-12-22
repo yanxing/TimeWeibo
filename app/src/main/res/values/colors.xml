@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 标题栏颜色-->
+    <color name="colorPrimary">#f9f9f9</color>
+    <color name="colorPrimaryDark">#f9f9f9</color>
+    <color name="colorAccent">#f9f9f9</color>
+
+    <!-- 默认背景颜色-->
+    <color name="default_bg">#f0f0f5</color>
+    <color name="colorMainDark">#323232</color>
+    <color name="colorMainLowDark">#3E444F</color>
+    <color name="colorMainHighDark">#333333</color>
+    <color name="colorMainHighDark_x">#142234</color>
+    <color name="colorMainGray">#808080</color>
+    <color name="colorMainGray_x">#686992</color>
+    <color name="line">#d2d2d2</color>
+    <color name="line_x">#d9d9d9</color>
+    <color name="line_xx">#e6e6e6</color>
+    <color name="line_xxx">#cccccb</color>
+    <color name="green">#13CE66</color>
+    <color name="gray">#737373</color>
+    <color name="line_grid">#e6e6e6</color>
+    <color name="noreport_color">#bfc9d0</color>
+
+    <color name="white">#ffffff</color>
+    <color name="list_line">#e6e6e6</color>
+    <color name="colorYellow">#FBB82C</color>
+    <color name="colorYellow_x">#FFF7E9</color>
+    <color name="colorGrayMiddle">#fafafa</color>
+    <color name="colorGray">#f2f2f2</color>
+    <color name="colorGray_x">#666666</color>
+    <color name="colorGray_xx">#a0a0a0</color>
+    <color name="colorHintGray">#cccccc</color>
+    <color name="colorGray_xxx">#999999</color>
+    <color name="colorGray_xxxx">#3c424b</color>
+    <color name="colorGray_xxxxx">#6b737a</color>
+    <color name="colorGray_l">#B3B3B3</color>
+    <color name="colorGray_ll">#BBB9C2</color>
+    <color name="colorGray_lll">#BFBFBF</color>
+    <color name="colorRed">#ff4242</color>
+    <color name="colorRed_x">#f64b36</color>
+    <color name="colorRed_l">#f57565</color>
+    <color name="colorRed_ll">#ff5742</color>
+    <color name="colorBlue">#1FB6FF</color>
+    <color name="colorBlueLow">#61aae7</color>
+    <color name="colorBlueLow_x">#1D74FA</color>
+    <color name="blue_middle_x">#1fb6ff</color>
+    <color name="colorDarkCircle">#AFBDCB</color>
+    <color name="color4">#444444</color>
+
+    <color name="colorOrange">#F7692B</color>
+
+</resources>
