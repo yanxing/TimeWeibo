@@ -41,16 +41,17 @@
 
         <ImageView
             android:id="@+id/home"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_weight="1"
-            android:src="@mipmap/home"/>
+            android:src="@mipmap/home_press"/>
 
         <ImageView
             android:id="@+id/message"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_weight="1"
+            android:layout_marginTop="1dp"
             android:src="@mipmap/message"/>
 
 
