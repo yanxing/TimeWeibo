@@ -1,4 +1,4 @@
-package com.yanxing.weibo.common;
+package com.yanxing.weibo.util;
 
 import android.support.v4.view.ViewPager;
 

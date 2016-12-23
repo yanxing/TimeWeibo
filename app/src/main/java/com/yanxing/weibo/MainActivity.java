@@ -9,7 +9,7 @@ import com.yanxing.titlebarlibrary.TitleBar;
 import com.yanxing.weibo.adapter.FragmentAdapter;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
-import com.yanxing.weibo.common.MyOnPageChangeListener;
+import com.yanxing.weibo.util.MyOnPageChangeListener;
 import com.yanxing.weibo.discover.DiscoverMainFragment;
 import com.yanxing.weibo.home.HomeMainFragment;
 import com.yanxing.weibo.me.MeMainFragment;
