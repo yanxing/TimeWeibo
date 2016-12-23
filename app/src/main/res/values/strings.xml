@@ -5,4 +5,8 @@
     <string name="me">我</string>
     <string name="concise_weibo">一个简洁的微博客户端</string>
     <string name="time">Time</string>
+    <string name="auth_success">授权成功</string>
+    <string name="auth_cancel">授权取消</string>
+    <string name="auth_error">授权失败</string>
+    <string name="auth_tip">继续授权</string>
 </resources>

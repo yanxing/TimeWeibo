@@ -9,6 +9,7 @@
     <color name="colorMainDark">#323232</color>
     <color name="colorMainHighDark">#333333</color>
     <color name="colorMainGray">#808080</color>
+    <color name="colorMainGray_x">#707070</color>
     <color name="colorHintGray">#cccccc</color>
     <color name="line">#d2d2d2</color>
     <color name="line_x">#d9d9d9</color>
