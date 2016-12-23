@@ -15,10 +15,7 @@
         app:title_main_center="true"
         app:title_main_color="@color/colorMainDark"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/line"/>
+    <View style="@style/Line"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
