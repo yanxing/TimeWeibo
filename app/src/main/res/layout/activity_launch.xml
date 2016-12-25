@@ -8,9 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <TextView
+        android:id="@+id/weibo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="140dp"
+        android:alpha="0"
         android:gravity="center"
         android:text="@string/concise_weibo"
         android:textColor="@color/colorMainGray_x"

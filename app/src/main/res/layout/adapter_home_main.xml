@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              style="@style/WeiboItemPadding"
+              android:clickable="true"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/click_white_dark_selector"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/simple_drawee_view"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            app:actualImageScaleType="focusCrop"
+            app:roundedCornerRadius="180dp"
+            app:roundingBorderWidth="1px"
+            app:roundingBorderColor="@color/line_x"
+            app:placeholderImage="@mipmap/head_default"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginTop="@dimen/margin2"
+            android:textSize="@dimen/text_normal"
+            android:textColor="@color/colorMainDark"
+            android:layout_toRightOf="@id/simple_drawee_view"
+            android:text="yanxing"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginTop="@dimen/margin4"
+            android:textSize="@dimen/text_small_x"
+            android:textColor="@color/colorMainGray"
+            android:layout_toRightOf="@id/simple_drawee_view"
+            android:text="昨天 19:30"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin8"
+        android:textColor="@color/colorMainDark"
+        android:text="三部门联合发布禁寄物品管理系统新规”18+1“项物品禁止寄递"/>
+
+    <View
+        style="@style/LineLow"
+        android:layout_marginTop="@dimen/margin6"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            style="@style/WeiboItemPraise">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@mipmap/praise"/>
+
+            <TextView
+                android:id="@+id/attitudesCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin4"
+                android:textSize="@dimen/text_small_x"
+                android:text="122"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/WeiboItemPraise">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@mipmap/comments"/>
+
+            <TextView
+                android:id="@+id/commentCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/text_small_x"
+                android:layout_marginLeft="@dimen/margin4"
+                android:text="122"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/WeiboItemPraise">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@mipmap/repost"/>
+
+            <TextView
+                android:id="@+id/repostCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/text_small_x"
+                android:layout_marginLeft="@dimen/margin4"
+                android:text="122"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,8 +1,9 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <!--暂且只按照720 px:dp/sp   2:1 -->
-    <dimen name="text_smaller">10sp</dimen>
-    <dimen name="text_small">12sp</dimen>
+    <dimen name="text_small">10sp</dimen>
+    <dimen name="text_small_x">11sp</dimen>
+    <dimen name="text_small_xx">12sp</dimen>
     <dimen name="text_middle">13sp</dimen>
     <dimen name="text_normal">14sp</dimen>
     <dimen name="text_normal_x">15sp</dimen>

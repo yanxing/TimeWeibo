@@ -16,8 +16,8 @@ public class ConstantValue {
 
     public static final String SCOPE = // 应用申请的高级权限
             "email,direct_messages_read,direct_messages_write,"
-                    + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
-                    + "follow_app_official_microblog";
+                    + "friendships_groups_read,friendships_groups_write," +
+                    "statuses_to_me_read";
 
 
 
@@ -29,10 +29,12 @@ public class ConstantValue {
      * 默认图极低磁盘空间缓存的最大值
      */
     public static final int MAX_DISK_CACHE_VERYLOW_SIZE = 10 * ByteConstants.MB;
+
     /**
      * 默认图低磁盘空间缓存的最大值
      */
     public static final int MAX_DISK_CACHE_LOW_SIZE = 30 * ByteConstants.MB;
+
     /**
      * 默认图磁盘缓存的最大值
      */

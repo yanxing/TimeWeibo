@@ -23,6 +23,11 @@
     <style name="Line">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/line</item>
+    </style>
+
+    <!-- item分割线，颜色较浅-->
+    <style name="LineLow" parent="Line">
         <item name="android:background">@color/line_xx</item>
     </style>
 
@@ -38,6 +43,23 @@
         <!-- 背景透明 -->
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <!--微博流item边距-->
+    <style name="WeiboItemPadding">
+        <item name="android:paddingLeft">@dimen/padding16</item>
+        <item name="android:paddingRight">@dimen/padding16</item>
+        <item name="android:paddingTop">@dimen/padding8</item>
+    </style>
+
+    <style name="WeiboItemPraise">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">@dimen/padding8</item>
+        <item name="android:paddingTop">@dimen/padding8</item>
+        <item name="android:background">@drawable/click_white_dark_selector</item>
     </style>
 
 </resources>

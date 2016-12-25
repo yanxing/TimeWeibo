@@ -1,14 +1,20 @@
 package com.yanxing.weibo;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.view.WindowManager;
+import android.widget.TextView;
 
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.yanxing.weibo.auth.WeiboAuthFragment;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.util.AccessTokenUtil;
 
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
+import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -18,6 +24,9 @@ import rx.functions.Action1;
  * Created by lishuangxiang on 2016/12/23.
  */
 public class LaunchActivity extends BaseActivity {
+
+    @BindView(R.id.weibo)
+    TextView mWeibo;
 
     private WeiboAuthFragment mWeiboAuthFragment = new WeiboAuthFragment();
 
@@ -29,16 +38,28 @@ public class LaunchActivity extends BaseActivity {
     @Override
     protected void afterInstanceView() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        EventBus.getDefault().register(this);
+        ObjectAnimator
+                .ofFloat(mWeibo, "alpha", 0.0F, 1.0F)
+                .setDuration(2000)
+                .start();
+        final Oauth2AccessToken oauth2AccessToken = AccessTokenUtil.readAccessToken(this);
         Observable.timer(2000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Long>bindToLifecycle())
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .add(R.id.auth, mWeiboAuthFragment)
-                                .commit();
+                        //token没有过期
+                        if (oauth2AccessToken.getExpiresTime() > System.currentTimeMillis()) {
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+                        } else {
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .add(R.id.auth, mWeiboAuthFragment)
+                                    .commit();
+                        }
                     }
                 });
     }
@@ -59,5 +80,11 @@ public class LaunchActivity extends BaseActivity {
     @Override
     protected BasePresenter initPresenter() {
         return null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
