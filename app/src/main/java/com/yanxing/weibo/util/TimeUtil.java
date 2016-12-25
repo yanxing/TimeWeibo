@@ -21,7 +21,7 @@ public class TimeUtil {
        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy"
                , Locale.US);
        try {
-           Date date=dateFormat.parse("Sun Dec 25 11:12:03 +0800 2016");
+           Date date=dateFormat.parse(americaTime);
            Calendar calendar = Calendar.getInstance();
            calendar.setTime(date);
            return calendar;
@@ -44,7 +44,7 @@ public class TimeUtil {
         long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
         if (day == 0) {
             if (hour == 0) {
-                return (min + "分钟前");
+                return ((min==0?"1":min )+ "分钟前");
             } else {
                 return (hour + "小时前");
             }

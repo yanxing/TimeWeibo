@@ -78,8 +78,8 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 mPullDownFresh = true;
-//                mPresenter.getFollowWeiboList(mCurrentPage,10, getActivity());
-                mPresenter.loadTestData(getActivity());
+                //mPresenter.loadTestData(getActivity());
+                mPresenter.getFollowWeiboList(mCurrentPage,10, getActivity());
             }
         });
         //上拉刷新
