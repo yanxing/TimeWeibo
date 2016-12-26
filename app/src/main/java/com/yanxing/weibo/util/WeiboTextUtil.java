@@ -80,16 +80,16 @@ public class WeiboTextUtil {
             String emotion=emotionMatcher.group();
             int start = emotionMatcher.start();
             int end = emotionMatcher.end();
-            int resId = EmotionUtils.getImageByName(emotion);
+            int resId = EmotionUtil.getImageByName(emotion);
             if (resId != -1) {  // 表情匹配
-                L.e("find emotion: " + emotion);
                 Drawable drawable = context.getResources().getDrawable(resId);
                 drawable.setBounds(0, 0, (int) (textSize * 1.3), (int) (textSize * 1.3));
                 // 自定义的 VerticalImageSpan ，可解决默认的 ImageSpan 不垂直居中的问题
-                VerticalImageSpan imageSpan = new VerticalImageSpan(drawable);
-                spannable.setSpan(imageSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                VerticalImageSpan imageSpan = new VerticalImageSpan(drawable);
+//                spannable.setSpan(imageSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
+        return spannable;
     }
 
     /**
@@ -124,6 +124,4 @@ public class WeiboTextUtil {
             ds.setUnderlineText(false);
         }
     }
-
-
 }
