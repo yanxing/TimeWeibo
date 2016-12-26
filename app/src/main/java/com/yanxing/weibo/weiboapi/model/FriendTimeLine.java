@@ -25,7 +25,7 @@ public class FriendTimeLine {
      */
 
     private boolean hasvisible;
-    private int previous_cursor;
+    private long previous_cursor;
     private long next_cursor;
     private int total_number;
     private int interval;
@@ -45,7 +45,7 @@ public class FriendTimeLine {
         this.hasvisible = hasvisible;
     }
 
-    public int getPrevious_cursor() {
+    public long getPrevious_cursor() {
         return previous_cursor;
     }
 
