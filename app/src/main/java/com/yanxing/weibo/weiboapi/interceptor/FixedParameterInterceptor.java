@@ -1,4 +1,6 @@
-package com.yanxing.weibo.weiboapi;
+package com.yanxing.weibo.weiboapi.interceptor;
+
+import com.yanxing.weibo.weiboapi.ConstantAPI;
 
 import java.io.IOException;
 
@@ -15,6 +17,10 @@ import okhttp3.Response;
 public class FixedParameterInterceptor implements Interceptor {
     private String mToken;
 
+    /**
+     * 请求添加token参数
+     * @param token
+     */
     public FixedParameterInterceptor(String token){
         mToken=token;
     }
@@ -23,7 +29,7 @@ public class FixedParameterInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request oldRequest = chain.request();
 
-        // 添加新的参数
+        // 添加token
         HttpUrl.Builder authorizedUrlBuilder = oldRequest.url()
                 .newBuilder()
                 .scheme(oldRequest.url().scheme())

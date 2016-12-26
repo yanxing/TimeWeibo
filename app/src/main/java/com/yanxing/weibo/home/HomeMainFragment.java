@@ -21,6 +21,7 @@ import butterknife.BindView;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
+import rx.Observable;
 
 /**
  * 微博主页，关注人的微博列表
@@ -57,12 +58,12 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
             @Override
             public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, final int position) {
                 holder.setText(R.id.name, mWeiboList.get(position).getUser().getName());
-                SimpleDraweeView head= (SimpleDraweeView) holder.findViewById(R.id.simple_drawee_view);
+                SimpleDraweeView head = (SimpleDraweeView) holder.findViewById(R.id.simple_drawee_view);
                 head.setImageURI(Uri.parse(mWeiboList.get(position).getUser().getAvatar_large()));
-                holder.setText(R.id.text,mWeiboList.get(position).getText());
-                holder.setText(R.id.attitudesCount,String.valueOf(mWeiboList.get(position).getAttitudes_count()));
-                holder.setText(R.id.commentCount,String.valueOf(mWeiboList.get(position).getComments_count()));
-                holder.setText(R.id.repostCount,String.valueOf(mWeiboList.get(position).getReposts_count()));
+                holder.setText(R.id.text, mWeiboList.get(position).getText());
+                holder.setText(R.id.attitudesCount, String.valueOf(mWeiboList.get(position).getAttitudes_count()));
+                holder.setText(R.id.commentCount, String.valueOf(mWeiboList.get(position).getComments_count()));
+                holder.setText(R.id.repostCount, String.valueOf(mWeiboList.get(position).getReposts_count()));
                 holder.setText(R.id.time, TimeUtil.getTimeAgo(TimeUtil.format(mWeiboList.get(position).getCreated_at())));
                 //点击事件
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -72,14 +73,15 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 });
             }
         };
+        //先加载本地缓存数据
+        mPresenter.getFollowWeiboList(mCurrentPage, 10, true);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         //下拉刷新
         mPtrFrameLayout.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 mPullDownFresh = true;
-                //mPresenter.loadTestData(getActivity());
-                mPresenter.getFollowWeiboList(mCurrentPage,10, getActivity());
+                mPresenter.getFollowWeiboList(mCurrentPage, 10);
             }
         });
         //上拉刷新
@@ -89,7 +91,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 super.onScrolled(recyclerView, dx, dy);
                 if (RecyclerViewUtil.isSlideToBottom(mRecyclerView)) {
                     mPullDownFresh = false;
-                    mPresenter.getFollowWeiboList(++mCurrentPage, 10,getActivity());
+                    mPresenter.getFollowWeiboList(++mCurrentPage, 10);
                 }
             }
         });
@@ -103,6 +105,9 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
 
     @Override
     public void setData(FriendTimeLine friendTimeLine) {
+        if (friendTimeLine == null) {
+            return;
+        }
         if (mPullDownFresh) {
             mWeiboList.clear();
             mWeiboList.addAll(friendTimeLine.getStatuses());
@@ -117,7 +122,12 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
     @Override
     public void setError(String error) {
         mPtrFrameLayout.refreshComplete();
-        LogUtil.d(TAG,error);
+        LogUtil.d(TAG, error);
         showToast(error);
+    }
+
+    @Override
+    public Observable.Transformer<FriendTimeLine, FriendTimeLine> rxLifecycle() {
+        return this.bindToLifecycle();
     }
 }
