@@ -40,10 +40,10 @@ public class WeiboTextUtil {
     // 话题
     public static final String REGEX_TOPIC = "#[\\p{Print}\\p{InCJKUnifiedIdeographs}&&[^#]]+#";
     // URL，这种是点击查看全文的，即详情
-    public static final String REGEX_URL = "全完：http://m.weibo.cn\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]";
+    public static final String REGEX_URL = "全文：http://(m\\.weibo\\.cn)\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]";
 
     // URL，这种是链接，内置web界面
-    public static final String REGEX_URL_WEB = "http://t.cn\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]";
+    public static final String REGEX_URL_WEB = "http://[a-zA-Z0-9+&@#/%?=~_\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]";
     // [表情]
     public static final String REGEX_EMOTION = "\\[(\\S+?)\\]";
 
@@ -88,9 +88,16 @@ public class WeiboTextUtil {
                 int start = spannable.getSpanStart(urlSpan);
                 int end = spannable.getSpanEnd(urlSpan);
                 spannable.removeSpan(urlSpan);
-                SpannableStringBuilder urlSpannableString = getUrlTextSpannableString(context, urlSpan.getURL(), textSize);
-                spannable.replace(start, end, urlSpannableString);
-                // 格式化链接部分文本
+                SpannableStringBuilder urlSpannableString = getUrlText(urlSpan.getURL());
+                spannable.replace(start, end, new SpannableStringBuilder(urlSpan.getURL()));
+                // 格式化“全文”文本
+                spannable.setSpan(myClickableSpan, start, start + urlSpannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }else if (urlSpan.getURL().contains(SCHEME_URL_WEB)) {
+                int start = spannable.getSpanStart(urlSpan);
+                int end = spannable.getSpanEnd(urlSpan);
+                spannable.removeSpan(urlSpan);
+                SpannableStringBuilder urlSpannableString = getWebUrlText(context, urlSpan.getURL(), textSize);
+                // 格式化Web链接部分文本
                 spannable.setSpan(myClickableSpan, start, start + urlSpannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
@@ -114,33 +121,27 @@ public class WeiboTextUtil {
     }
 
     /**
-     * 格式化链接
+     * 格式化链接，详情链接（全文）
      *
-     * @param context
      * @param source  文本
-     * @param size    文字大小
      * @return
      */
-    private static SpannableStringBuilder getUrlText(Context context, String source, int size) {
+    private static SpannableStringBuilder getUrlText(String source) {
         SpannableStringBuilder builder = new SpannableStringBuilder(source);
-        String prefix = " ";
-        builder.replace(0, prefix.length(), prefix);
-        VerticalImageSpan imageSpan = new VerticalImageSpan(context,
-                ((BitmapDrawable) drawable).getBitmap());
-        builder.setSpan(imageSpan, prefix.length(), source.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.append(" 网页链接");
+        builder.clear();
+        builder.append("全文");
         return builder;
     }
 
     /**
-     * 格式化链接
+     * 格式化链接，web链接
      *
      * @param context
      * @param source  文本
      * @param size    文字大小
      * @return
      */
-    private static SpannableStringBuilder getUrlTextSpannableString(Context context, String source, int size) {
+    private static SpannableStringBuilder getWebUrlText(Context context, String source, int size) {
         SpannableStringBuilder builder = new SpannableStringBuilder(source);
         String prefix = " ";
         builder.replace(0, prefix.length(), prefix);
