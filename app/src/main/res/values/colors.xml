@@ -15,7 +15,7 @@
     <color name="line">#d2d2d2</color>
     <color name="line_x">#d9d9d9</color>
     <color name="line_xx">#e6e6e6</color>
-    <color name="line_xxx">#eaeaea</color>
+    <color name="line_xxx">#e2e2e2</color>
     <color name="colorGray_x">#666666</color>
     <color name="colorGray_xx">#a0a0a0</color>
     <color name="colorGray_xxx">#999999</color>
@@ -31,7 +31,8 @@
     <color name="colorRed_l">#f57565</color>
     <color name="colorRed_ll">#ff5742</color>
     <color name="colorBlue">#1FB6FF</color>
-    <color name="colorBlueLow">#61aae7</color>
+    <!--微博颜色-->
+    <color name="colorBlueLow">#507daf</color>
     <color name="colorBlueLow_x">#1D74FA</color>
     <color name="blue_middle_x">#1fb6ff</color>
     <color name="colorOrange">#e78170</color>

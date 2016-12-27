@@ -174,6 +174,7 @@ public class EmotionUtil {
         map.put("[可爱]", R.mipmap.d_keai);
         map.put("[怒]", R.mipmap.d_nu);
         map.put("[汗]", R.mipmap.d_han);
+        map.put("[二哈]",R.mipmap.erha);
     }
 
     /**

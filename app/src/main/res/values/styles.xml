@@ -45,13 +45,6 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <!--微博流item边距-->
-    <style name="WeiboItemPadding">
-        <item name="android:paddingLeft">@dimen/padding16</item>
-        <item name="android:paddingRight">@dimen/padding16</item>
-        <item name="android:paddingTop">@dimen/padding8</item>
-    </style>
-
     <style name="WeiboItemPraise">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

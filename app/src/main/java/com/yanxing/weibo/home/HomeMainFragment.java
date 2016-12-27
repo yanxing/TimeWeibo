@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yanxing.adapterlibrary.RecyclerViewAdapter;
@@ -12,6 +13,7 @@ import com.yanxing.weibo.base.BaseFragment;
 import com.yanxing.weibo.util.LogUtil;
 import com.yanxing.weibo.util.RecyclerViewUtil;
 import com.yanxing.weibo.util.TimeUtil;
+import com.yanxing.weibo.util.WeiboTextUtil;
 import com.yanxing.weibo.weiboapi.model.FriendTimeLine;
 
 import java.util.ArrayList;
@@ -43,6 +45,10 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
      * 下拉刷新
      */
     private boolean mPullDownFresh = true;
+    /**
+     * 标志可以进行下拉刷新
+     */
+    private boolean mPullUpFresh=false;
     private int mCurrentPage = 1;
 
     @Override
@@ -61,10 +67,20 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 SimpleDraweeView head = (SimpleDraweeView) holder.findViewById(R.id.simple_drawee_view);
                 head.setImageURI(Uri.parse(mWeiboList.get(position).getUser().getAvatar_large()));
                 holder.setText(R.id.text, mWeiboList.get(position).getText());
+                TextView weiboText= (TextView) holder.findViewById(R.id.text);
+                weiboText.setText(WeiboTextUtil.formatWeiboText(getActivity(),mWeiboList.get(position).getText(),weiboText));
                 holder.setText(R.id.attitudesCount, String.valueOf(mWeiboList.get(position).getAttitudes_count()));
                 holder.setText(R.id.commentCount, String.valueOf(mWeiboList.get(position).getComments_count()));
                 holder.setText(R.id.repostCount, String.valueOf(mWeiboList.get(position).getReposts_count()));
                 holder.setText(R.id.time, TimeUtil.getTimeAgo(TimeUtil.format(mWeiboList.get(position).getCreated_at())));
+                //该微博为转发微博
+                if (mWeiboList.get(position).getRetweeted_status()!=null){
+                    TextView atWeibo= (TextView) holder.findViewById(R.id.textChild);
+                    atWeibo.setVisibility(View.VISIBLE);
+                    String content="@"+mWeiboList.get(position).getRetweeted_status().getUser().getName()+" :"+
+                            mWeiboList.get(position).getRetweeted_status().getText();
+                    atWeibo.setText(WeiboTextUtil.formatWeiboText(getActivity(),content,atWeibo));
+                }
                 //点击事件
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -89,7 +105,8 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (RecyclerViewUtil.isSlideToBottom(mRecyclerView)) {
+                if (RecyclerViewUtil.isSlideToBottom(mRecyclerView,40)&&mPullUpFresh) {
+                    mPullUpFresh=false;
                     mPullDownFresh = false;
                     mPresenter.getFollowWeiboList(++mCurrentPage, 10);
                 }
@@ -108,6 +125,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
         if (friendTimeLine == null) {
             return;
         }
+        mPullUpFresh=true;
         if (mPullDownFresh) {
             mWeiboList.clear();
             mWeiboList.addAll(friendTimeLine.getStatuses());
@@ -121,6 +139,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
 
     @Override
     public void setError(String error) {
+        mPullUpFresh=true;
         mPtrFrameLayout.refreshComplete();
         LogUtil.d(TAG, error);
         showToast(error);
