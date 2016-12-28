@@ -52,7 +52,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
     /**
      * 标志可以进行下拉刷新
      */
-    private boolean mPullUpFresh=false;
+    private boolean mPullUpFresh = false;
     private int mCurrentPage = 1;
 
     @Override
@@ -71,30 +71,30 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 SimpleDraweeView head = (SimpleDraweeView) holder.findViewById(R.id.simple_drawee_view);
                 head.setImageURI(Uri.parse(mWeiboList.get(position).getUser().getAvatar_large()));
                 holder.setText(R.id.text, mWeiboList.get(position).getText());
-                TextView weiboText= (TextView) holder.findViewById(R.id.text);
-                WeiboTextUtil.formatWeiboText(getActivity(),mWeiboList.get(position).getText(),weiboText);
+                TextView weiboText = (TextView) holder.findViewById(R.id.text);
+                weiboText.setText(WeiboTextUtil.formatWeiboText(getActivity(), mWeiboList.get(position).getText(), weiboText));
                 holder.setText(R.id.attitudesCount, String.valueOf(mWeiboList.get(position).getAttitudes_count()));
                 holder.setText(R.id.commentCount, String.valueOf(mWeiboList.get(position).getComments_count()));
                 holder.setText(R.id.repostCount, String.valueOf(mWeiboList.get(position).getReposts_count()));
                 holder.setText(R.id.time, TimeUtil.getTimeAgo(TimeUtil.format(mWeiboList.get(position).getCreated_at())));
                 //该微博为转发微博
-                if (mWeiboList.get(position).getRetweeted_status()!=null){
-                    TextView atWeibo= (TextView) holder.findViewById(R.id.textChild);
+                if (mWeiboList.get(position).getRetweeted_status() != null) {
+                    TextView atWeibo = (TextView) holder.findViewById(R.id.textChild);
                     atWeibo.setVisibility(View.VISIBLE);
-                    String content="@"+mWeiboList.get(position).getRetweeted_status().getUser().getName()+" :"+
+                    String content = "@" + mWeiboList.get(position).getRetweeted_status().getUser().getName() + " :" +
                             mWeiboList.get(position).getRetweeted_status().getText();
-                    WeiboTextUtil.formatWeiboText(getActivity(),content,atWeibo);
+                    atWeibo.setText(WeiboTextUtil.formatWeiboText(getActivity(), content, atWeibo));
                     //微博显示是否有图片策略：此微博是转发微博，原微博有图片，才标记此条微博有图片，无论转发时是否添加了图片
                     //此微博不是转发微博，有图片就显示此条微博含有图片，这里和微博显示一样
-                    List<?> list=mWeiboList.get(position).getRetweeted_status().getPic_urls();
-                    if (list!=null&&list.size()>0){
-                        ImageView imageView= (ImageView) holder.findViewById(R.id.hasImage);
+                    List<?> list = mWeiboList.get(position).getRetweeted_status().getPic_urls();
+                    if (list != null && list.size() > 0) {
+                        ImageView imageView = (ImageView) holder.findViewById(R.id.hasImage);
                         imageView.setVisibility(View.VISIBLE);
                     }
-                }else {
-                    List<?> list=mWeiboList.get(position).getPic_urls();
-                    if (list!=null&&list.size()>0){
-                        ImageView imageView= (ImageView) holder.findViewById(R.id.hasImage);
+                } else {
+                    List<?> list = mWeiboList.get(position).getPic_urls();
+                    if (list != null && list.size() > 0) {
+                        ImageView imageView = (ImageView) holder.findViewById(R.id.hasImage);
                         imageView.setVisibility(View.VISIBLE);
                     }
                 }
@@ -123,8 +123,15 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (RecyclerViewUtil.isSlideToBottom(mRecyclerView,40)&&mPullUpFresh) {
-                    mPullUpFresh=false;
+                int h=60;
+                if (mRecyclerView.getChildCount()>0){
+                    int temp=mRecyclerView.getChildAt(0).getHeight();
+                    if (temp>60){
+                        h=temp*2;
+                    }
+                }
+                if (RecyclerViewUtil.isSlideToBottom(mRecyclerView,h) && mPullUpFresh) {
+                    mPullUpFresh = false;
                     mPullDownFresh = false;
                     mPresenter.getFollowWeiboList(++mCurrentPage, 10);
                 }
@@ -143,7 +150,9 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
         if (friendTimeLine == null) {
             return;
         }
-        mPullUpFresh=true;
+
+
+        mPullUpFresh = true;
         if (mPullDownFresh) {
             mWeiboList.clear();
             mWeiboList.addAll(friendTimeLine.getStatuses());
@@ -157,7 +166,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
 
     @Override
     public void setError(String error) {
-        mPullUpFresh=true;
+        mPullUpFresh = true;
         mPtrFrameLayout.refreshComplete();
         LogUtil.d(TAG, error);
         showToast(error);

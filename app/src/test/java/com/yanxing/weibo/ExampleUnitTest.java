@@ -24,8 +24,10 @@ public class ExampleUnitTest {
 //        assertEquals(4, 2 + 2);
         Pattern pattern=Pattern.compile(REGEX_URL_WEB);
         boolean re=pattern.matcher("http://t.cn/RtjD4uC").find();
-        System.out.print(re);
+        System.out.println(re);
+        System.out.println(System.currentTimeMillis()/1000);
         Document doc = Jsoup.connect("http://t.cn/RIQ1T9W").get();
-        Elements newsHeadlines = doc.select("title");
+        String string= doc.select("title").get(0).toString();
+        System.out.println(System.currentTimeMillis()/1000);
     }
 }

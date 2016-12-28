@@ -18,6 +18,18 @@ public class ConstantValue {
             "email,direct_messages_read,direct_messages_write,"
                     + "friendships_groups_read,friendships_groups_write," +
                     "statuses_to_me_read";
+    /**
+     * 一般网页链接
+     */
+    public static final int URL_TYPE0=0;
+    /**
+     * 图片链接
+     */
+    public static final int URL_TYPE1=1;
+    /**
+     * 视频链接
+     */
+    public static final int URL_TYPE2=2;
 
 
 

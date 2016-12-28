@@ -47,7 +47,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
     public void getFollowWeiboList(int currentPage, int pageSize, boolean useCache) {
         CacheInterceptor cacheInterceptor = new CacheInterceptor(mContext, useCache);
         mRetrofitManage.setCacheInterceptor(cacheInterceptor);
-        StatusesApi statusesApi = mRetrofitManage.initRetrofit(mContext).create(StatusesApi.class);
+        final StatusesApi statusesApi = mRetrofitManage.initRetrofit(mContext).create(StatusesApi.class);
         statusesApi.getFriendsTimeline(0, 0, pageSize, currentPage, 0, 0, 0)
                 .compose(mView.rxLifecycle())
                 .subscribeOn(Schedulers.io())
