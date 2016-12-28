@@ -29,28 +29,28 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 微博文本，话题、表情、链接和@
+ * 微博文本，话题、表情、全文、链接和@
  * 改自http://www.tuicool.com/articles/qIJba2i
  * Created by lishuangxiang on 2016/12/26.
  */
 public class WeiboTextUtil {
 
     // @人 正则表达式
-    public static final String REGEX_AT = "@[\\w\\p{InCJKUnifiedIdeographs}-]{1,26}";
+    private static final String REGEX_AT = "@[\\w\\p{InCJKUnifiedIdeographs}-]{1,26}";
     // 话题
-    public static final String REGEX_TOPIC = "#[\\p{Print}\\p{InCJKUnifiedIdeographs}&&[^#]]+#";
-    // URL，这种是点击查看全文的，即详情
-    public static final String REGEX_URL = "全文：http://(m\\.weibo\\.cn)\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]";
-
-    // URL，这种是链接，内置web界面
-    public static final String REGEX_URL_WEB = "http://[a-zA-Z0-9+&@#/%?=~_\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]";
+    private static final String REGEX_TOPIC = "#[\\p{Print}\\p{InCJKUnifiedIdeographs}&&[^#]]+#";
+    // URL，这种是点击查看全文的，即详情，不使用webview  针对“全文: http://m.weibo.cn/  ”这样链接形式
+    private static final String REGEX_URL = "全文： http://(m\\.weibo\\.cn){1}(/\\w*)*";
+    // URL，这种链接是跳转内置web界面，针对微博文本中http://t.cn/ 这种链接形式 ，
+    // 可能是图片链接（转发微博时，添加了图片，微博限制转发微博只能添加一张图片）
+    private static final String REGEX_URL_WEB = "http://(t\\.cn){1}/\\w*";
     // [表情]
-    public static final String REGEX_EMOTION = "\\[(\\S+?)\\]";
+    private static final String REGEX_EMOTION = "\\[(\\S+?)\\]";
 
-    public static final String SCHEME_TOPIC = "topic:";
-    public static final String SCHEME_URL = "url:";
-    public static final String SCHEME_URL_WEB = "web:";
-    public static final String SCHEME_AT = "at:";
+    private static final String SCHEME_TOPIC = "topic:";
+    private static final String SCHEME_URL = "url:";
+    private static final String SCHEME_URL_WEB = "web:";
+    private static final String SCHEME_AT = "at:";
 
     /**
      * 格式化微博文本
@@ -89,14 +89,15 @@ public class WeiboTextUtil {
                 int end = spannable.getSpanEnd(urlSpan);
                 spannable.removeSpan(urlSpan);
                 SpannableStringBuilder urlSpannableString = getUrlText(urlSpan.getURL());
-                spannable.replace(start, end, new SpannableStringBuilder(urlSpan.getURL()));
+                spannable.replace(start, end, urlSpannableString);
                 // 格式化“全文”文本
                 spannable.setSpan(myClickableSpan, start, start + urlSpannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }else if (urlSpan.getURL().contains(SCHEME_URL_WEB)) {
+            } else if (urlSpan.getURL().contains(SCHEME_URL_WEB)) {
                 int start = spannable.getSpanStart(urlSpan);
                 int end = spannable.getSpanEnd(urlSpan);
                 spannable.removeSpan(urlSpan);
                 SpannableStringBuilder urlSpannableString = getWebUrlText(context, urlSpan.getURL(), textSize);
+                spannable.replace(start, end, urlSpannableString);
                 // 格式化Web链接部分文本
                 spannable.setSpan(myClickableSpan, start, start + urlSpannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
@@ -123,7 +124,7 @@ public class WeiboTextUtil {
     /**
      * 格式化链接，详情链接（全文）
      *
-     * @param source  文本
+     * @param source 文本
      * @return
      */
     private static SpannableStringBuilder getUrlText(String source) {
@@ -146,7 +147,7 @@ public class WeiboTextUtil {
         String prefix = " ";
         builder.replace(0, prefix.length(), prefix);
         Drawable drawable = context.getResources().getDrawable(R.mipmap.link);
-        drawable.setBounds(0, 0, size,size);
+        drawable.setBounds(0, 0, size, size);
         VerticalImageSpan imageSpan = new VerticalImageSpan(context,
                 ((BitmapDrawable) drawable).getBitmap());
         builder.setSpan(imageSpan, prefix.length(), source.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

@@ -16,8 +16,8 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
 
-        String REGEX_URL_WEB = "http://[\\t\\.cn]{1}[a-zA-Z0-9+&@#/%=~_|]";
-//        String REGEX_URL_WEB = "http://[a-zA-Z0-9+&@#/%?=~_\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]";
+//        String REGEX_URL_WEB = "http://(t\\.cn){1}/\\w*";
+        String REGEX_URL_WEB = "http://[a-zA-Z0-9+&@#/%?=~_\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]";
 //        assertEquals(4, 2 + 2);
         Pattern pattern=Pattern.compile(REGEX_URL_WEB);
         boolean re=pattern.matcher("http://t.cn/RtjD4uC").matches();

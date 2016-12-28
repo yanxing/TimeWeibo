@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -27,6 +28,9 @@ import rx.Observable;
 
 /**
  * 微博主页，关注人的微博列表
+ * 列表中没有显示微博图片，有含有图片标志，考虑如下：微博更像个媒体社交，不想朋友圈、instagram，信息流很多，
+ * 更多的是获取感兴趣的信息，微博含有的图片并不全是必要的， 用户浏览微博时，觉得文字信息感兴趣，才停下来去看，
+ * 点击即可进行详情查看，这时会显示图片，后期做到分组下的好友圈时，默认显示微博图片
  * Created by lishuangxiang on 2016/12/22.
  */
 public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresenter>
@@ -80,7 +84,21 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                     String content="@"+mWeiboList.get(position).getRetweeted_status().getUser().getName()+" :"+
                             mWeiboList.get(position).getRetweeted_status().getText();
                     atWeibo.setText(WeiboTextUtil.formatWeiboText(getActivity(),content,atWeibo));
+                    //微博显示是否有图片策略：此微博是转发微博，原微博有图片，才标记此条微博有图片，无论转发时是否添加了图片
+                    //此微博不是转发微博，有图片就显示此条微博含有图片，这里和微博显示一样
+                    List<?> list=mWeiboList.get(position).getRetweeted_status().getPic_urls();
+                    if (list!=null&&list.size()>0){
+                        ImageView imageView= (ImageView) holder.findViewById(R.id.hasImage);
+                        imageView.setVisibility(View.VISIBLE);
+                    }
+                }else {
+                    List<?> list=mWeiboList.get(position).getPic_urls();
+                    if (list!=null&&list.size()>0){
+                        ImageView imageView= (ImageView) holder.findViewById(R.id.hasImage);
+                        imageView.setVisibility(View.VISIBLE);
+                    }
                 }
+
                 //点击事件
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

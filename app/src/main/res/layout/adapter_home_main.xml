@@ -44,6 +44,16 @@
             android:text="昨天 19:30"
             android:textColor="@color/colorMainGray"
             android:textSize="@dimen/text_small_x"/>
+        <ImageView
+            android:id="@+id/hasImage"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_toRightOf="@id/time"
+            android:layout_below="@id/name"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/margin6"
+            android:layout_marginLeft="@dimen/margin8"
+            android:src="@mipmap/has_image"/>
     </RelativeLayout>
 
     <TextView
