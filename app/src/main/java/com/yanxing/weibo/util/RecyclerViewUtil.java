@@ -25,19 +25,21 @@ public class RecyclerViewUtil {
     }
 
     /**
-     * RecyclerView是否滑动到了底部（非真实），用于上拉到接近底部时预加载数据，距离底部high时，预加载数据
+     * RecyclerView是否可以刷新，用于上拉到接近底部时预加载数据
      *
      * @param recyclerView
-     * @param high 闸值
      * @return
      */
-    public static boolean isSlideToBottom(RecyclerView recyclerView,int high) {
+    public static boolean isCanRefresh(RecyclerView recyclerView) {
         if (recyclerView == null) {
             return false;
         }
-        if (recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset()
-                >= recyclerView.computeVerticalScrollRange()-high)
+        int e=recyclerView.computeVerticalScrollExtent();
+        int o=recyclerView.computeVerticalScrollOffset();
+        int r=recyclerView.computeVerticalScrollRange();
+        if ((e+o)*1.0/r>0.7){
             return true;
+        }
         return false;
     }
 }

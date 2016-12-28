@@ -123,14 +123,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int h=60;
-                if (mRecyclerView.getChildCount()>0){
-                    int temp=mRecyclerView.getChildAt(0).getHeight();
-                    if (temp>60){
-                        h=temp*2;
-                    }
-                }
-                if (RecyclerViewUtil.isSlideToBottom(mRecyclerView,h) && mPullUpFresh) {
+                if (RecyclerViewUtil.isCanRefresh(mRecyclerView) && mPullUpFresh) {
                     mPullUpFresh = false;
                     mPullDownFresh = false;
                     mPresenter.getFollowWeiboList(++mCurrentPage, 10);
