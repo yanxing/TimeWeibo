@@ -1,5 +1,8 @@
 package com.yanxing.weibo;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.junit.Test;
 
 import java.util.regex.Pattern;
@@ -20,7 +23,9 @@ public class ExampleUnitTest {
         String REGEX_URL_WEB = "http://[a-zA-Z0-9+&@#/%?=~_\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]";
 //        assertEquals(4, 2 + 2);
         Pattern pattern=Pattern.compile(REGEX_URL_WEB);
-        boolean re=pattern.matcher("http://t.cn/RtjD4uC").matches();
+        boolean re=pattern.matcher("http://t.cn/RtjD4uC").find();
         System.out.print(re);
+        Document doc = Jsoup.connect("http://t.cn/RIQ1T9W").get();
+        Elements newsHeadlines = doc.select("title");
     }
 }

@@ -25,12 +25,23 @@ import android.widget.TextView;
 
 import com.yanxing.weibo.R;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+
 /**
- * 微博文本，话题、表情、全文、链接和@
- * 改自http://www.tuicool.com/articles/qIJba2i
+ * 格式化微博文本，话题、表情、全文、链接和@，改自http://www.tuicool.com/articles/qIJba2i
+ * 针对链接中点击查看全文链接、视频链接、图片链接、一般网页链接作分类显示和处理
  * Created by lishuangxiang on 2016/12/26.
  */
 public class WeiboTextUtil {
@@ -42,7 +53,7 @@ public class WeiboTextUtil {
     // URL，这种是点击查看全文的，即详情，不使用webview  针对“全文: http://m.weibo.cn/  ”这样链接形式
     private static final String REGEX_URL = "全文： http://(m\\.weibo\\.cn){1}(/\\w*)*";
     // URL，这种链接是跳转内置web界面，针对微博文本中http://t.cn/ 这种链接形式 ，
-    // 可能是图片链接（转发微博时，添加了图片，微博限制转发微博只能添加一张图片）
+    // 可能是图片链接（转发微博时，添加了图片，微博限制转发微博只能添加一张图片），也可能是视频链接，这里分三类
     private static final String REGEX_URL_WEB = "http://(t\\.cn){1}/\\w*";
     // [表情]
     private static final String REGEX_EMOTION = "\\[(\\S+?)\\]";
@@ -55,11 +66,11 @@ public class WeiboTextUtil {
     /**
      * 格式化微博文本
      */
-    public static SpannableStringBuilder formatWeiboText(Context context, String content, TextView textView) {
-        int textSize = (int) textView.getTextSize();
+    public static void formatWeiboText(final Context context, String content, final TextView textView) {
+        final int textSize = (int) textView.getTextSize();
         //设置textView部分可点击
         textView.setMovementMethod(LinkMovementMethod.getInstance());
-        SpannableStringBuilder spannable = new SpannableStringBuilder(content);
+        final SpannableStringBuilder spannable = new SpannableStringBuilder(content);
         //设置正则表达式匹配@
         Linkify.addLinks(spannable, Pattern.compile(REGEX_AT), SCHEME_AT);
         //匹配话题#
@@ -69,40 +80,7 @@ public class WeiboTextUtil {
         //匹配WEB链接
         Linkify.addLinks(spannable, Pattern.compile(REGEX_URL_WEB), SCHEME_URL_WEB);
 
-        MyClickableSpan myClickableSpan;
-        // 获取上面到所有 addLinks 后的匹配部分(这里一个匹配项被封装成了一个 URLSpan 对象)
-        URLSpan[] urlSpans = spannable.getSpans(0, content.length(), URLSpan.class);
-        for (URLSpan urlSpan : urlSpans) {
-            myClickableSpan = new MyClickableSpan();
-            if (urlSpan.getURL().startsWith(SCHEME_AT)) {
-                int start = spannable.getSpanStart(urlSpan);
-                int end = spannable.getSpanEnd(urlSpan);
-                spannable.removeSpan(urlSpan);
-                spannable.setSpan(myClickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else if (urlSpan.getURL().startsWith(SCHEME_TOPIC)) {
-                int start = spannable.getSpanStart(urlSpan);
-                int end = spannable.getSpanEnd(urlSpan);
-                spannable.removeSpan(urlSpan);
-                spannable.setSpan(myClickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else if (urlSpan.getURL().contains(SCHEME_URL)) {
-                int start = spannable.getSpanStart(urlSpan);
-                int end = spannable.getSpanEnd(urlSpan);
-                spannable.removeSpan(urlSpan);
-                SpannableStringBuilder urlSpannableString = getUrlText(urlSpan.getURL());
-                spannable.replace(start, end, urlSpannableString);
-                // 格式化“全文”文本
-                spannable.setSpan(myClickableSpan, start, start + urlSpannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else if (urlSpan.getURL().contains(SCHEME_URL_WEB)) {
-                int start = spannable.getSpanStart(urlSpan);
-                int end = spannable.getSpanEnd(urlSpan);
-                spannable.removeSpan(urlSpan);
-                SpannableStringBuilder urlSpannableString = getWebUrlText(context, urlSpan.getURL(), textSize);
-                spannable.replace(start, end, urlSpannableString);
-                // 格式化Web链接部分文本
-                spannable.setSpan(myClickableSpan, start, start + urlSpannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
-
+        //表情单独格式化
         Matcher emotionMatcher = Pattern.compile(REGEX_EMOTION).matcher(spannable);
         while (emotionMatcher.find()) {
             String emotion = emotionMatcher.group();
@@ -111,14 +89,125 @@ public class WeiboTextUtil {
             int resId = EmotionUtil.getImageByName(emotion);
             if (resId != -1) {  // 表情匹配
                 Drawable drawable = context.getResources().getDrawable(resId);
-                drawable.setBounds(0, 0, (int) (textSize * 1.3), (int) (textSize * 1.0));
+                drawable.setBounds(0, 0, (int) (textSize * 1.3), textSize);
                 //自定义的 VerticalImageSpan ，可解决默认的 ImageSpan 不垂直居中的问题
                 VerticalImageSpan imageSpan = new VerticalImageSpan(context,
                         BitmapFactory.decodeResource(context.getResources(), resId));
                 spannable.setSpan(imageSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
-        return spannable;
+
+        final MyClickableSpan[] myClickableSpan = new MyClickableSpan[1];
+        // 获取上面到所有 addLinks 后的匹配部分(这里一个匹配项被封装成了一个 URLSpan 对象)
+        URLSpan[] urlSpans = spannable.getSpans(0, content.length(), URLSpan.class);
+
+//        Observable.from(urlSpans)
+//                .map(new Func1<URLSpan, SpannableStringBuilder>() {
+//                    @Override
+//                    public SpannableStringBuilder call(URLSpan urlSpan) {
+//                        myClickableSpan[0] = new MyClickableSpan();
+//                        if (urlSpan.getURL().startsWith(SCHEME_AT)) {
+//                            int start = spannable.getSpanStart(urlSpan);
+//                            int end = spannable.getSpanEnd(urlSpan);
+//                            spannable.removeSpan(urlSpan);
+//                            spannable.setSpan(myClickableSpan[0], start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                        } else if (urlSpan.getURL().startsWith(SCHEME_TOPIC)) {
+//                            int start = spannable.getSpanStart(urlSpan);
+//                            int end = spannable.getSpanEnd(urlSpan);
+//                            spannable.removeSpan(urlSpan);
+//                            spannable.setSpan(myClickableSpan[0], start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                        } else if (urlSpan.getURL().contains(SCHEME_URL)) {
+//                            int start = spannable.getSpanStart(urlSpan);
+//                            int end = spannable.getSpanEnd(urlSpan);
+//                            spannable.removeSpan(urlSpan);
+//                            SpannableStringBuilder urlSpannableString = getUrlText(urlSpan.getURL());
+//                            spannable.replace(start, end, urlSpannableString);
+//                            // 格式化“全文”文本
+//                            spannable.setSpan(myClickableSpan[0], start, start + urlSpannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                        } else if (urlSpan.getURL().contains(SCHEME_URL_WEB)) {
+//                            int start = spannable.getSpanStart(urlSpan);
+//                            int end = spannable.getSpanEnd(urlSpan);
+//                            spannable.removeSpan(urlSpan);
+//                            SpannableStringBuilder urlSpannableString = getWebUrlText(context, urlSpan.getURL(), textSize);
+//                            spannable.replace(start, end, urlSpannableString);
+//                            // 格式化Web链接部分文本
+//                            spannable.setSpan(myClickableSpan[0], start, start + urlSpannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                        }
+//                        return spannable;
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .unsubscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Action1<SpannableStringBuilder>() {
+//                    @Override
+//                    public void call(SpannableStringBuilder bitmap) {
+//                        textView.setText(spannable);
+//                    }
+//                });
+
+        for (URLSpan urlSpan : urlSpans) {
+            myClickableSpan[0] = new MyClickableSpan();
+            if (urlSpan.getURL().startsWith(SCHEME_AT)) {
+                int start = spannable.getSpanStart(urlSpan);
+                int end = spannable.getSpanEnd(urlSpan);
+                spannable.removeSpan(urlSpan);
+                spannable.setSpan(myClickableSpan[0], start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } else if (urlSpan.getURL().startsWith(SCHEME_TOPIC)) {
+                int start = spannable.getSpanStart(urlSpan);
+                int end = spannable.getSpanEnd(urlSpan);
+                spannable.removeSpan(urlSpan);
+                spannable.setSpan(myClickableSpan[0], start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } else if (urlSpan.getURL().contains(SCHEME_URL)) {
+                int start = spannable.getSpanStart(urlSpan);
+                int end = spannable.getSpanEnd(urlSpan);
+                spannable.removeSpan(urlSpan);
+                SpannableStringBuilder urlSpannableString = getUrlText(urlSpan.getURL());
+                spannable.replace(start, end, urlSpannableString);
+                // 格式化“全文”文本
+                spannable.setSpan(myClickableSpan[0], start, start + urlSpannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } else if (urlSpan.getURL().contains(SCHEME_URL_WEB)) {
+                int start = spannable.getSpanStart(urlSpan);
+                int end = spannable.getSpanEnd(urlSpan);
+                spannable.removeSpan(urlSpan);
+                SpannableStringBuilder urlSpannableString = getDefaultWebUrlText(context, urlSpan.getURL(), textSize);
+                spannable.replace(start, end, urlSpannableString);
+                // 格式化Web链接部分文本
+                spannable.setSpan(myClickableSpan[0], start, start + urlSpannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+        textView.setText(spannable);
+
+        Observable.from(urlSpans)
+                .filter(new Func1<URLSpan, Boolean>() {
+                    @Override
+                    public Boolean call(URLSpan urlSpan) {
+                        return urlSpan.getURL().contains(SCHEME_URL_WEB);
+                    }
+                })
+                .map(new Func1<URLSpan, SpannableStringBuilder>() {
+                    @Override
+                    public SpannableStringBuilder call(URLSpan urlSpan) {
+                        myClickableSpan[0] = new MyClickableSpan();
+                        int start = spannable.getSpanStart(urlSpan);
+                        int end = spannable.getSpanEnd(urlSpan);
+                        spannable.removeSpan(urlSpan);
+                        SpannableStringBuilder urlSpannableString = getWebUrlText(context, urlSpan.getURL(), textSize);
+                        spannable.replace(start, end, urlSpannableString);
+                        // 格式化Web链接部分文本
+                        spannable.setSpan(myClickableSpan[0], start, start + urlSpannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        return spannable;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<SpannableStringBuilder>() {
+                    @Override
+                    public void call(SpannableStringBuilder bitmap) {
+                        textView.setText(spannable);
+                    }
+                });
     }
 
     /**
@@ -135,7 +224,7 @@ public class WeiboTextUtil {
     }
 
     /**
-     * 格式化链接，web链接
+     * 格式化链接，web链接（包括一般web链接，图片、视频）
      *
      * @param context
      * @param source  文本
@@ -144,16 +233,61 @@ public class WeiboTextUtil {
      */
     private static SpannableStringBuilder getWebUrlText(Context context, String source, int size) {
         SpannableStringBuilder builder = new SpannableStringBuilder(source);
+        String url = source.substring(SCHEME_URL_WEB.length(), source.length());
+        Document doc = null;
+        String tip = " 网页链接";
+        Drawable drawable = context.getResources().getDrawable(R.mipmap.link);
+        ;
+        try {
+            doc = Jsoup.connect(url).get();
+            Elements title = doc.select("title");
+            if (title != null && title.size() > 0) {
+                String temp = title.get(0).toString();
+                if (temp.contains("视频") || temp.contains("秒拍")) {
+                    tip = " 短视频";
+                    drawable = context.getResources().getDrawable(R.mipmap.video);
+                } else if (temp.contains("图片")) {
+                    tip = " 查看图片";
+                    drawable = context.getResources().getDrawable(R.mipmap.has_image);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         String prefix = " ";
         builder.replace(0, prefix.length(), prefix);
-        Drawable drawable = context.getResources().getDrawable(R.mipmap.link);
         drawable.setBounds(0, 0, size, size);
         VerticalImageSpan imageSpan = new VerticalImageSpan(context,
                 ((BitmapDrawable) drawable).getBitmap());
         builder.setSpan(imageSpan, prefix.length(), source.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.append(" 网页链接");
+        builder.append(tip);
         return builder;
     }
+
+    /**
+     * 格式化链接，web链接（包括一般web链接，图片、视频）
+     *
+     * @param context
+     * @param source  文本
+     * @param size    文字大小
+     * @return
+     */
+    private static SpannableStringBuilder getDefaultWebUrlText(Context context, String source, int size) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(source);
+        String tip = " 网页链接";
+        Drawable drawable = context.getResources().getDrawable(R.mipmap.link);
+        ;
+        String prefix = " ";
+        builder.replace(0, prefix.length(), prefix);
+        drawable.setBounds(0, 0, size, size);
+        VerticalImageSpan imageSpan = new VerticalImageSpan(context,
+                ((BitmapDrawable) drawable).getBitmap());
+        builder.setSpan(imageSpan, prefix.length(), source.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(tip);
+        return builder;
+    }
+
 
     private static class MyClickableSpan extends ClickableSpan {
 
@@ -201,16 +335,6 @@ public class WeiboTextUtil {
 
         /**
          * see detail message in android.text.TextLine
-         *
-         * @param canvas the canvas, can be null if not rendering
-         * @param text   the text to be draw
-         * @param start  the text start position
-         * @param end    the text end position
-         * @param x      the edge of the replacement closest to the leading margin
-         * @param top    the top of the line
-         * @param y      the baseline
-         * @param bottom the bottom of the line
-         * @param paint  the work paint
          */
         @Override
         public void draw(Canvas canvas, CharSequence text, int start, int end,
@@ -226,4 +350,6 @@ public class WeiboTextUtil {
             canvas.restore();
         }
     }
+
+//    private static new
 }

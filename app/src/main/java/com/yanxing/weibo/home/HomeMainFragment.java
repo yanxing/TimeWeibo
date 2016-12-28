@@ -72,7 +72,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 head.setImageURI(Uri.parse(mWeiboList.get(position).getUser().getAvatar_large()));
                 holder.setText(R.id.text, mWeiboList.get(position).getText());
                 TextView weiboText= (TextView) holder.findViewById(R.id.text);
-                weiboText.setText(WeiboTextUtil.formatWeiboText(getActivity(),mWeiboList.get(position).getText(),weiboText));
+                WeiboTextUtil.formatWeiboText(getActivity(),mWeiboList.get(position).getText(),weiboText);
                 holder.setText(R.id.attitudesCount, String.valueOf(mWeiboList.get(position).getAttitudes_count()));
                 holder.setText(R.id.commentCount, String.valueOf(mWeiboList.get(position).getComments_count()));
                 holder.setText(R.id.repostCount, String.valueOf(mWeiboList.get(position).getReposts_count()));
@@ -83,7 +83,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                     atWeibo.setVisibility(View.VISIBLE);
                     String content="@"+mWeiboList.get(position).getRetweeted_status().getUser().getName()+" :"+
                             mWeiboList.get(position).getRetweeted_status().getText();
-                    atWeibo.setText(WeiboTextUtil.formatWeiboText(getActivity(),content,atWeibo));
+                    WeiboTextUtil.formatWeiboText(getActivity(),content,atWeibo);
                     //微博显示是否有图片策略：此微博是转发微博，原微博有图片，才标记此条微博有图片，无论转发时是否添加了图片
                     //此微博不是转发微博，有图片就显示此条微博含有图片，这里和微博显示一样
                     List<?> list=mWeiboList.get(position).getRetweeted_status().getPic_urls();
