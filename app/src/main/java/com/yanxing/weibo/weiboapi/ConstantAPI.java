@@ -19,4 +19,9 @@ public class ConstantAPI {
      */
     public static final String STATUSES_FRIENDS_TIMELINE = "statuses/friends_timeline.json";
 
+    /**
+     * 根据地理信息坐标返回实际地址
+     */
+    public static final String GEO_TO_ADDRESS = "geo_to_address.json";
+
 }

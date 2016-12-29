@@ -5,12 +5,19 @@ import android.content.Context;
 import com.yanxing.weibo.base.BasePresenter;
 import com.yanxing.weibo.base.RetrofitManage;
 import com.yanxing.weibo.util.ParseJsonUtil;
+import com.yanxing.weibo.weiboapi.ConstantAPI;
+import com.yanxing.weibo.weiboapi.LocationApi;
 import com.yanxing.weibo.weiboapi.interceptor.CacheInterceptor;
 import com.yanxing.weibo.weiboapi.StatusesApi;
 import com.yanxing.weibo.weiboapi.model.FriendTimeLine;
+import com.yanxing.weibo.weiboapi.model.GeoToAddress;
 
+import java.util.List;
+
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -49,7 +56,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
         mRetrofitManage.setCacheInterceptor(cacheInterceptor);
         final StatusesApi statusesApi = mRetrofitManage.initRetrofit(mContext).create(StatusesApi.class);
         statusesApi.getFriendsTimeline(0, 0, pageSize, currentPage, 0, 0, 0)
-                .compose(mView.rxLifecycle())
+                .compose(mView.<FriendTimeLine>rxLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<FriendTimeLine>() {
@@ -68,6 +75,34 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
                         mView.setData(friendTimeLine);
                     }
                 });
+    }
+
+    public void getGeoToAddress(FriendTimeLine.StatusesBean.Geo.Coordinates coordinates,int indexOfWeiboList){
+//        Observable.from()
+        LocationApi locationApi = mRetrofitManage.initRetrofit(mContext).create(LocationApi.class);
+        locationApi.getGeoToAddress(ConstantAPI.GEO_TO_ADDRESS,coordinates.getLongitude()+
+                ","+coordinates.getLatitude())
+                .compose(mView.<GeoToAddress>rxLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<GeoToAddress>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.setError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(GeoToAddress geoToAddress) {
+                        geoToAddress.getGeos().get(0).getCity_name();
+//                        mView.setData(geoToAddress);
+                    }
+                });
+
     }
 
     /**

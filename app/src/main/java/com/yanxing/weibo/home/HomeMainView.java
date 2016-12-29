@@ -17,5 +17,5 @@ public interface HomeMainView {
      * 取消Rx中的订阅
      * @return
      */
-    Observable.Transformer<FriendTimeLine, FriendTimeLine> rxLifecycle();
+    <T> Observable.Transformer<T, T> rxLifecycle();
 }
