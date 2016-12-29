@@ -32,7 +32,7 @@ public class TimeUtil {
    }
 
     /**
-     * 和当前时间比较，多久以前,超出一天，显示原时间
+     * 和当前时间比较，多久以前,1小时以内返回多少分钟，超出一天，返回原时间
      *
      * @param calendar 要比较的时间  格式：2016/9/20 17:49:38
      * @return
@@ -45,19 +45,21 @@ public class TimeUtil {
         if (day == 0) {
             if (hour == 0) {
                 return ((min==0?"1":min )+ "分钟前");
-            } else {
-                return (hour + "小时前");
+            } else  {
+                int hourTemp=calendar.get(Calendar.HOUR_OF_DAY);
+                int minTemp=calendar.get(Calendar.MINUTE);
+                return "今天 " +hourTemp +":"+(minTemp<10?"0"+minTemp:minTemp);
             }
         }else if (day==1){
             int hourTemp=calendar.get(Calendar.HOUR_OF_DAY);
             int minTemp=calendar.get(Calendar.MINUTE);
-            return "昨天  " +hourTemp +":"+minTemp;
+            return "昨天 " +hourTemp +":"+(minTemp<10?"0"+minTemp:minTemp);
         }else {
             int month=calendar.get(Calendar.MONTH)+1;
             int dayTemp=calendar.get(Calendar.DAY_OF_MONTH);
             int hourTemp=calendar.get(Calendar.HOUR_OF_DAY);
             int minTemp=calendar.get(Calendar.MINUTE);
-            return month+"-"+dayTemp+" "+hourTemp+":"+minTemp;
+            return month+"-"+dayTemp+" "+hourTemp+":"+(minTemp<10?"0"+minTemp:minTemp);
         }
     }
 }
