@@ -9,4 +9,5 @@
     <string name="auth_cancel">授权取消</string>
     <string name="auth_error">授权失败</string>
     <string name="auth_tip">继续授权</string>
+    <string name="home_detail">微博正文</string>
 </resources>

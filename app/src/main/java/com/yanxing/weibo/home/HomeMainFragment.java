@@ -1,6 +1,8 @@
 package com.yanxing.weibo.home;
 
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -105,6 +107,10 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Intent intent=new Intent(getActivity(),WeiboDetailActivity.class);
+                        Bundle bundle=new Bundle();
+//                        bundle.putParcelable("weibo",mWeiboList.get(position));
+                        startActivity(intent);
                     }
                 });
             }
