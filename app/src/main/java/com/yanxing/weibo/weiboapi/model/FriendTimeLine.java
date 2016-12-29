@@ -510,8 +510,14 @@ public class FriendTimeLine {
         }
 
         public static class Geo{
+
+            /**
+             * type : Point
+             * coordinates : [31.117314637,121.49860864]
+             */
+
             private String type;
-            private Coordinates coordinates;
+            private List<Double> coordinates;
 
             public String getType() {
                 return type;
@@ -521,36 +527,13 @@ public class FriendTimeLine {
                 this.type = type;
             }
 
-            public Coordinates getCoordinates() {
+            public List<Double> getCoordinates() {
                 return coordinates;
             }
 
-            public void setCoordinates(Coordinates coordinates) {
+            public void setCoordinates(List<Double> coordinates) {
                 this.coordinates = coordinates;
             }
-
-            public static class Coordinates{
-                //维度 shanghai 小的
-                private long latitude;
-                private long longitude;
-
-                public long getLatitude() {
-                    return latitude;
-                }
-
-                public void setLatitude(long latitude) {
-                    this.latitude = latitude;
-                }
-
-                public long getLongitude() {
-                    return longitude;
-                }
-
-                public void setLongitude(long longitude) {
-                    this.longitude = longitude;
-                }
-            }
-
         }
 
         public static class UserBean {

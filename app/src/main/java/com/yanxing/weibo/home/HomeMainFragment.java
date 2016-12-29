@@ -164,6 +164,11 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
     }
 
     @Override
+    public void upateNotifyItemChanged(int position) {
+        mRecyclerViewAdapter.update(position);
+    }
+
+    @Override
     public void setError(String error) {
         mPullUpFresh = true;
         mPtrFrameLayout.refreshComplete();
@@ -172,7 +177,8 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
     }
 
     @Override
-    public Observable.Transformer<FriendTimeLine, FriendTimeLine> rxLifecycle() {
+    public <T> Observable.Transformer<T, T> rxLifecycle() {
         return this.bindToLifecycle();
     }
+
 }

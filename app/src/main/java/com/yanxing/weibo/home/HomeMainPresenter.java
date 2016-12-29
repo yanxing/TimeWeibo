@@ -17,6 +17,7 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -77,11 +78,29 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
                 });
     }
 
-    public void getGeoToAddress(FriendTimeLine.StatusesBean.Geo.Coordinates coordinates,int indexOfWeiboList){
-//        Observable.from()
+    public void getGeoToAddress(List<FriendTimeLine.StatusesBean> weiboList){
+        final int[] indexOfWeiboList = {0};
+        Observable.from(weiboList)
+                .filter(new Func1<FriendTimeLine.StatusesBean, Boolean>() {
+                    @Override
+                    public Boolean call(FriendTimeLine.StatusesBean statusesBean) {
+                        indexOfWeiboList[0]++;
+                        return statusesBean.getGeo()!=null&&statusesBean.getGeo().getCoordinates()!=null;
+                    }
+                }).subscribe(new Action1<FriendTimeLine.StatusesBean>() {
+            @Override
+            public void call(FriendTimeLine.StatusesBean statusesBean) {
+                   test(statusesBean,indexOfWeiboList[0]);
+            }
+        });
+
+    }
+
+    public void test(final FriendTimeLine.StatusesBean statusesBean , final int index){
+        List<Double> coordinates=statusesBean.getGeo().getCoordinates();
         LocationApi locationApi = mRetrofitManage.initRetrofit(mContext).create(LocationApi.class);
-        locationApi.getGeoToAddress(ConstantAPI.GEO_TO_ADDRESS,coordinates.getLongitude()+
-                ","+coordinates.getLatitude())
+        locationApi.getGeoToAddress(ConstantAPI.GEO_TO_ADDRESS,coordinates.get(1)+
+                ","+coordinates.get(0))
                 .compose(mView.<GeoToAddress>rxLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -98,11 +117,17 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
 
                     @Override
                     public void onNext(GeoToAddress geoToAddress) {
-                        geoToAddress.getGeos().get(0).getCity_name();
+                        if (geoToAddress.getGeos()!=null&&geoToAddress.getGeos().size()>0){
+                            if (statusesBean.getAnnotations()!=null&&statusesBean.getAnnotations().size()>0){
+                                String detailAddress=statusesBean.getAnnotations().get(0).getPlace().getTitle();
+                                statusesBean.setLocation(geoToAddress.getGeos().get(0).getCity_name()+"·"+detailAddress);
+                                mView.upateNotifyItemChanged(index);
+                            }
+                        }
+
 //                        mView.setData(geoToAddress);
                     }
                 });
-
     }
 
     /**
