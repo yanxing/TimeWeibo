@@ -92,6 +92,8 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                         imageView.setVisibility(View.VISIBLE);
                     }
                 } else {
+                    TextView atWeibo = (TextView) holder.findViewById(R.id.textChild);
+                    atWeibo.setVisibility(View.GONE);
                     List<?> list = mWeiboList.get(position).getPic_urls();
                     if (list != null && list.size() > 0) {
                         ImageView imageView = (ImageView) holder.findViewById(R.id.hasImage);
