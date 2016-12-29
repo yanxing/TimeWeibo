@@ -210,5 +210,4 @@ public class WeiboTextUtil {
         }
     }
 
-//    private static new
 }

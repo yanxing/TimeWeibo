@@ -108,14 +108,14 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
             }
         };
         //先加载本地缓存数据
-        mPresenter.getFollowWeiboList(mCurrentPage, 10, true);
+        mPresenter.getFollowWeiboList(mCurrentPage, 20, true);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         //下拉刷新
         mPtrFrameLayout.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 mPullDownFresh = true;
-                mPresenter.getFollowWeiboList(mCurrentPage, 10);
+                mPresenter.getFollowWeiboList(mCurrentPage, 20);
             }
         });
         //上拉刷新
@@ -126,7 +126,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 if (RecyclerViewUtil.isCanRefresh(mRecyclerView) && mPullUpFresh) {
                     mPullUpFresh = false;
                     mPullDownFresh = false;
-                    mPresenter.getFollowWeiboList(++mCurrentPage, 10);
+                    mPresenter.getFollowWeiboList(++mCurrentPage, 20);
                 }
             }
         });
@@ -143,8 +143,6 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
         if (friendTimeLine == null) {
             return;
         }
-
-
         mPullUpFresh = true;
         if (mPullDownFresh) {
             mWeiboList.clear();
