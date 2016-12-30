@@ -8,17 +8,19 @@
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:back_img_visible="false"
         app:backgroundColor="@color/colorPrimary"
         app:title_main="@string/home_detail"
         app:title_main_center="true"
         app:title_main_color="@color/colorMainDark"/>
-    <ScrollView
+    <View
+        style="@style/Line"/>
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin16"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -54,7 +56,6 @@
                 android:layout_marginLeft="@dimen/margin8"
                 android:layout_marginTop="@dimen/margin4"
                 android:layout_toRightOf="@id/simple_drawee_view"
-                android:text="12:30 19:30"
                 android:textColor="@color/colorMainGray"
                 android:textSize="@dimen/text_small_x"/>
         </RelativeLayout>
@@ -81,6 +82,14 @@
             android:text="三部门联合发布禁寄物品管理系统新规”18+1“项物品禁止寄递"
             android:textColor="@color/colorGray_x"
             android:visibility="gone"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/image"
+                android:layout_marginTop="@dimen/margin4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding16"
+                android:paddingRight="@dimen/padding16"/>
+
     </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

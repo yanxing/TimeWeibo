@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import de.greenrobot.event.EventBus;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -64,6 +65,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
 
     @Override
     protected void afterInstanceView() {
+        EventBus.getDefault().register(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerViewAdapter = new RecyclerViewAdapter<FriendTimeLine.StatusesBean>(mWeiboList,
                 R.layout.adapter_home_main) {
@@ -110,13 +112,14 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                     }
                 }
 
-                //点击事件
+                //Item点击事件
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent=new Intent(getActivity(),WeiboDetailActivity.class);
                         Bundle bundle=new Bundle();
-//                        bundle.putParcelable("weibo",mWeiboList.get(position));
+                        bundle.putParcelable("weibo",mWeiboList.get(position));
+                        intent.putExtras(bundle);
                         startActivity(intent);
                     }
                 });
@@ -172,7 +175,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
     }
 
     @Override
-    public void upateNotifyItemChanged(int position) {
+    public void updateNotifyItemChanged(int position) {
         mRecyclerViewAdapter.update(position);
     }
 
@@ -184,9 +187,18 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
         showToast(error);
     }
 
+    public void onEvent(View view){
+        showToast(view.toString());
+    }
+
     @Override
     public <T> Observable.Transformer<T, T> rxLifecycle() {
         return this.bindToLifecycle();
     }
 
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
 }

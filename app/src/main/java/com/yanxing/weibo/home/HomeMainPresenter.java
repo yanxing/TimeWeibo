@@ -125,7 +125,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
                             if (statusesBean.getAnnotations()!=null&&statusesBean.getAnnotations().size()>0){
                                 String detailAddress=statusesBean.getAnnotations().get(0).getPlace().getTitle();
                                 statusesBean.setLocation(geoToAddress.getGeos().get(0).getCity_name()+"·"+detailAddress);
-                                mView.upateNotifyItemChanged(indexOfWeiboList[0]);
+                                mView.updateNotifyItemChanged(indexOfWeiboList[0]);
                             }
                         }
                     }

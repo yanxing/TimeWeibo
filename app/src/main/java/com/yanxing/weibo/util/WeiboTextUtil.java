@@ -25,6 +25,8 @@ import com.yanxing.weibo.R;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * 格式化微博文本，话题、表情、全文、链接和@，改自http://www.tuicool.com/articles/qIJba2i
  * 针对链接中点击查看全文链接、视频链接、图片链接、一般网页链接作分类显示和处理
@@ -152,7 +154,7 @@ public class WeiboTextUtil {
 
         @Override
         public void onClick(View widget) {
-
+            EventBus.getDefault().post(widget);
         }
 
         @Override

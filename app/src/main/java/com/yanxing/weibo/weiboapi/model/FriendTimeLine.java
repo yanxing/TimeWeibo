@@ -1,10 +1,15 @@
 package com.yanxing.weibo.weiboapi.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 用不到的、不确定的字段已注释掉，不然不便于序列化
  * Created by 李双祥 on 2016/12/23.
  */
 
@@ -20,8 +25,9 @@ public class FriendTimeLine {
     private long max_id;
     private long has_unread;
     private List<StatusesBean> statuses;
-    private List<?> advertises;
-    private List<?> ad;
+    //用不到的、不确定的字段已注释掉
+//    private List<?> advertises;
+//    private List<?> ad;
 
     public boolean isHasvisible() {
         return hasvisible;
@@ -103,23 +109,23 @@ public class FriendTimeLine {
         this.statuses = statuses;
     }
 
-    public List<?> getAdvertises() {
-        return advertises;
-    }
+//    public List<?> getAdvertises() {
+//        return advertises;
+//    }
+//
+//    public void setAdvertises(List<?> advertises) {
+//        this.advertises = advertises;
+//    }
+//
+//    public List<?> getAd() {
+//        return ad;
+//    }
+//
+//    public void setAd(List<?> ad) {
+//        this.ad = ad;
+//    }
 
-    public void setAdvertises(List<?> advertises) {
-        this.advertises = advertises;
-    }
-
-    public List<?> getAd() {
-        return ad;
-    }
-
-    public void setAd(List<?> ad) {
-        this.ad = ad;
-    }
-
-    public static class StatusesBean {
+    public static class StatusesBean implements Parcelable {
 
         private String created_at;
         private long id;
@@ -157,13 +163,68 @@ public class FriendTimeLine {
         private String original_pic;
         private String picStatus;
         private long page_type;
-        private List<?> pic_urls;
+        private List<PicUrl> pic_urls;
+
+        public List<PicUrl> getPic_urls() {
+            return pic_urls;
+        }
+
+        public void setPic_urls(List<PicUrl> pic_urls) {
+            this.pic_urls = pic_urls;
+        }
+
         private List<AnnotationsBeanX> annotations;
         private List<Integer> biz_ids;
-        private List<?> darwin_tags;
-        private List<?> hot_weibo_tags;
-        private List<?> text_tag_tips;
+//        private List<?> darwin_tags;
+//        private List<?> hot_weibo_tags;
+//        private List<?> text_tag_tips;
         private String location;
+
+        public static class PicUrl implements Parcelable {
+
+            /**
+             * thumbnail_pic : http://wx4.sinaimg.cn/thumbnail/61ff32dely1fb8nai7t14g20c806rk5y.gif
+             */
+
+            private String thumbnail_pic;
+
+            public String getThumbnail_pic() {
+                return thumbnail_pic;
+            }
+
+            public void setThumbnail_pic(String thumbnail_pic) {
+                this.thumbnail_pic = thumbnail_pic;
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.thumbnail_pic);
+            }
+
+            public PicUrl() {
+            }
+
+            protected PicUrl(Parcel in) {
+                this.thumbnail_pic = in.readString();
+            }
+
+            public static final Creator<PicUrl> CREATOR = new Creator<PicUrl>() {
+                @Override
+                public PicUrl createFromParcel(Parcel source) {
+                    return new PicUrl(source);
+                }
+
+                @Override
+                public PicUrl[] newArray(int size) {
+                    return new PicUrl[size];
+                }
+            };
+        }
 
         public String getLocation() {
             return location;
@@ -461,13 +522,13 @@ public class FriendTimeLine {
             this.page_type = page_type;
         }
 
-        public List<?> getPic_urls() {
-            return pic_urls;
-        }
-
-        public void setPic_urls(List<?> pic_urls) {
-            this.pic_urls = pic_urls;
-        }
+//        public List<?> getPic_urls() {
+//            return pic_urls;
+//        }
+//
+//        public void setPic_urls(List<?> pic_urls) {
+//            this.pic_urls = pic_urls;
+//        }
 
         public List<AnnotationsBeanX> getAnnotations() {
             return annotations;
@@ -485,31 +546,31 @@ public class FriendTimeLine {
             this.biz_ids = biz_ids;
         }
 
-        public List<?> getDarwin_tags() {
-            return darwin_tags;
-        }
+//        public List<?> getDarwin_tags() {
+//            return darwin_tags;
+//        }
+//
+//        public void setDarwin_tags(List<?> darwin_tags) {
+//            this.darwin_tags = darwin_tags;
+//        }
+//
+//        public List<?> getHot_weibo_tags() {
+//            return hot_weibo_tags;
+//        }
+//
+//        public void setHot_weibo_tags(List<?> hot_weibo_tags) {
+//            this.hot_weibo_tags = hot_weibo_tags;
+//        }
+//
+//        public List<?> getText_tag_tips() {
+//            return text_tag_tips;
+//        }
+//
+//        public void setText_tag_tips(List<?> text_tag_tips) {
+//            this.text_tag_tips = text_tag_tips;
+//        }
 
-        public void setDarwin_tags(List<?> darwin_tags) {
-            this.darwin_tags = darwin_tags;
-        }
-
-        public List<?> getHot_weibo_tags() {
-            return hot_weibo_tags;
-        }
-
-        public void setHot_weibo_tags(List<?> hot_weibo_tags) {
-            this.hot_weibo_tags = hot_weibo_tags;
-        }
-
-        public List<?> getText_tag_tips() {
-            return text_tag_tips;
-        }
-
-        public void setText_tag_tips(List<?> text_tag_tips) {
-            this.text_tag_tips = text_tag_tips;
-        }
-
-        public static class Geo{
+        public static class Geo implements Parcelable {
 
             /**
              * type : Point
@@ -534,9 +595,41 @@ public class FriendTimeLine {
             public void setCoordinates(List<Double> coordinates) {
                 this.coordinates = coordinates;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.type);
+                dest.writeList(this.coordinates);
+            }
+
+            public Geo() {
+            }
+
+            protected Geo(Parcel in) {
+                this.type = in.readString();
+                this.coordinates = new ArrayList<Double>();
+                in.readList(this.coordinates, Double.class.getClassLoader());
+            }
+
+            public static final Creator<Geo> CREATOR = new Creator<Geo>() {
+                @Override
+                public Geo createFromParcel(Parcel source) {
+                    return new Geo(source);
+                }
+
+                @Override
+                public Geo[] newArray(int size) {
+                    return new Geo[size];
+                }
+            };
         }
 
-        public static class UserBean {
+        public static class UserBean implements Parcelable {
             /**
              * id : 2087169013
              * idstr : 2087169013
@@ -1131,9 +1224,154 @@ public class FriendTimeLine {
             public void setUrank(long urank) {
                 this.urank = urank;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeLong(this.id);
+                dest.writeString(this.idstr);
+                dest.writeLong(this.classX);
+                dest.writeString(this.screen_name);
+                dest.writeString(this.name);
+                dest.writeString(this.province);
+                dest.writeString(this.city);
+                dest.writeString(this.location);
+                dest.writeString(this.description);
+                dest.writeString(this.url);
+                dest.writeString(this.profile_image_url);
+                dest.writeString(this.cover_image);
+                dest.writeString(this.cover_image_phone);
+                dest.writeString(this.profile_url);
+                dest.writeString(this.domain);
+                dest.writeString(this.weihao);
+                dest.writeString(this.gender);
+                dest.writeLong(this.followers_count);
+                dest.writeLong(this.friends_count);
+                dest.writeLong(this.pagefriends_count);
+                dest.writeLong(this.statuses_count);
+                dest.writeLong(this.favourites_count);
+                dest.writeString(this.created_at);
+                dest.writeByte(this.following ? (byte) 1 : (byte) 0);
+                dest.writeByte(this.allow_all_act_msg ? (byte) 1 : (byte) 0);
+                dest.writeByte(this.geo_enabled ? (byte) 1 : (byte) 0);
+                dest.writeByte(this.verified ? (byte) 1 : (byte) 0);
+                dest.writeLong(this.verified_type);
+                dest.writeString(this.remark);
+                dest.writeLong(this.ptype);
+                dest.writeByte(this.allow_all_comment ? (byte) 1 : (byte) 0);
+                dest.writeString(this.avatar_large);
+                dest.writeString(this.avatar_hd);
+                dest.writeString(this.verified_reason);
+                dest.writeString(this.verified_trade);
+                dest.writeString(this.verified_reason_url);
+                dest.writeString(this.verified_source);
+                dest.writeString(this.verified_source_url);
+                dest.writeLong(this.verified_state);
+                dest.writeLong(this.verified_level);
+                dest.writeLong(this.verified_type_ext);
+                dest.writeString(this.verified_reason_modified);
+                dest.writeString(this.verified_contact_name);
+                dest.writeString(this.verified_contact_email);
+                dest.writeString(this.verified_contact_mobile);
+                dest.writeByte(this.follow_me ? (byte) 1 : (byte) 0);
+                dest.writeLong(this.online_status);
+                dest.writeLong(this.bi_followers_count);
+                dest.writeString(this.lang);
+                dest.writeLong(this.star);
+                dest.writeLong(this.mbtype);
+                dest.writeLong(this.mbrank);
+                dest.writeLong(this.block_word);
+                dest.writeLong(this.block_app);
+                dest.writeLong(this.credit_score);
+                dest.writeLong(this.user_ability);
+                dest.writeString(this.cardid);
+                dest.writeString(this.avatargj_id);
+                dest.writeLong(this.urank);
+            }
+
+            public UserBean() {
+            }
+
+            protected UserBean(Parcel in) {
+                this.id = in.readLong();
+                this.idstr = in.readString();
+                this.classX = in.readLong();
+                this.screen_name = in.readString();
+                this.name = in.readString();
+                this.province = in.readString();
+                this.city = in.readString();
+                this.location = in.readString();
+                this.description = in.readString();
+                this.url = in.readString();
+                this.profile_image_url = in.readString();
+                this.cover_image = in.readString();
+                this.cover_image_phone = in.readString();
+                this.profile_url = in.readString();
+                this.domain = in.readString();
+                this.weihao = in.readString();
+                this.gender = in.readString();
+                this.followers_count = in.readLong();
+                this.friends_count = in.readLong();
+                this.pagefriends_count = in.readLong();
+                this.statuses_count = in.readLong();
+                this.favourites_count = in.readLong();
+                this.created_at = in.readString();
+                this.following = in.readByte() != 0;
+                this.allow_all_act_msg = in.readByte() != 0;
+                this.geo_enabled = in.readByte() != 0;
+                this.verified = in.readByte() != 0;
+                this.verified_type = in.readLong();
+                this.remark = in.readString();
+                this.ptype = in.readLong();
+                this.allow_all_comment = in.readByte() != 0;
+                this.avatar_large = in.readString();
+                this.avatar_hd = in.readString();
+                this.verified_reason = in.readString();
+                this.verified_trade = in.readString();
+                this.verified_reason_url = in.readString();
+                this.verified_source = in.readString();
+                this.verified_source_url = in.readString();
+                this.verified_state = in.readLong();
+                this.verified_level = in.readLong();
+                this.verified_type_ext = in.readLong();
+                this.verified_reason_modified = in.readString();
+                this.verified_contact_name = in.readString();
+                this.verified_contact_email = in.readString();
+                this.verified_contact_mobile = in.readString();
+                this.follow_me = in.readByte() != 0;
+                this.online_status = in.readLong();
+                this.bi_followers_count = in.readLong();
+                this.lang = in.readString();
+                this.star = in.readLong();
+                this.mbtype = in.readLong();
+                this.mbrank = in.readLong();
+                this.block_word = in.readLong();
+                this.block_app = in.readLong();
+                this.credit_score = in.readLong();
+                this.user_ability = in.readLong();
+                this.cardid = in.readString();
+                this.avatargj_id = in.readString();
+                this.urank = in.readLong();
+            }
+
+            public static final Creator<UserBean> CREATOR = new Creator<UserBean>() {
+                @Override
+                public UserBean createFromParcel(Parcel source) {
+                    return new UserBean(source);
+                }
+
+                @Override
+                public UserBean[] newArray(int size) {
+                    return new UserBean[size];
+                }
+            };
         }
 
-        public static class VisibleBean {
+        public static class VisibleBean implements Parcelable {
             /**
              * type : 0
              * list_id : 0
@@ -1157,58 +1395,40 @@ public class FriendTimeLine {
             public void setList_id(long list_id) {
                 this.list_id = list_id;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeLong(this.type);
+                dest.writeLong(this.list_id);
+            }
+
+            public VisibleBean() {
+            }
+
+            protected VisibleBean(Parcel in) {
+                this.type = in.readLong();
+                this.list_id = in.readLong();
+            }
+
+            public static final Creator<VisibleBean> CREATOR = new Creator<VisibleBean>() {
+                @Override
+                public VisibleBean createFromParcel(Parcel source) {
+                    return new VisibleBean(source);
+                }
+
+                @Override
+                public VisibleBean[] newArray(int size) {
+                    return new VisibleBean[size];
+                }
+            };
         }
 
-        public static class RetweetedStatusBean {
-            /**
-             * created_at : Tue Dec 27 11:39:56 +0800 2016
-             * id : 4057261549125878
-             * mid : 4057261549125878
-             * idstr : 4057261549125878
-             * text : 『旅行游记』贵州：肇兴侗寨-镇远古镇-西江千户苗寨-青岩古镇-黄果树
-             [照相机] 美好回忆：http://t.cn/RIQ0WH3
-             [爱你] 有你，我们的旅行更加精彩
-             [围观] 微博群：http://t.cn/RtO6oml 💎群主@旅行者晓强
-             🌟 点击 #深圳# 加入微博深圳社区
-             * textLength : 224
-             * source_allowclick : 0
-             * source_type : 1
-             * source : <a href="http://app.weibo.com/t/feed/3jskmg" rel="nofollow">iPhone 6s</a>
-             * favorited : false
-             * truncated : false
-             * in_reply_to_status_id :
-             * in_reply_to_user_id :
-             * in_reply_to_screen_name :
-             * pic_urls : [{"thumbnail_pic":"http://ww3.sinaimg.cn/thumbnail/67b61440gw1fb575nn0mtj20p00go4gv.jpg"},{"thumbnail_pic":"http://ww1.sinaimg.cn/thumbnail/67b61440gw1fb575o4o2sj20p00gok2q.jpg"},{"thumbnail_pic":"http://ww4.sinaimg.cn/thumbnail/67b61440gw1fb575opqeej20p00gond7.jpg"},{"thumbnail_pic":"http://ww3.sinaimg.cn/thumbnail/67b61440gw1fb575nbix4j20p00godt5.jpg"},{"thumbnail_pic":"http://ww4.sinaimg.cn/thumbnail/67b61440gw1fb575tdrqvj22gw1e01l0.jpg"},{"thumbnail_pic":"http://ww1.sinaimg.cn/thumbnail/67b61440gw1fb575ty5ncj20p00gowqh.jpg"},{"thumbnail_pic":"http://ww4.sinaimg.cn/thumbnail/67b61440gw1fb575v05ivj20p00p0wwb.jpg"},{"thumbnail_pic":"http://ww1.sinaimg.cn/thumbnail/67b61440gw1fb575vi13bj20p00p04jk.jpg"},{"thumbnail_pic":"http://ww1.sinaimg.cn/thumbnail/67b61440gw1fb575wamsbj20p00p0qnc.jpg"}]
-             * thumbnail_pic : http://ww3.sinaimg.cn/thumbnail/67b61440gw1fb575nn0mtj20p00go4gv.jpg
-             * bmiddle_pic : http://ww3.sinaimg.cn/bmiddle/67b61440gw1fb575nn0mtj20p00go4gv.jpg
-             * original_pic : http://ww3.sinaimg.cn/large/67b61440gw1fb575nn0mtj20p00go4gv.jpg
-             * geo : null
-             * user : {"id":1739985984,"idstr":"1739985984","class":1,"screen_name":"深圳同城会","name":"深圳同城会","province":"44","city":"3","location":"广东 深圳","description":"#深圳# 超级话题 微博深圳同城社区","url":"","profile_image_url":"http://tva4.sinaimg.cn/crop.0.0.600.600.50/67b61440jw1f07fbj17okj20go0go75s.jpg","cover_image":"http://ww1.sinaimg.cn/crop.0.0.920.300/67b61440gw1el85d9ls5vj20pk08c0wc.jpg","cover_image_phone":"http://ww2.sinaimg.cn/crop.0.0.640.640.640/67b61440gw1f6e6bqnke0j20ku0kuq5n.jpg","profile_url":"shenzhen","domain":"shenzhen","weihao":"","gender":"m","followers_count":186323,"friends_count":199,"pagefriends_count":6,"statuses_count":5931,"favourites_count":0,"created_at":"Mon May 10 16:09:31 +0800 2010","following":false,"allow_all_act_msg":true,"geo_enabled":true,"verified":true,"verified_type":3,"remark":"","ptype":0,"allow_all_comment":true,"avatar_large":"http://tva4.sinaimg.cn/crop.0.0.600.600.180/67b61440jw1f07fbj17okj20go0go75s.jpg","avatar_hd":"http://tva4.sinaimg.cn/crop.0.0.600.600.1024/67b61440jw1f07fbj17okj20go0go75s.jpg","verified_reason":"深圳同城会官方微博","verified_trade":"","verified_reason_url":"","verified_source":"","verified_source_url":"","verified_state":0,"verified_level":3,"verified_type_ext":0,"verified_reason_modified":"深圳同城会官方微博","verified_contact_name":"谢定强","verified_contact_email":"13424200545@qq.com","verified_contact_mobile":"13424200545","follow_me":false,"online_status":0,"bi_followers_count":66,"lang":"zh-cn","star":0,"mbtype":12,"mbrank":4,"block_word":0,"block_app":1,"location_rights":1,"credit_score":80,"user_ability":8,"urank":32}
-             * annotations : [{"client_mblogid":"iPhone-46D64D9C-86E8-452F-ACD9-361D8CEA2A1A"},{"mapi_request":true}]
-             * picStatus : 0:1,1:1,2:1,3:1,4:1,5:1,6:1,7:1,8:1
-             * reposts_count : 5
-             * comments_count : 5
-             * attitudes_count : 12
-             * isLongText : false
-             * mlevel : 0
-             * visible : {"type":0,"list_id":0}
-             * biz_ids : [230940,230491]
-             * biz_feature : 4294967300
-             * topic_id : 1022:1008087a399889b9a4aed64afd0cf95941b975
-             * sync_mblog : true
-             * is_imported_topic : false
-             * page_type : 32
-             * hasActionTypeCard : 0
-             * darwin_tags : []
-             * hot_weibo_tags : []
-             * text_tag_tips : []
-             * userType : 0
-             * extend_info : {"weibo_camera":{"c":["27235472_27235473_27235474_27235475_25631572_27235477"]}}
-             * positive_recom_flag : 0
-             * gif_ids :
-             * is_show_bulletin : 1
-             */
+        public static class RetweetedStatusBean implements Parcelable {
 
             private String created_at;
             private long id;
@@ -1227,7 +1447,7 @@ public class FriendTimeLine {
             private String thumbnail_pic;
             private String bmiddle_pic;
             private String original_pic;
-            private Object geo;
+            private Geo geo;
             private UserBeanX user;
             private String picStatus;
             private long reposts_count;
@@ -1250,9 +1470,9 @@ public class FriendTimeLine {
             private List<PicUrlsBean> pic_urls;
             private List<AnnotationsBean> annotations;
             private List<Integer> biz_ids;
-            private List<?> darwin_tags;
-            private List<?> hot_weibo_tags;
-            private List<?> text_tag_tips;
+//            private List<?> darwin_tags;
+//            private List<?> hot_weibo_tags;
+//            private List<?> text_tag_tips;
 
             public String getCreated_at() {
                 return created_at;
@@ -1394,7 +1614,7 @@ public class FriendTimeLine {
                 return geo;
             }
 
-            public void setGeo(Object geo) {
+            public void setGeo(Geo geo) {
                 this.geo = geo;
             }
 
@@ -1574,91 +1794,31 @@ public class FriendTimeLine {
                 this.biz_ids = biz_ids;
             }
 
-            public List<?> getDarwin_tags() {
-                return darwin_tags;
-            }
+//            public List<?> getDarwin_tags() {
+//                return darwin_tags;
+//            }
+//
+//            public void setDarwin_tags(List<?> darwin_tags) {
+//                this.darwin_tags = darwin_tags;
+//            }
+//
+//            public List<?> getHot_weibo_tags() {
+//                return hot_weibo_tags;
+//            }
+//
+//            public void setHot_weibo_tags(List<?> hot_weibo_tags) {
+//                this.hot_weibo_tags = hot_weibo_tags;
+//            }
+//
+//            public List<?> getText_tag_tips() {
+//                return text_tag_tips;
+//            }
+//
+//            public void setText_tag_tips(List<?> text_tag_tips) {
+//                this.text_tag_tips = text_tag_tips;
+//            }
 
-            public void setDarwin_tags(List<?> darwin_tags) {
-                this.darwin_tags = darwin_tags;
-            }
-
-            public List<?> getHot_weibo_tags() {
-                return hot_weibo_tags;
-            }
-
-            public void setHot_weibo_tags(List<?> hot_weibo_tags) {
-                this.hot_weibo_tags = hot_weibo_tags;
-            }
-
-            public List<?> getText_tag_tips() {
-                return text_tag_tips;
-            }
-
-            public void setText_tag_tips(List<?> text_tag_tips) {
-                this.text_tag_tips = text_tag_tips;
-            }
-
-            public static class UserBeanX {
-                /**
-                 * id : 1739985984
-                 * idstr : 1739985984
-                 * class : 1
-                 * screen_name : 深圳同城会
-                 * name : 深圳同城会
-                 * province : 44
-                 * city : 3
-                 * location : 广东 深圳
-                 * description : #深圳# 超级话题 微博深圳同城社区
-                 * url :
-                 * profile_image_url : http://tva4.sinaimg.cn/crop.0.0.600.600.50/67b61440jw1f07fbj17okj20go0go75s.jpg
-                 * cover_image : http://ww1.sinaimg.cn/crop.0.0.920.300/67b61440gw1el85d9ls5vj20pk08c0wc.jpg
-                 * cover_image_phone : http://ww2.sinaimg.cn/crop.0.0.640.640.640/67b61440gw1f6e6bqnke0j20ku0kuq5n.jpg
-                 * profile_url : shenzhen
-                 * domain : shenzhen
-                 * weihao :
-                 * gender : m
-                 * followers_count : 186323
-                 * friends_count : 199
-                 * pagefriends_count : 6
-                 * statuses_count : 5931
-                 * favourites_count : 0
-                 * created_at : Mon May 10 16:09:31 +0800 2010
-                 * following : false
-                 * allow_all_act_msg : true
-                 * geo_enabled : true
-                 * verified : true
-                 * verified_type : 3
-                 * remark :
-                 * ptype : 0
-                 * allow_all_comment : true
-                 * avatar_large : http://tva4.sinaimg.cn/crop.0.0.600.600.180/67b61440jw1f07fbj17okj20go0go75s.jpg
-                 * avatar_hd : http://tva4.sinaimg.cn/crop.0.0.600.600.1024/67b61440jw1f07fbj17okj20go0go75s.jpg
-                 * verified_reason : 深圳同城会官方微博
-                 * verified_trade :
-                 * verified_reason_url :
-                 * verified_source :
-                 * verified_source_url :
-                 * verified_state : 0
-                 * verified_level : 3
-                 * verified_type_ext : 0
-                 * verified_reason_modified : 深圳同城会官方微博
-                 * verified_contact_name : 谢定强
-                 * verified_contact_email : 13424200545@qq.com
-                 * verified_contact_mobile : 13424200545
-                 * follow_me : false
-                 * online_status : 0
-                 * bi_followers_count : 66
-                 * lang : zh-cn
-                 * star : 0
-                 * mbtype : 12
-                 * mbrank : 4
-                 * block_word : 0
-                 * block_app : 1
-                 * location_rights : 1
-                 * credit_score : 80
-                 * user_ability : 8
-                 * urank : 32
-                 */
+            public static class UserBeanX implements Parcelable {
 
                 private long id;
                 private String idstr;
@@ -2183,9 +2343,152 @@ public class FriendTimeLine {
                 public void setUrank(long urank) {
                     this.urank = urank;
                 }
+
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+                    dest.writeLong(this.id);
+                    dest.writeString(this.idstr);
+                    dest.writeLong(this.classX);
+                    dest.writeString(this.screen_name);
+                    dest.writeString(this.name);
+                    dest.writeString(this.province);
+                    dest.writeString(this.city);
+                    dest.writeString(this.location);
+                    dest.writeString(this.description);
+                    dest.writeString(this.url);
+                    dest.writeString(this.profile_image_url);
+                    dest.writeString(this.cover_image);
+                    dest.writeString(this.cover_image_phone);
+                    dest.writeString(this.profile_url);
+                    dest.writeString(this.domain);
+                    dest.writeString(this.weihao);
+                    dest.writeString(this.gender);
+                    dest.writeLong(this.followers_count);
+                    dest.writeLong(this.friends_count);
+                    dest.writeLong(this.pagefriends_count);
+                    dest.writeLong(this.statuses_count);
+                    dest.writeLong(this.favourites_count);
+                    dest.writeString(this.created_at);
+                    dest.writeByte(this.following ? (byte) 1 : (byte) 0);
+                    dest.writeByte(this.allow_all_act_msg ? (byte) 1 : (byte) 0);
+                    dest.writeByte(this.geo_enabled ? (byte) 1 : (byte) 0);
+                    dest.writeByte(this.verified ? (byte) 1 : (byte) 0);
+                    dest.writeLong(this.verified_type);
+                    dest.writeString(this.remark);
+                    dest.writeLong(this.ptype);
+                    dest.writeByte(this.allow_all_comment ? (byte) 1 : (byte) 0);
+                    dest.writeString(this.avatar_large);
+                    dest.writeString(this.avatar_hd);
+                    dest.writeString(this.verified_reason);
+                    dest.writeString(this.verified_trade);
+                    dest.writeString(this.verified_reason_url);
+                    dest.writeString(this.verified_source);
+                    dest.writeString(this.verified_source_url);
+                    dest.writeLong(this.verified_state);
+                    dest.writeLong(this.verified_level);
+                    dest.writeLong(this.verified_type_ext);
+                    dest.writeString(this.verified_reason_modified);
+                    dest.writeString(this.verified_contact_name);
+                    dest.writeString(this.verified_contact_email);
+                    dest.writeString(this.verified_contact_mobile);
+                    dest.writeByte(this.follow_me ? (byte) 1 : (byte) 0);
+                    dest.writeLong(this.online_status);
+                    dest.writeLong(this.bi_followers_count);
+                    dest.writeString(this.lang);
+                    dest.writeLong(this.star);
+                    dest.writeLong(this.mbtype);
+                    dest.writeLong(this.mbrank);
+                    dest.writeLong(this.block_word);
+                    dest.writeLong(this.block_app);
+                    dest.writeLong(this.location_rights);
+                    dest.writeLong(this.credit_score);
+                    dest.writeLong(this.user_ability);
+                    dest.writeLong(this.urank);
+                }
+
+                public UserBeanX() {
+                }
+
+                protected UserBeanX(Parcel in) {
+                    this.id = in.readLong();
+                    this.idstr = in.readString();
+                    this.classX = in.readLong();
+                    this.screen_name = in.readString();
+                    this.name = in.readString();
+                    this.province = in.readString();
+                    this.city = in.readString();
+                    this.location = in.readString();
+                    this.description = in.readString();
+                    this.url = in.readString();
+                    this.profile_image_url = in.readString();
+                    this.cover_image = in.readString();
+                    this.cover_image_phone = in.readString();
+                    this.profile_url = in.readString();
+                    this.domain = in.readString();
+                    this.weihao = in.readString();
+                    this.gender = in.readString();
+                    this.followers_count = in.readLong();
+                    this.friends_count = in.readLong();
+                    this.pagefriends_count = in.readLong();
+                    this.statuses_count = in.readLong();
+                    this.favourites_count = in.readLong();
+                    this.created_at = in.readString();
+                    this.following = in.readByte() != 0;
+                    this.allow_all_act_msg = in.readByte() != 0;
+                    this.geo_enabled = in.readByte() != 0;
+                    this.verified = in.readByte() != 0;
+                    this.verified_type = in.readLong();
+                    this.remark = in.readString();
+                    this.ptype = in.readLong();
+                    this.allow_all_comment = in.readByte() != 0;
+                    this.avatar_large = in.readString();
+                    this.avatar_hd = in.readString();
+                    this.verified_reason = in.readString();
+                    this.verified_trade = in.readString();
+                    this.verified_reason_url = in.readString();
+                    this.verified_source = in.readString();
+                    this.verified_source_url = in.readString();
+                    this.verified_state = in.readLong();
+                    this.verified_level = in.readLong();
+                    this.verified_type_ext = in.readLong();
+                    this.verified_reason_modified = in.readString();
+                    this.verified_contact_name = in.readString();
+                    this.verified_contact_email = in.readString();
+                    this.verified_contact_mobile = in.readString();
+                    this.follow_me = in.readByte() != 0;
+                    this.online_status = in.readLong();
+                    this.bi_followers_count = in.readLong();
+                    this.lang = in.readString();
+                    this.star = in.readLong();
+                    this.mbtype = in.readLong();
+                    this.mbrank = in.readLong();
+                    this.block_word = in.readLong();
+                    this.block_app = in.readLong();
+                    this.location_rights = in.readLong();
+                    this.credit_score = in.readLong();
+                    this.user_ability = in.readLong();
+                    this.urank = in.readLong();
+                }
+
+                public static final Creator<UserBeanX> CREATOR = new Creator<UserBeanX>() {
+                    @Override
+                    public UserBeanX createFromParcel(Parcel source) {
+                        return new UserBeanX(source);
+                    }
+
+                    @Override
+                    public UserBeanX[] newArray(int size) {
+                        return new UserBeanX[size];
+                    }
+                };
             }
 
-            public static class VisibleBeanX {
+            public static class VisibleBeanX implements Parcelable {
                 /**
                  * type : 0
                  * list_id : 0
@@ -2209,9 +2512,40 @@ public class FriendTimeLine {
                 public void setList_id(long list_id) {
                     this.list_id = list_id;
                 }
+
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+                    dest.writeLong(this.type);
+                    dest.writeLong(this.list_id);
+                }
+
+                public VisibleBeanX() {
+                }
+
+                protected VisibleBeanX(Parcel in) {
+                    this.type = in.readLong();
+                    this.list_id = in.readLong();
+                }
+
+                public static final Creator<VisibleBeanX> CREATOR = new Creator<VisibleBeanX>() {
+                    @Override
+                    public VisibleBeanX createFromParcel(Parcel source) {
+                        return new VisibleBeanX(source);
+                    }
+
+                    @Override
+                    public VisibleBeanX[] newArray(int size) {
+                        return new VisibleBeanX[size];
+                    }
+                };
             }
 
-            public static class ExtendInfoBean {
+            public static class ExtendInfoBean implements Parcelable {
                 /**
                  * weibo_camera : {"c":["27235472_27235473_27235474_27235475_25631572_27235477"]}
                  */
@@ -2226,7 +2560,7 @@ public class FriendTimeLine {
                     this.weibo_camera = weibo_camera;
                 }
 
-                public static class WeiboCameraBean {
+                public static class WeiboCameraBean implements Parcelable {
                     private List<String> c;
 
                     public List<String> getC() {
@@ -2236,10 +2570,68 @@ public class FriendTimeLine {
                     public void setC(List<String> c) {
                         this.c = c;
                     }
+
+                    @Override
+                    public int describeContents() {
+                        return 0;
+                    }
+
+                    @Override
+                    public void writeToParcel(Parcel dest, int flags) {
+                        dest.writeStringList(this.c);
+                    }
+
+                    public WeiboCameraBean() {
+                    }
+
+                    protected WeiboCameraBean(Parcel in) {
+                        this.c = in.createStringArrayList();
+                    }
+
+                    public static final Creator<WeiboCameraBean> CREATOR = new Creator<WeiboCameraBean>() {
+                        @Override
+                        public WeiboCameraBean createFromParcel(Parcel source) {
+                            return new WeiboCameraBean(source);
+                        }
+
+                        @Override
+                        public WeiboCameraBean[] newArray(int size) {
+                            return new WeiboCameraBean[size];
+                        }
+                    };
                 }
+
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+                    dest.writeParcelable(this.weibo_camera, flags);
+                }
+
+                public ExtendInfoBean() {
+                }
+
+                protected ExtendInfoBean(Parcel in) {
+                    this.weibo_camera = in.readParcelable(WeiboCameraBean.class.getClassLoader());
+                }
+
+                public static final Creator<ExtendInfoBean> CREATOR = new Creator<ExtendInfoBean>() {
+                    @Override
+                    public ExtendInfoBean createFromParcel(Parcel source) {
+                        return new ExtendInfoBean(source);
+                    }
+
+                    @Override
+                    public ExtendInfoBean[] newArray(int size) {
+                        return new ExtendInfoBean[size];
+                    }
+                };
             }
 
-            public static class PicUrlsBean {
+            public static class PicUrlsBean implements Parcelable {
                 /**
                  * thumbnail_pic : http://ww3.sinaimg.cn/thumbnail/67b61440gw1fb575nn0mtj20p00go4gv.jpg
                  */
@@ -2253,9 +2645,38 @@ public class FriendTimeLine {
                 public void setThumbnail_pic(String thumbnail_pic) {
                     this.thumbnail_pic = thumbnail_pic;
                 }
+
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+                    dest.writeString(this.thumbnail_pic);
+                }
+
+                public PicUrlsBean() {
+                }
+
+                protected PicUrlsBean(Parcel in) {
+                    this.thumbnail_pic = in.readString();
+                }
+
+                public static final Creator<PicUrlsBean> CREATOR = new Creator<PicUrlsBean>() {
+                    @Override
+                    public PicUrlsBean createFromParcel(Parcel source) {
+                        return new PicUrlsBean(source);
+                    }
+
+                    @Override
+                    public PicUrlsBean[] newArray(int size) {
+                        return new PicUrlsBean[size];
+                    }
+                };
             }
 
-            public static class AnnotationsBean {
+            public static class AnnotationsBean implements Parcelable {
                 /**
                  * client_mblogid : iPhone-46D64D9C-86E8-452F-ACD9-361D8CEA2A1A
                  * mapi_request : true
@@ -2279,17 +2700,151 @@ public class FriendTimeLine {
                 public void setMapi_request(boolean mapi_request) {
                     this.mapi_request = mapi_request;
                 }
+
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+                    dest.writeString(this.client_mblogid);
+                    dest.writeByte(this.mapi_request ? (byte) 1 : (byte) 0);
+                }
+
+                public AnnotationsBean() {
+                }
+
+                protected AnnotationsBean(Parcel in) {
+                    this.client_mblogid = in.readString();
+                    this.mapi_request = in.readByte() != 0;
+                }
+
+                public static final Creator<AnnotationsBean> CREATOR = new Creator<AnnotationsBean>() {
+                    @Override
+                    public AnnotationsBean createFromParcel(Parcel source) {
+                        return new AnnotationsBean(source);
+                    }
+
+                    @Override
+                    public AnnotationsBean[] newArray(int size) {
+                        return new AnnotationsBean[size];
+                    }
+                };
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.created_at);
+                dest.writeLong(this.id);
+                dest.writeString(this.mid);
+                dest.writeString(this.idstr);
+                dest.writeString(this.text);
+                dest.writeLong(this.textLength);
+                dest.writeLong(this.source_allowclick);
+                dest.writeLong(this.source_type);
+                dest.writeString(this.source);
+                dest.writeByte(this.favorited ? (byte) 1 : (byte) 0);
+                dest.writeByte(this.truncated ? (byte) 1 : (byte) 0);
+                dest.writeString(this.in_reply_to_status_id);
+                dest.writeString(this.in_reply_to_user_id);
+                dest.writeString(this.in_reply_to_screen_name);
+                dest.writeString(this.thumbnail_pic);
+                dest.writeString(this.bmiddle_pic);
+                dest.writeString(this.original_pic);
+                dest.writeParcelable(this.geo, flags);
+                dest.writeParcelable(this.user, flags);
+                dest.writeString(this.picStatus);
+                dest.writeLong(this.reposts_count);
+                dest.writeLong(this.comments_count);
+                dest.writeLong(this.attitudes_count);
+                dest.writeByte(this.isLongText ? (byte) 1 : (byte) 0);
+                dest.writeLong(this.mlevel);
+                dest.writeParcelable(this.visible, flags);
+                dest.writeLong(this.biz_feature);
+                dest.writeString(this.topic_id);
+                dest.writeByte(this.sync_mblog ? (byte) 1 : (byte) 0);
+                dest.writeByte(this.is_imported_topic ? (byte) 1 : (byte) 0);
+                dest.writeLong(this.page_type);
+                dest.writeLong(this.hasActionTypeCard);
+                dest.writeLong(this.userType);
+                dest.writeParcelable(this.extend_info, flags);
+                dest.writeLong(this.positive_recom_flag);
+                dest.writeString(this.gif_ids);
+                dest.writeLong(this.is_show_bulletin);
+                dest.writeList(this.pic_urls);
+                dest.writeList(this.annotations);
+                dest.writeList(this.biz_ids);
+            }
+
+            public RetweetedStatusBean() {
+            }
+
+            protected RetweetedStatusBean(Parcel in) {
+                this.created_at = in.readString();
+                this.id = in.readLong();
+                this.mid = in.readString();
+                this.idstr = in.readString();
+                this.text = in.readString();
+                this.textLength = in.readLong();
+                this.source_allowclick = in.readLong();
+                this.source_type = in.readLong();
+                this.source = in.readString();
+                this.favorited = in.readByte() != 0;
+                this.truncated = in.readByte() != 0;
+                this.in_reply_to_status_id = in.readString();
+                this.in_reply_to_user_id = in.readString();
+                this.in_reply_to_screen_name = in.readString();
+                this.thumbnail_pic = in.readString();
+                this.bmiddle_pic = in.readString();
+                this.original_pic = in.readString();
+                this.geo = in.readParcelable(Geo.class.getClassLoader());
+                this.user = in.readParcelable(UserBeanX.class.getClassLoader());
+                this.picStatus = in.readString();
+                this.reposts_count = in.readLong();
+                this.comments_count = in.readLong();
+                this.attitudes_count = in.readLong();
+                this.isLongText = in.readByte() != 0;
+                this.mlevel = in.readLong();
+                this.visible = in.readParcelable(VisibleBeanX.class.getClassLoader());
+                this.biz_feature = in.readLong();
+                this.topic_id = in.readString();
+                this.sync_mblog = in.readByte() != 0;
+                this.is_imported_topic = in.readByte() != 0;
+                this.page_type = in.readLong();
+                this.hasActionTypeCard = in.readLong();
+                this.userType = in.readLong();
+                this.extend_info = in.readParcelable(ExtendInfoBean.class.getClassLoader());
+                this.positive_recom_flag = in.readLong();
+                this.gif_ids = in.readString();
+                this.is_show_bulletin = in.readLong();
+                this.pic_urls = new ArrayList<PicUrlsBean>();
+                in.readList(this.pic_urls, PicUrlsBean.class.getClassLoader());
+                this.annotations = new ArrayList<AnnotationsBean>();
+                in.readList(this.annotations, AnnotationsBean.class.getClassLoader());
+                this.biz_ids = new ArrayList<Integer>();
+                in.readList(this.biz_ids, Integer.class.getClassLoader());
+            }
+
+            public static final Creator<RetweetedStatusBean> CREATOR = new Creator<RetweetedStatusBean>() {
+                @Override
+                public RetweetedStatusBean createFromParcel(Parcel source) {
+                    return new RetweetedStatusBean(source);
+                }
+
+                @Override
+                public RetweetedStatusBean[] newArray(int size) {
+                    return new RetweetedStatusBean[size];
+                }
+            };
         }
 
-        public static class AnnotationsBeanX {
-
-            /**
-             * shooting : 1
-             * place : {"lon":121.49860864,"poiid":"B2094757D06FA0F5429C","title":"芦恒路地铁站","type":"checkin","lat":31.117314637}
-             * client_mblogid : be0f4839-b322-4808-8585-568fec3d4c8a
-             * mapi_request : true
-             */
+        public static class AnnotationsBeanX implements Parcelable {
 
             private int shooting;
             private PlaceBean place;
@@ -2328,7 +2883,7 @@ public class FriendTimeLine {
                 this.mapi_request = mapi_request;
             }
 
-            public static class PlaceBean {
+            public static class PlaceBean implements Parcelable {
                 /**
                  * lon : 121.49860864
                  * poiid : B2094757D06FA0F5429C
@@ -2382,7 +2937,189 @@ public class FriendTimeLine {
                 public void setLat(double lat) {
                     this.lat = lat;
                 }
+
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+                    dest.writeDouble(this.lon);
+                    dest.writeString(this.poiid);
+                    dest.writeString(this.title);
+                    dest.writeString(this.type);
+                    dest.writeDouble(this.lat);
+                }
+
+                public PlaceBean() {
+                }
+
+                protected PlaceBean(Parcel in) {
+                    this.lon = in.readDouble();
+                    this.poiid = in.readString();
+                    this.title = in.readString();
+                    this.type = in.readString();
+                    this.lat = in.readDouble();
+                }
+
+                public static final Creator<PlaceBean> CREATOR = new Creator<PlaceBean>() {
+                    @Override
+                    public PlaceBean createFromParcel(Parcel source) {
+                        return new PlaceBean(source);
+                    }
+
+                    @Override
+                    public PlaceBean[] newArray(int size) {
+                        return new PlaceBean[size];
+                    }
+                };
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(this.shooting);
+                dest.writeParcelable(this.place, flags);
+                dest.writeString(this.client_mblogid);
+                dest.writeByte(this.mapi_request ? (byte) 1 : (byte) 0);
+            }
+
+            public AnnotationsBeanX() {
+            }
+
+            protected AnnotationsBeanX(Parcel in) {
+                this.shooting = in.readInt();
+                this.place = in.readParcelable(PlaceBean.class.getClassLoader());
+                this.client_mblogid = in.readString();
+                this.mapi_request = in.readByte() != 0;
+            }
+
+            public static final Creator<AnnotationsBeanX> CREATOR = new Creator<AnnotationsBeanX>() {
+                @Override
+                public AnnotationsBeanX createFromParcel(Parcel source) {
+                    return new AnnotationsBeanX(source);
+                }
+
+                @Override
+                public AnnotationsBeanX[] newArray(int size) {
+                    return new AnnotationsBeanX[size];
+                }
+            };
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.created_at);
+            dest.writeLong(this.id);
+            dest.writeString(this.mid);
+            dest.writeString(this.idstr);
+            dest.writeString(this.text);
+            dest.writeLong(this.textLength);
+            dest.writeLong(this.source_allowclick);
+            dest.writeLong(this.source_type);
+            dest.writeString(this.source);
+            dest.writeByte(this.favorited ? (byte) 1 : (byte) 0);
+            dest.writeByte(this.truncated ? (byte) 1 : (byte) 0);
+            dest.writeString(this.in_reply_to_status_id);
+            dest.writeString(this.in_reply_to_user_id);
+            dest.writeString(this.in_reply_to_screen_name);
+            dest.writeParcelable(this.geo, flags);
+            dest.writeParcelable(this.user, flags);
+            dest.writeLong(this.reposts_count);
+            dest.writeLong(this.comments_count);
+            dest.writeLong(this.attitudes_count);
+            dest.writeByte(this.isLongText ? (byte) 1 : (byte) 0);
+            dest.writeLong(this.mlevel);
+            dest.writeParcelable(this.visible, flags);
+            dest.writeLong(this.biz_feature);
+            dest.writeLong(this.hasActionTypeCard);
+            dest.writeString(this.rid);
+            dest.writeLong(this.userType);
+            dest.writeString(this.cardid);
+            dest.writeLong(this.positive_recom_flag);
+            dest.writeString(this.gif_ids);
+            dest.writeLong(this.is_show_bulletin);
+            dest.writeParcelable(this.retweeted_status, flags);
+            dest.writeString(this.thumbnail_pic);
+            dest.writeString(this.bmiddle_pic);
+            dest.writeString(this.original_pic);
+            dest.writeString(this.picStatus);
+            dest.writeLong(this.page_type);
+            dest.writeList(this.pic_urls);
+            dest.writeList(this.annotations);
+            dest.writeList(this.biz_ids);
+            dest.writeString(this.location);
+        }
+
+        public StatusesBean() {
+        }
+
+        protected StatusesBean(Parcel in) {
+            this.created_at = in.readString();
+            this.id = in.readLong();
+            this.mid = in.readString();
+            this.idstr = in.readString();
+            this.text = in.readString();
+            this.textLength = in.readLong();
+            this.source_allowclick = in.readLong();
+            this.source_type = in.readLong();
+            this.source = in.readString();
+            this.favorited = in.readByte() != 0;
+            this.truncated = in.readByte() != 0;
+            this.in_reply_to_status_id = in.readString();
+            this.in_reply_to_user_id = in.readString();
+            this.in_reply_to_screen_name = in.readString();
+            this.geo = in.readParcelable(Geo.class.getClassLoader());
+            this.user = in.readParcelable(UserBean.class.getClassLoader());
+            this.reposts_count = in.readLong();
+            this.comments_count = in.readLong();
+            this.attitudes_count = in.readLong();
+            this.isLongText = in.readByte() != 0;
+            this.mlevel = in.readLong();
+            this.visible = in.readParcelable(VisibleBean.class.getClassLoader());
+            this.biz_feature = in.readLong();
+            this.hasActionTypeCard = in.readLong();
+            this.rid = in.readString();
+            this.userType = in.readLong();
+            this.cardid = in.readString();
+            this.positive_recom_flag = in.readLong();
+            this.gif_ids = in.readString();
+            this.is_show_bulletin = in.readLong();
+            this.retweeted_status = in.readParcelable(RetweetedStatusBean.class.getClassLoader());
+            this.thumbnail_pic = in.readString();
+            this.bmiddle_pic = in.readString();
+            this.original_pic = in.readString();
+            this.picStatus = in.readString();
+            this.page_type = in.readLong();
+            this.pic_urls = new ArrayList<PicUrl>();
+            in.readList(this.pic_urls, PicUrl.class.getClassLoader());
+            this.annotations = new ArrayList<AnnotationsBeanX>();
+            in.readList(this.annotations, AnnotationsBeanX.class.getClassLoader());
+            this.biz_ids = new ArrayList<Integer>();
+            in.readList(this.biz_ids, Integer.class.getClassLoader());
+            this.location = in.readString();
+        }
+
+        public static final Parcelable.Creator<StatusesBean> CREATOR = new Parcelable.Creator<StatusesBean>() {
+            @Override
+            public StatusesBean createFromParcel(Parcel source) {
+                return new StatusesBean(source);
+            }
+
+            @Override
+            public StatusesBean[] newArray(int size) {
+                return new StatusesBean[size];
+            }
+        };
     }
 }

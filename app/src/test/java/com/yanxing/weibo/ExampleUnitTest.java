@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
+import java.util.Calendar;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
@@ -22,12 +23,14 @@ public class ExampleUnitTest {
 //        String REGEX_URL_WEB = "http://(t\\.cn){1}/\\w*";
         String REGEX_URL_WEB = "http://[a-zA-Z0-9+&@#/%?=~_\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]";
 //        assertEquals(4, 2 + 2);
-        Pattern pattern=Pattern.compile(REGEX_URL_WEB);
-        boolean re=pattern.matcher("http://t.cn/RtjD4uC").find();
-        System.out.println(re);
-        System.out.println(System.currentTimeMillis()/1000);
-        Document doc = Jsoup.connect("http://t.cn/RIQ1T9W").get();
-        String string= doc.select("title").get(0).toString();
-        System.out.println(System.currentTimeMillis()/1000);
+//        Pattern pattern=Pattern.compile(REGEX_URL_WEB);
+//        boolean re=pattern.matcher("http://t.cn/RtjD4uC").find();
+//        System.out.println(re);
+//        System.out.println(System.currentTimeMillis()/1000);
+//        Document doc = Jsoup.connect("http://t.cn/RIQ1T9W").get();
+//        String string= doc.select("title").get(0).toString();
+//        System.out.println(System.currentTimeMillis()/1000);
+        Calendar currentCalendar = Calendar.getInstance();
+        System.out.println(currentCalendar.get(Calendar.YEAR));
     }
 }

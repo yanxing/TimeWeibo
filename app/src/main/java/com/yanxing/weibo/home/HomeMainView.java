@@ -11,7 +11,7 @@ public interface HomeMainView {
 
     void setData(FriendTimeLine friendTimeLine);
 
-    void upateNotifyItemChanged(int position);
+    void updateNotifyItemChanged(int position);
 
     void setError(String error);
 

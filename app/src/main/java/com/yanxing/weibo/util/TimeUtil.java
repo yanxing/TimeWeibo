@@ -34,7 +34,7 @@ public class TimeUtil {
     /**
      * 和当前时间比较，多久以前,1小时以内返回多少分钟，超出一天，返回原时间
      *
-     * @param calendar 要比较的时间  格式：2016/9/20 17:49:38
+     * @param calendar
      * @return
      */
     public static String getTimeAgo(Calendar calendar) {
@@ -55,11 +55,37 @@ public class TimeUtil {
             int minTemp=calendar.get(Calendar.MINUTE);
             return "昨天 " +hourTemp +":"+(minTemp<10?"0"+minTemp:minTemp);
         }else {
+            Calendar currentCalendar = Calendar.getInstance();
             int month=calendar.get(Calendar.MONTH)+1;
             int dayTemp=calendar.get(Calendar.DAY_OF_MONTH);
             int hourTemp=calendar.get(Calendar.HOUR_OF_DAY);
             int minTemp=calendar.get(Calendar.MINUTE);
+            //今年
+            if (currentCalendar.get(Calendar.YEAR)==calendar.get(Calendar.YEAR)){
+                return month+"-"+dayTemp+" "+hourTemp+":"+(minTemp<10?"0"+minTemp:minTemp);
+            }else {
+                return calendar.get(Calendar.YEAR)+"-"+month+"-"+dayTemp+" "+hourTemp+":"+(minTemp<10?"0"+minTemp:minTemp);
+            }
+        }
+    }
+
+    /**
+     * 格式化时间
+     *
+     * @param calendar
+     * @return
+     */
+    public static String getTimeDetail(Calendar calendar) {
+        Calendar currentCalendar = Calendar.getInstance();
+        int month=calendar.get(Calendar.MONTH)+1;
+        int dayTemp=calendar.get(Calendar.DAY_OF_MONTH);
+        int hourTemp=calendar.get(Calendar.HOUR_OF_DAY);
+        int minTemp=calendar.get(Calendar.MINUTE);
+        //今年
+        if (currentCalendar.get(Calendar.YEAR)==calendar.get(Calendar.YEAR)){
             return month+"-"+dayTemp+" "+hourTemp+":"+(minTemp<10?"0"+minTemp:minTemp);
+        }else {
+            return calendar.get(Calendar.YEAR)+"-"+month+"-"+dayTemp+" "+hourTemp+":"+(minTemp<10?"0"+minTemp:minTemp);
         }
     }
 }
