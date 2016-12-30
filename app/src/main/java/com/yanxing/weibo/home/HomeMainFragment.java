@@ -79,6 +79,13 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 holder.setText(R.id.commentCount, String.valueOf(mWeiboList.get(position).getComments_count()));
                 holder.setText(R.id.repostCount, String.valueOf(mWeiboList.get(position).getReposts_count()));
                 holder.setText(R.id.time, TimeUtil.getTimeAgo(TimeUtil.format(mWeiboList.get(position).getCreated_at())));
+                TextView location= (TextView) holder.findViewById(R.id.address);
+                if (mWeiboList.get(position).getLocation()!=null){
+                    location.setVisibility(View.VISIBLE);
+                    location.setText(mWeiboList.get(position).getLocation());
+                }else {
+                    location.setVisibility(View.GONE);
+                }
                 //该微博为转发微博
                 if (mWeiboList.get(position).getRetweeted_status() != null) {
                     TextView atWeibo = (TextView) holder.findViewById(R.id.textChild);
@@ -161,6 +168,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
             mRecyclerViewAdapter.update(mWeiboList);
         }
         mPtrFrameLayout.refreshComplete();
+        mPresenter.getGeoToAddress(mWeiboList);
     }
 
     @Override

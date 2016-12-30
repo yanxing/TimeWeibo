@@ -44,11 +44,23 @@
             android:text="昨天 19:30"
             android:textColor="@color/colorMainGray"
             android:textSize="@dimen/text_small_x"/>
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginTop="@dimen/margin4"
+            android:layout_toRightOf="@id/time"
+            android:text="在上海南京东路步行街"
+            android:visibility="gone"
+            android:textColor="@color/colorMainGray"
+            android:textSize="@dimen/text_small_x"/>
         <ImageView
             android:id="@+id/hasImage"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_toRightOf="@id/time"
+            android:layout_toRightOf="@id/address"
             android:layout_below="@id/name"
             android:visibility="gone"
             android:layout_marginTop="@dimen/margin6"
