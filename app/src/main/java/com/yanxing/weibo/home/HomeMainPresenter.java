@@ -83,7 +83,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
      * @param weiboList
      */
     public void getGeoToAddress(final List<FriendTimeLine.StatusesBean> weiboList) {
-        final int[] indexOfWeiboList = {0};
+        final int[] indexOfWeiboList = {-1};
         Observable.from(weiboList)
                 //只处理有位置信息的微博
                 .filter(new Func1<FriendTimeLine.StatusesBean, Boolean>() {
@@ -115,7 +115,13 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
 
                     @Override
                     public void onError(Throwable e) {
-                         mView.setError(e.getMessage());
+                        //获取失败，只显示地点名，无城市信息
+                        FriendTimeLine.StatusesBean statusesBean=weiboList.get(indexOfWeiboList[0]);
+                        if (statusesBean.getAnnotations()!=null&&statusesBean.getAnnotations().size()>0){
+                            String detailAddress=statusesBean.getAnnotations().get(0).getPlace().getTitle();
+                            statusesBean.setLocation(detailAddress);
+                            mView.updateNotifyItemChanged(indexOfWeiboList[0]);
+                        }
                     }
 
                     @Override

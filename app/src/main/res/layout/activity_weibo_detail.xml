@@ -11,6 +11,7 @@
         app:backgroundColor="@color/colorPrimary"
         app:title_main="@string/home_detail"
         app:title_main_center="true"
+        app:back_img_resource="@mipmap/goback_dark"
         app:title_main_color="@color/colorMainDark"/>
     <View
         style="@style/Line"/>
@@ -89,7 +90,51 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/padding16"
                 android:paddingRight="@dimen/padding16"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding16"
+            android:paddingRight="@dimen/padding16">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@mipmap/praise"/>
 
+            <TextView
+                android:id="@+id/attitudesCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin4"
+                android:text="122个赞"
+                android:textSize="@dimen/text_small_x"/>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@mipmap/comments"/>
+
+            <TextView
+                android:id="@+id/commentCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin4"
+                android:text="122"
+                android:textSize="@dimen/text_small_x"/>
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@mipmap/repost"/>
+
+            <TextView
+                android:id="@+id/repostCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin4"
+                android:text="122"
+                android:textSize="@dimen/text_small_x"/>
+        </LinearLayout>
     </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

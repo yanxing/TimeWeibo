@@ -7,13 +7,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
 import com.yanxing.adapterlibrary.RecyclerViewAdapter;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
 import com.yanxing.weibo.util.TimeUtil;
 import com.yanxing.weibo.util.WeiboTextUtil;
+import com.yanxing.weibo.weiboapi.ConstantAPI;
 import com.yanxing.weibo.weiboapi.model.FriendTimeLine;
 
 
@@ -22,8 +26,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.functions.Func1;
 
 /**
  * 微博正文
@@ -50,6 +52,7 @@ public class WeiboDetailActivity extends BaseActivity {
     RecyclerView mImageRecyclerView;
 
     private RecyclerViewAdapter<String> mRecyclerViewAdapter;
+    private RecyclerView.LayoutParams mParams;
 
     @Override
     protected int getLayoutResID() {
@@ -79,7 +82,6 @@ public class WeiboDetailActivity extends BaseActivity {
      */
     public void showImage(final FriendTimeLine.StatusesBean statusesBean){
         final List<String> imageList=new ArrayList<>();
-        String middleImage = null;
         //如果是转发微博，因api限制只能获取到原微博的图片（如果有图片）
         if (statusesBean.getRetweeted_status()!=null){
             final FriendTimeLine.StatusesBean.RetweetedStatusBean repost=statusesBean.getRetweeted_status();
@@ -88,27 +90,42 @@ public class WeiboDetailActivity extends BaseActivity {
                 for (int i=0;i<picUrls.size();i++){
                     imageList.add(picUrls.get(i).getThumbnail_pic());
                 }
-                middleImage=repost.getBmiddle_pic();
             }
         }else {
             if (statusesBean.getPic_urls()!=null){
-                middleImage=statusesBean.getBmiddle_pic();
                 for (int i=0;i<statusesBean.getPic_urls().size();i++){
                     imageList.add(statusesBean.getPic_urls().get(i).getThumbnail_pic());
                 }
             }
         }
 
-        final String finalMiddleImage = middleImage;
+        if (imageList.size()==1){
+            mParams=new RecyclerView.LayoutParams
+                    (RecyclerView.LayoutParams.MATCH_PARENT,800);
+        }else if (imageList.size()==2){
+            mParams=new RecyclerView.LayoutParams
+                    (RecyclerView.LayoutParams.MATCH_PARENT,460);
+        }else if (imageList.size()==4){
+            mParams=new RecyclerView.LayoutParams
+                    (RecyclerView.LayoutParams.MATCH_PARENT,420);
+        }else{
+            mParams=new RecyclerView.LayoutParams
+                    (RecyclerView.LayoutParams.MATCH_PARENT,340);
+        }
         mRecyclerViewAdapter=new RecyclerViewAdapter<String>(imageList,R.layout.adapter_weibo_detail) {
             @Override
-            public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, int position) {
-                SimpleDraweeView image= (SimpleDraweeView) holder.findViewById(R.id.simple_drawee_view);
-                if (position==0){//如果只有一张图，则不使用缩略图，使用中等尺寸图
-                    image.setImageURI(Uri.parse(finalMiddleImage));
-                }else {
-                    image.setImageURI(Uri.parse(imageList.get(position)));
-                }
+            public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, final int position) {
+                final SimpleDraweeView image= (SimpleDraweeView) holder.findViewById(R.id.simple_drawee_view);
+                image.setLayoutParams(mParams);
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        //先加载缩略图，再加载中等图
+                        .setLowResImageRequest(ImageRequest.fromUri(imageList.get(position)))
+                        .setImageRequest(ImageRequest.fromUri(imageList.get(position)
+                                .replaceAll(ConstantAPI.THUMBNAIL_PIC,ConstantAPI.BMIDDLE_PIC)))
+                        .setOldController(image.getController())
+                        .setAutoPlayAnimations(true)
+                        .build();
+                image.setController(controller);
             }
         };
         //微博最多有9张图片
