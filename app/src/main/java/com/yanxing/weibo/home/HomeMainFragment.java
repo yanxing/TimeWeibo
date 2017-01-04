@@ -168,12 +168,9 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
         mPullUpFresh = true;
         if (mPullDownFresh) {
             mWeiboList.clear();
-            mWeiboList.addAll(friendTimeLine.getStatuses());
-            mRecyclerView.setAdapter(mRecyclerViewAdapter);
-        } else {
-            mWeiboList.addAll(friendTimeLine.getStatuses());
-            mRecyclerViewAdapter.update(mWeiboList);
         }
+        mWeiboList.addAll(friendTimeLine.getStatuses());
+        mRecyclerViewAdapter.update(mWeiboList);
         mPtrFrameLayout.refreshComplete();
         mPresenter.getGeoToAddress(mWeiboList);
     }

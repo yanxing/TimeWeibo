@@ -23,6 +23,10 @@ public class ConstantAPI {
      * 根据地理信息坐标返回实际地址
      */
     public static final String GEO_TO_ADDRESS = "geo_to_address.json";
+    /**
+     * 获取某条微博的评论列表
+     */
+    public static final String COMMENTS="comments/show.json";
 
 
 

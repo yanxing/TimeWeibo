@@ -21,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/back_img"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginLeft="12dp"
                 android:background="@mipmap/goback_normal"/>
 
@@ -41,7 +41,7 @@
                 android:gravity="left"
                 android:maxLines="1"
                 android:text="@string/title"
-                android:textSize="18sp"/>
+                android:textSize="17sp"/>
         </FrameLayout>
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_marginRight="8dp"
             android:gravity="center"
             android:text="@string/menu"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:visibility="invisible"/>
 
         <ImageView

@@ -4,5 +4,5 @@
                                            android:id="@+id/simple_drawee_view"
                                            android:layout_width="match_parent"
                                            android:layout_height="match_parent"
-                                           app:actualImageScaleType="focusCrop">
+                                           app:actualImageScaleType="fitCenter">
 </com.facebook.drawee.view.SimpleDraweeView>

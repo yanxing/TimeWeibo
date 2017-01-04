@@ -177,6 +177,8 @@ public class EmotionUtil {
         map.put("[二哈]",R.mipmap.erha);
         map.put("[污]",R.mipmap.wu);
         map.put("[舔屏]",R.mipmap.tianping);
+        map.put("[微笑]",R.mipmap.weixiao);
+        map.put("[摊手]",R.mipmap.tanshou);
     }
 
     /**

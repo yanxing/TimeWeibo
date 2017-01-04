@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="@dimen/padding16"
+              android:paddingRight="@dimen/padding16"
+              android:paddingTop="@dimen/padding8">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/simple_drawee_view"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            app:actualImageScaleType="focusCrop"
+            app:placeholderImage="@mipmap/head_default"
+            app:roundedCornerRadius="180dp"
+            app:roundingBorderColor="@color/line_x"
+            app:roundingBorderWidth="1px"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginTop="@dimen/margin2"
+            android:layout_toRightOf="@id/simple_drawee_view"
+            android:text="yanxing"
+            android:textColor="@color/colorMainDark"
+            android:textSize="@dimen/text_normal"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginTop="@dimen/margin4"
+            android:layout_toRightOf="@id/simple_drawee_view"
+            android:textColor="@color/colorMainGray"
+            android:textSize="@dimen/text_small_x"/>
+        <TextView
+            android:id="@+id/comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin6"
+            android:lineSpacingExtra="@dimen/margin4"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_below="@id/time"
+            android:layout_toRightOf="@id/simple_drawee_view"
+            android:text="这个微博写的真好"
+            android:textColor="@color/colorMainDark"/>
+    </RelativeLayout>
+    <View style="@style/LineLow"
+        android:layout_marginTop="@dimen/padding8"/>
+
+
+</LinearLayout>

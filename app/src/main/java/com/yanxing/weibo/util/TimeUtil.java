@@ -38,34 +38,32 @@ public class TimeUtil {
      * @return
      */
     public static String getTimeAgo(Calendar calendar) {
-        long l = System.currentTimeMillis() - calendar.getTimeInMillis();
-        long day = l / (24 * 60 * 60 * 1000);
-        long hour = (l / (60 * 60 * 1000) - day * 24);
-        long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
-        if (day == 0) {
-            if (hour == 0) {
-                return ((min==0?"1":min )+ "分钟前");
-            } else  {
-                int hourTemp=calendar.get(Calendar.HOUR_OF_DAY);
-                int minTemp=calendar.get(Calendar.MINUTE);
-                return "今天 " +hourTemp +":"+(minTemp<10?"0"+minTemp:minTemp);
-            }
-        }else if (day==1){
-            int hourTemp=calendar.get(Calendar.HOUR_OF_DAY);
-            int minTemp=calendar.get(Calendar.MINUTE);
-            return "昨天 " +hourTemp +":"+(minTemp<10?"0"+minTemp:minTemp);
-        }else {
-            Calendar currentCalendar = Calendar.getInstance();
-            int month=calendar.get(Calendar.MONTH)+1;
-            int dayTemp=calendar.get(Calendar.DAY_OF_MONTH);
-            int hourTemp=calendar.get(Calendar.HOUR_OF_DAY);
-            int minTemp=calendar.get(Calendar.MINUTE);
-            //今年
-            if (currentCalendar.get(Calendar.YEAR)==calendar.get(Calendar.YEAR)){
-                return month+"-"+dayTemp+" "+hourTemp+":"+(minTemp<10?"0"+minTemp:minTemp);
+        Calendar currentCalendar = Calendar.getInstance();
+        int month=calendar.get(Calendar.MONTH)+1;
+        int dayTemp=calendar.get(Calendar.DAY_OF_MONTH);
+        int hourTemp=calendar.get(Calendar.HOUR_OF_DAY);
+        int minTemp=calendar.get(Calendar.MINUTE);
+        //今年
+        if (currentCalendar.get(Calendar.YEAR)==calendar.get(Calendar.YEAR)){
+            if ((currentCalendar.get(Calendar.MONTH)+1)==month){
+                if (dayTemp==currentCalendar.get(Calendar.DAY_OF_MONTH)){//今天的
+                    long c=currentCalendar.getTimeInMillis()-calendar.getTimeInMillis();
+                    long min=c/1000/60;
+                    if (min>=60){
+                        return "今天 " +hourTemp +":"+(minTemp<10?"0"+minTemp:minTemp);
+                    }else {
+                        return ((min==0?"1":min )+ "分钟前");
+                    }
+                }else if ((dayTemp+1)==(currentCalendar.get(Calendar.DAY_OF_MONTH))){
+                    return "昨天 " +hourTemp +":"+(minTemp<10?"0"+minTemp:minTemp);
+                }else {
+                    return month+"-"+dayTemp+" "+hourTemp+":"+(minTemp<10?"0"+minTemp:minTemp);
+                }
             }else {
-                return calendar.get(Calendar.YEAR)+"-"+month+"-"+dayTemp+" "+hourTemp+":"+(minTemp<10?"0"+minTemp:minTemp);
+                return month+"-"+dayTemp+" "+hourTemp+":"+(minTemp<10?"0"+minTemp:minTemp);
             }
+        }else {
+            return calendar.get(Calendar.YEAR)+"-"+month+"-"+dayTemp+" "+hourTemp+":"+(minTemp<10?"0"+minTemp:minTemp);
         }
     }
 
