@@ -1,140 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
     <com.yanxing.titlebarlibrary.TitleBar
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:back_img_resource="@mipmap/back"
         app:backgroundColor="@color/colorPrimary"
         app:title_main="@string/home_detail"
         app:title_main_center="true"
-        app:back_img_resource="@mipmap/goback_dark"
         app:title_main_color="@color/colorMainDark"/>
+
     <View
         style="@style/Line"/>
-    <android.support.v4.widget.NestedScrollView
+
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin16"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-        <RelativeLayout
+
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding16">
+            android:layout_height="wrap_content">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/simple_drawee_view"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                app:actualImageScaleType="focusCrop"
-                app:placeholderImage="@mipmap/head_default"
-                app:roundedCornerRadius="180dp"
-                app:roundingBorderColor="@color/line_x"
-                app:roundingBorderWidth="1px"/>
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin8"
-                android:layout_marginTop="@dimen/margin2"
-                android:layout_toRightOf="@id/simple_drawee_view"
-                android:text="yanxing"
-                android:textColor="@color/colorMainDark"
-                android:textSize="@dimen/text_normal"/>
-
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/name"
-                android:layout_marginLeft="@dimen/margin8"
-                android:layout_marginTop="@dimen/margin4"
-                android:layout_toRightOf="@id/simple_drawee_view"
-                android:textColor="@color/colorMainGray"
-                android:textSize="@dimen/text_small_x"/>
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/weibo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin6"
-            android:lineSpacingExtra="@dimen/margin4"
-            android:paddingLeft="@dimen/padding16"
-            android:paddingRight="@dimen/padding16"
-            android:text="三部门联合发布禁寄物品管理系统新规”18+1“项物品禁止寄递"
-            android:textColor="@color/colorMainDark"/>
-        <TextView
-            android:id="@+id/atWeibo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/click_grey_dark_selector"
-            android:paddingBottom="@dimen/padding8"
-            android:paddingLeft="@dimen/padding16"
-            android:paddingRight="@dimen/padding16"
-            android:paddingTop="@dimen/padding8"
-            android:text="三部门联合发布禁寄物品管理系统新规”18+1“项物品禁止寄递"
-            android:textColor="@color/colorGray_x"
-            android:visibility="gone"/>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/image"
-                android:layout_marginTop="@dimen/margin4"
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/padding16"
-                android:paddingRight="@dimen/padding16"/>
-        <LinearLayout
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin16"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/padding16">
+
+                        <com.facebook.drawee.view.SimpleDraweeView
+                            android:id="@+id/simple_drawee_view"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            app:actualImageScaleType="focusCrop"
+                            app:placeholderImage="@mipmap/head_default"
+                            app:roundedCornerRadius="180dp"
+                            app:roundingBorderColor="@color/line_x"
+                            app:roundingBorderWidth="1px"/>
+
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin8"
+                            android:layout_marginTop="@dimen/margin2"
+                            android:layout_toRightOf="@id/simple_drawee_view"
+                            android:text="yanxing"
+                            android:textColor="@color/colorMainDark"
+                            android:textSize="@dimen/text_normal"/>
+
+                        <TextView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/name"
+                            android:layout_marginLeft="@dimen/margin8"
+                            android:layout_marginTop="@dimen/margin4"
+                            android:layout_toRightOf="@id/simple_drawee_view"
+                            android:textColor="@color/colorMainGray"
+                            android:textSize="@dimen/text_small_x"/>
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/weibo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin6"
+                        android:lineSpacingExtra="@dimen/margin4"
+                        android:paddingLeft="@dimen/padding16"
+                        android:paddingRight="@dimen/padding16"
+                        android:text="三部门联合发布禁寄物品管理系统新规”18+1“项物品禁止寄递"
+                        android:textColor="@color/colorMainDark"/>
+
+                    <TextView
+                        android:id="@+id/atWeibo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/click_grey_dark_selector"
+                        android:paddingBottom="@dimen/padding8"
+                        android:paddingLeft="@dimen/padding16"
+                        android:paddingRight="@dimen/padding16"
+                        android:paddingTop="@dimen/padding8"
+                        android:text="三部门联合发布禁寄物品管理系统新规”18+1“项物品禁止寄递"
+                        android:textColor="@color/colorGray_x"
+                        android:visibility="gone"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin4"
+                        android:paddingLeft="@dimen/padding16"
+                        android:paddingRight="@dimen/padding16"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin8"
+                        android:paddingLeft="@dimen/padding16"
+                        android:paddingRight="@dimen/padding16">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@mipmap/praise"/>
+
+                        <TextView
+                            android:id="@+id/attitudesCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/margin2"
+                            android:text="0次赞"
+                            android:textSize="@dimen/text_middle"/>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="@dimen/margin6"
+                            android:layout_marginTop="@dimen/margin2"
+                            android:src="@mipmap/comments"/>
+
+                        <TextView
+                            android:id="@+id/commentCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/margin2"
+                            android:text="0条评论"
+                            android:textSize="@dimen/text_middle"/>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="@dimen/margin6"
+                            android:layout_marginTop="@dimen/margin2"
+                            android:src="@mipmap/repost"/>
+
+                        <TextView
+                            android:id="@+id/repostCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/margin2"
+                            android:text="0次转发"
+                            android:textSize="@dimen/text_middle"/>
+                    </LinearLayout>
+
+                    <View
+                        style="@style/LineLow"
+                        android:layout_marginLeft="@dimen/margin16"
+                        android:layout_marginRight="@dimen/padding16"
+                        android:layout_marginTop="@dimen/margin4"/>
+
+                </LinearLayout>
+
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding16"
-            android:paddingRight="@dimen/padding16">
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@mipmap/praise"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </android.support.design.widget.CoordinatorLayout>
 
-            <TextView
-                android:id="@+id/attitudesCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin4"
-                android:text="122个赞"
-                android:textSize="@dimen/text_small_x"/>
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@mipmap/comments"/>
 
-            <TextView
-                android:id="@+id/commentCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin4"
-                android:text="122"
-                android:textSize="@dimen/text_small_x"/>
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@mipmap/repost"/>
+    <!-- <ScrollView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/repostCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin4"
-                android:text="122"
-                android:textSize="@dimen/text_small_x"/>
-        </LinearLayout>
-    </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+      </ScrollView>-->
 </LinearLayout>
