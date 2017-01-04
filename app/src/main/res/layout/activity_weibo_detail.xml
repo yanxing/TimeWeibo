@@ -20,7 +20,8 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
@@ -108,6 +109,11 @@
                         android:layout_marginTop="@dimen/margin4"
                         android:paddingLeft="@dimen/padding16"
                         android:paddingRight="@dimen/padding16"/>
+                    <View
+                        style="@style/LineLow"
+                        android:layout_marginLeft="@dimen/margin16"
+                        android:layout_marginRight="@dimen/padding16"
+                        android:layout_marginTop="@dimen/margin10"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -116,26 +122,14 @@
                         android:paddingLeft="@dimen/padding16"
                         android:paddingRight="@dimen/padding16">
 
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@mipmap/praise"/>
-
                         <TextView
                             android:id="@+id/attitudesCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/margin2"
-                            android:text="0次赞"
+                            android:text="0次赞，"
                             android:textSize="@dimen/text_middle"/>
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_marginLeft="@dimen/margin6"
-                            android:layout_marginTop="@dimen/margin2"
-                            android:src="@mipmap/comments"/>
 
                         <TextView
                             android:id="@+id/commentCount"
@@ -143,15 +137,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/margin2"
-                            android:text="0条评论"
+                            android:text="0条评论和"
                             android:textSize="@dimen/text_middle"/>
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_marginLeft="@dimen/margin6"
-                            android:layout_marginTop="@dimen/margin2"
-                            android:src="@mipmap/repost"/>
 
                         <TextView
                             android:id="@+id/repostCount"
@@ -167,7 +154,7 @@
                         style="@style/LineLow"
                         android:layout_marginLeft="@dimen/margin16"
                         android:layout_marginRight="@dimen/padding16"
-                        android:layout_marginTop="@dimen/margin4"/>
+                        android:layout_marginTop="@dimen/margin10"/>
 
                 </LinearLayout>
 
@@ -181,4 +168,38 @@
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     </android.support.design.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/padding16"
+        android:paddingRight="@dimen/padding16"
+        android:background="@drawable/top_shape">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="写下你的评论"
+            android:paddingLeft="@dimen/padding8"
+            android:paddingTop="@dimen/padding6"
+            android:paddingBottom="@dimen/padding6"
+            android:background="@drawable/comment_edit_shape"
+            android:textColorHint="@color/colorGray_xx"
+            android:textSize="@dimen/text_middle"/>
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="@dimen/margin16"
+            android:src="@mipmap/repost"/>
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="@dimen/margin8"
+            android:src="@mipmap/praise"/>
+    </LinearLayout>
 </LinearLayout>

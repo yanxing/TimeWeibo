@@ -10,7 +10,7 @@
     <string name="auth_error">授权失败</string>
     <string name="auth_tip">继续授权</string>
     <string name="home_detail">微博正文</string>
-    <string name="praise">次赞</string>
-    <string name="comment">条评论</string>
+    <string name="praise">次赞,</string>
+    <string name="comment">条评论和</string>
     <string name="repost">条转发</string>
 </resources>

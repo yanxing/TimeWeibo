@@ -1,8 +1,5 @@
 package com.yanxing.weibo;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.junit.Test;
 
 import java.util.Calendar;
