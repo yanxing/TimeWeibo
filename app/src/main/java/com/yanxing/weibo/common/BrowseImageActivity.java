@@ -70,6 +70,7 @@ public class BrowseImageActivity extends BaseActivity {
                 }
                 mViewPager.setAdapter(new DraweePagerAdapter());
                 mViewPager.setCurrentItem(index);
+                mCurrentImagePath=mImageUrls.get(index).replaceAll(ConstantAPI.THUMBNAIL_PIC, ConstantAPI.ORIGINAL_PIC);
                 mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -176,5 +177,11 @@ public class BrowseImageActivity extends BaseActivity {
     @Override
     protected BasePresenter initPresenter() {
         return null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
