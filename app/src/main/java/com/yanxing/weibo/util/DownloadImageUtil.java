@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * 下载图片到相册
+ * 下载图片
  * Created by lishuangxiang on 2016/11/24.
  */
 
