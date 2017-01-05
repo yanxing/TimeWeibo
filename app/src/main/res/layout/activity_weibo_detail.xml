@@ -155,6 +155,16 @@
                         android:layout_marginLeft="@dimen/margin16"
                         android:layout_marginRight="@dimen/padding16"
                         android:layout_marginTop="@dimen/margin10"/>
+                    <com.yanxing.weibo.view.ProgressWheel
+                        android:id="@+id/view_load"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        app:matProg_barWidth="3dp"
+                        app:matProg_barColor="@color/colorGray_xx"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="@dimen/margin10"
+                        app:matProg_progressIndeterminate="true" />
 
                 </LinearLayout>
 
@@ -166,6 +176,7 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="40dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     </android.support.design.widget.CoordinatorLayout>
 

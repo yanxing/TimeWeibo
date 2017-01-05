@@ -18,6 +18,7 @@ import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.util.RecyclerViewUtil;
 import com.yanxing.weibo.util.TimeUtil;
 import com.yanxing.weibo.util.WeiboTextUtil;
+import com.yanxing.weibo.view.ProgressWheel;
 import com.yanxing.weibo.weiboapi.ConstantAPI;
 import com.yanxing.weibo.weiboapi.model.FriendTimeLine;
 import com.yanxing.weibo.weiboapi.model.WeiboComment;
@@ -67,6 +68,9 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
     @BindView(R.id.repostCount)
     TextView mRepostCount;
 
+    @BindView(R.id.view_load)
+    ProgressWheel mProgressWheel;
+
     private RecyclerViewAdapter<String> mRecyclerViewImageAdapter;
     private RecyclerView.LayoutParams mParams;
     private RecyclerViewAdapter<WeiboComment.CommentsBean> mRecyclerViewCommentAdapter;
@@ -80,6 +84,7 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
      */
     private boolean mPullUpFresh = false;
     private int mCurrentPage = 1;
+    private long mWeiboID;
 
     @Override
     protected int getLayoutResID() {
@@ -105,7 +110,8 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
             mAtWeibo.setText(WeiboTextUtil.formatWeiboText(this, content, mAtWeibo));
         }
         showImage(weibo);
-        loadComments(weibo.getId());
+        mWeiboID=weibo.getId();
+        loadComments(mWeiboID);
     }
 
     /**
@@ -208,18 +214,32 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
         });
     }
 
+    @OnClick(R.id.commentCount)
+    public void onClickCommentCount(){
+        mCurrentPage=1;
+        mPresenter.getWeiboCommentList(mWeiboID, mCurrentPage, 50);
+        mPullDownFresh = true;
+    }
+
     @Override
     protected WeiboDetailPresenter initPresenter() {
         return new WeiboDetailPresenter(this, getApplicationContext());
     }
 
-    @OnClick({R.id.simple_drawee_view, R.id.atWeibo})
+    @OnClick({R.id.simple_drawee_view, R.id.atWeibo,R.id.commentCount})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.simple_drawee_view:
 
                 break;
             case R.id.atWeibo:
+
+                break;
+            case R.id.commentCount://重新加载评论
+                mProgressWheel.setVisibility(View.VISIBLE);
+                mCurrentPage=1;
+                mPresenter.getWeiboCommentList(mWeiboID, mCurrentPage, 50);
+                mPullDownFresh = true;
                 break;
         }
     }
@@ -229,23 +249,24 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
      */
     @Override
     public void setData(WeiboComment weiboComment) {
+        mProgressWheel.setVisibility(View.GONE);
         WeiboComment.StatusBean statusBean=weiboComment.getStatus();
         mAttitudesCount.setText(statusBean.getAttitudes_count() + getString(R.string.praise));
         mCommentCount.setText(statusBean.getComments_count() + getString(R.string.comment));
         mRepostCount.setText(statusBean.getReposts_count() + getString(R.string.repost));
-        if (weiboComment == null) {
-            return;
+        if (weiboComment.getComments()!=null&&weiboComment.getComments().size()>0) {
+            mPullUpFresh = true;
+            if (mPullDownFresh) {
+                mWeiboCommentList.clear();
+            }
+            mWeiboCommentList.addAll(weiboComment.getComments());
+            mRecyclerViewCommentAdapter.update(mWeiboCommentList);
         }
-        mPullUpFresh = true;
-        if (mPullDownFresh) {
-            mWeiboCommentList.clear();
-        }
-        mWeiboCommentList.addAll(weiboComment.getComments());
-        mRecyclerViewCommentAdapter.update(mWeiboCommentList);
     }
 
     @Override
     public void setError(String error) {
+        mProgressWheel.setVisibility(View.GONE);
         showToast(error);
     }
 
