@@ -40,7 +40,7 @@ public class ImageMenuDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new DownloadImage(true));
-                ImageMenuDialog.this.dismiss();
+//                ImageMenuDialog.this.dismiss();
             }
         });
         return dialog;
