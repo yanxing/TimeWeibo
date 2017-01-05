@@ -11,10 +11,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * 下载图片
+ * 下载图片(png,gif,jpg)
  * Created by lishuangxiang on 2016/11/24.
  */
-
 public class DownloadImageUtil {
 
     private ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
@@ -50,13 +49,25 @@ public class DownloadImageUtil {
                     conn.setRequestProperty("Charset", "UTF-8");
                     conn.connect();
                     if (conn.getResponseCode() == 200) {
+                        String fileType=conn.getContentType();
+                        String imageName=String.valueOf(System.currentTimeMillis());
+                        if (fileType.equalsIgnoreCase("image/gif")){
+                            imageName=imageName+".gif";
+                        }else if (fileType.equalsIgnoreCase("image/jpeg")){
+                            imageName=imageName+".jpg";
+                        }else if (fileType.equalsIgnoreCase("image/png")){
+                            imageName=imageName+".png";
+                        }else {
+                            mDownloadListener.error("url is not image");
+                            return;
+                        }
                         InputStream inStream = conn.getInputStream();
-                        final String imageName=System.currentTimeMillis() + ".jpg";
                         FileUtil.writeStInput(savePath,imageName, inStream);
+                        final String finalImageName = imageName;
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                mDownloadListener.success(savePath+imageName);
+                                mDownloadListener.success(savePath+ finalImageName);
                             }
                         });
                     }else {

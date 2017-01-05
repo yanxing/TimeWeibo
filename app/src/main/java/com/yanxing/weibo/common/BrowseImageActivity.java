@@ -46,6 +46,7 @@ public class BrowseImageActivity extends BaseActivity {
 
     private List<String> mImageUrls = new ArrayList<>();
     private String mCurrentImagePath;
+    private static final String FRAGMENT_TAG="ImageMenuDialog";
 
     @Override
     protected int getLayoutResID() {
@@ -93,7 +94,7 @@ public class BrowseImageActivity extends BaseActivity {
     @OnClick(R.id.menu)
     public void onClick() {
         ImageMenuDialog imageMenuDialog = new ImageMenuDialog();
-        imageMenuDialog.show(getSupportFragmentManager(), "ImageMenuDialog");
+        imageMenuDialog.show(getSupportFragmentManager(), FRAGMENT_TAG);
     }
 
     /**
@@ -114,6 +115,10 @@ public class BrowseImageActivity extends BaseActivity {
                             showToast(message);
                         }
                     });
+            ImageMenuDialog imageMenuDialog= (ImageMenuDialog) getSupportFragmentManager()
+                    .findFragmentByTag(FRAGMENT_TAG);
+            imageMenuDialog.dismiss();
+
         }
     }
 
