@@ -41,7 +41,9 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".home.WeiboDetailActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".common.BrowseImageActivity"
             android:screenOrientation="portrait"/>
 
         <activity

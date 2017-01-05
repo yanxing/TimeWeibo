@@ -1,5 +1,6 @@
 package com.yanxing.weibo.home;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,6 +16,7 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.yanxing.adapterlibrary.RecyclerViewAdapter;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseActivity;
+import com.yanxing.weibo.common.BrowseImageActivity;
 import com.yanxing.weibo.util.RecyclerViewUtil;
 import com.yanxing.weibo.util.TimeUtil;
 import com.yanxing.weibo.util.WeiboTextUtil;
@@ -164,7 +166,17 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
                         .setAutoPlayAnimations(true)
                         .build();
                 image.setController(controller);
-
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(getApplicationContext(), BrowseImageActivity.class);
+                        Bundle bundle=new Bundle();
+                        bundle.putStringArrayList("imageUrl", (ArrayList<String>) imageList);
+                        bundle.putInt("currentIndex",position);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                });
             }
         };
         //微博最多有9张图片
