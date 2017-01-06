@@ -1,7 +1,11 @@
 package com.yanxing.weibo.common;
 
+import android.content.Intent;
 import android.graphics.drawable.Animatable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -17,18 +21,17 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
-import com.yanxing.weibo.common.model.DownloadImage;
 import com.yanxing.weibo.util.ConstantValue;
 import com.yanxing.weibo.util.DownloadImageUtil;
 import com.yanxing.weibo.util.FileUtil;
 import com.yanxing.weibo.weiboapi.ConstantAPI;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 import me.relex.photodraweeview.OnPhotoTapListener;
 import me.relex.photodraweeview.PhotoDraweeView;
 
@@ -46,7 +49,8 @@ public class BrowseImageActivity extends BaseActivity {
 
     private List<String> mImageUrls = new ArrayList<>();
     private String mCurrentImagePath;
-    private static final String FRAGMENT_TAG="ImageMenuDialog";
+    //和清单文件中provider一致
+    private static final String AUTHORITY = "com.yanxing.provider";
 
     @Override
     protected int getLayoutResID() {
@@ -55,7 +59,6 @@ public class BrowseImageActivity extends BaseActivity {
 
     @Override
     protected void afterInstanceView() {
-        EventBus.getDefault().register(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -93,33 +96,27 @@ public class BrowseImageActivity extends BaseActivity {
 
     @OnClick(R.id.menu)
     public void onClick() {
-        ImageMenuDialog imageMenuDialog = new ImageMenuDialog();
-        imageMenuDialog.show(getSupportFragmentManager(), FRAGMENT_TAG);
-    }
-
-    /**
-     * 保存图片
-     */
-    public void onEvent(DownloadImage downloadImage) {
-        if (downloadImage.isDownload()) {
-            DownloadImageUtil.getInstance().downloadImage(mCurrentImagePath,
-                    FileUtil.getStoragePath() + ConstantValue.CACHE_IMAGE,
-                    new DownloadImageUtil.DownloadListener() {
-                        @Override
-                        public void success(String path) {
-                            showToast(getString(R.string.yi_save) + path);
+        DownloadImageUtil.getInstance().downloadImage(mCurrentImagePath,
+                FileUtil.getStoragePath() + ConstantValue.CAMERA,
+                new DownloadImageUtil.DownloadListener() {
+                    @Override
+                    public void success(String path) {
+                        File file=new File(path);
+                        showToast(getString(R.string.yi_save));
+                        //通知图库有新图片加入
+                        if (Build.VERSION.SDK_INT >= 24) {
+                            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                                    FileProvider.getUriForFile(getApplicationContext(), AUTHORITY, file)));
+                        } else {
+                            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
                         }
+                    }
 
-                        @Override
-                        public void error(String message) {
-                            showToast(message);
-                        }
-                    });
-            ImageMenuDialog imageMenuDialog= (ImageMenuDialog) getSupportFragmentManager()
-                    .findFragmentByTag(FRAGMENT_TAG);
-            imageMenuDialog.dismiss();
-
-        }
+                    @Override
+                    public void error(String message) {
+                        showToast(message);
+                    }
+                });
     }
 
     public class DraweePagerAdapter extends PagerAdapter {
@@ -182,11 +179,5 @@ public class BrowseImageActivity extends BaseActivity {
     @Override
     protected BasePresenter initPresenter() {
         return null;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 }

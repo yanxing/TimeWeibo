@@ -58,6 +58,11 @@ public class ConstantValue {
     public static final String CACHE_IMAGE="timeweibo/image/";
 
     /**
+     * 相机图片文件夹
+     */
+    public static final String CAMERA="DCIM/Camera/";
+
+    /**
      * 文字缓存文件夹
      */
     public static final String CACHE="timeweibo/cache/";

@@ -14,5 +14,5 @@
     <string name="comment">条评论和</string>
     <string name="repost">条转发</string>
     <string name="save_image">保存图片</string>
-    <string name="yi_save">已保存到</string>
+    <string name="yi_save">已保存到相册</string>
 </resources>

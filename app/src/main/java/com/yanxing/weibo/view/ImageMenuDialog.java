@@ -1,4 +1,4 @@
-package com.yanxing.weibo.common;
+package com.yanxing.weibo.view;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.yanxing.weibo.R;
-import com.yanxing.weibo.common.model.DownloadImage;
 
 import de.greenrobot.event.EventBus;
 
@@ -39,7 +38,7 @@ public class ImageMenuDialog extends DialogFragment {
         saveImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new DownloadImage(true));
+                EventBus.getDefault().post("save");
             }
         });
         return dialog;

@@ -1,8 +1,12 @@
 package com.yanxing.weibo.home;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,6 +18,7 @@ import com.yanxing.adapterlibrary.RecyclerViewAdapter;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseFragment;
 import com.yanxing.weibo.util.LogUtil;
+import com.yanxing.weibo.util.PermissionUtil;
 import com.yanxing.weibo.util.RecyclerViewUtil;
 import com.yanxing.weibo.util.TimeUtil;
 import com.yanxing.weibo.util.WeiboTextUtil;
@@ -57,6 +62,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
      */
     private boolean mPullUpFresh = false;
     private int mCurrentPage = 1;
+    private static final int QUESTION_LOCATION = 1;
 
     @Override
     protected int getLayoutResID() {
@@ -65,6 +71,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
 
     @Override
     protected void afterInstanceView() {
+        checkPermission();
         EventBus.getDefault().register(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerViewAdapter = new RecyclerViewAdapter<FriendTimeLine.StatusesBean>(mWeiboList,
@@ -155,6 +162,17 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
         mPtrFrameLayout.autoRefresh(true);
     }
 
+    /**
+     * 检查并申请写入权限
+     */
+    public void checkPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            PermissionUtil.checkSelfPermission(this, new String[]{
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    , Manifest.permission.READ_EXTERNAL_STORAGE}, QUESTION_LOCATION);
+        }
+    }
+
     @Override
     protected HomeMainPresenter initPresenter() {
         return new HomeMainPresenter(this, getActivity());
@@ -201,5 +219,19 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions
+            , @NonNull int[] grantResults) {
+        if (requestCode == QUESTION_LOCATION) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                for (String permission : permissions) {
+                    PermissionUtil.getPermissionTip(permission);
+                }
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
