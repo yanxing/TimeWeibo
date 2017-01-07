@@ -8,27 +8,35 @@
     android:id="@+id/viewPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/padding16"
-        android:paddingRight="@dimen/padding14"
+        android:paddingBottom="@dimen/padding16"
         android:paddingLeft="@dimen/padding14"
-        android:paddingBottom="@dimen/padding16">
+        android:paddingTop="@dimen/padding16">
+
         <TextView
             android:id="@+id/currentPage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:text="2/9"
             android:textColor="@color/white"
             android:textSize="@dimen/text_normal"
-            android:textStyle="bold"
-            android:text="2/9"/>
-        <ImageView
+            android:textStyle="bold"/>
+
+        <LinearLayout
             android:id="@+id/menu"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/download"/>
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@mipmap/download"/>
+        </LinearLayout>
     </RelativeLayout>
 </FrameLayout>

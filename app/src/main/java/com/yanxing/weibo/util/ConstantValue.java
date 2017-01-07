@@ -50,7 +50,7 @@ public class ConstantValue {
     /**
      * 默认图磁盘缓存的最大值
      */
-    public static final int MAX_DISK_CACHE_SIZE = 50 * ByteConstants.MB;
+    public static final int MAX_DISK_CACHE_SIZE = 300 * ByteConstants.MB;
 
     /**
      * 缓存图片文件夹

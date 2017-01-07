@@ -22,11 +22,13 @@ import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
 import com.yanxing.weibo.util.ConstantValue;
-import com.yanxing.weibo.util.DownloadImageUtil;
 import com.yanxing.weibo.util.FileUtil;
+import com.yanxing.weibo.util.FrescoUtil;
 import com.yanxing.weibo.weiboapi.ConstantAPI;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,27 +98,30 @@ public class BrowseImageActivity extends BaseActivity {
 
     @OnClick(R.id.menu)
     public void onClick() {
-        DownloadImageUtil.getInstance().downloadImage(mCurrentImagePath,
-                FileUtil.getStoragePath() + ConstantValue.CAMERA,
-                new DownloadImageUtil.DownloadListener() {
-                    @Override
-                    public void success(String path) {
-                        File file=new File(path);
-                        showToast(getString(R.string.yi_save));
-                        //通知图库有新图片加入
-                        if (Build.VERSION.SDK_INT >= 24) {
-                            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                                    FileProvider.getUriForFile(getApplicationContext(), AUTHORITY, file)));
-                        } else {
-                            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-                        }
-                    }
-
-                    @Override
-                    public void error(String message) {
-                        showToast(message);
-                    }
-                });
+        //保存图片
+        File file=FrescoUtil.getDiskCache(Uri.parse(mCurrentImagePath));
+        try {
+            FileInputStream fileInputStream=new FileInputStream(file);
+            long time=System.currentTimeMillis();
+            String newImage="timeweibo"+time;
+            if (mCurrentImagePath.contains("gif")){
+                newImage+=".gif";
+            }else {
+                newImage+=".png";
+            }
+            FileUtil.writeStInput(FileUtil.getStoragePath() + ConstantValue.CAMERA
+                    ,newImage,fileInputStream);
+            showToast(getString(R.string.yi_save));
+            //通知图库有新图片加入
+            if (Build.VERSION.SDK_INT >= 24) {
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                        FileProvider.getUriForFile(getApplicationContext(), AUTHORITY, file)));
+            } else {
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public class DraweePagerAdapter extends PagerAdapter {

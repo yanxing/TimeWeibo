@@ -118,9 +118,13 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
                         //获取失败，只显示地点名，无城市信息
                         FriendTimeLine.StatusesBean statusesBean=weiboList.get(indexOfWeiboList[0]);
                         if (statusesBean.getAnnotations()!=null&&statusesBean.getAnnotations().size()>0){
-                            String detailAddress=statusesBean.getAnnotations().get(0).getPlace().getTitle();
-                            statusesBean.setLocation(detailAddress);
-                            mView.updateNotifyItemChanged(indexOfWeiboList[0]);
+                            FriendTimeLine.StatusesBean.AnnotationsBeanX.PlaceBean placeBean=statusesBean
+                                    .getAnnotations().get(0).getPlace();
+                            if (placeBean!=null){
+                                String detailAddress=placeBean.getTitle();
+                                statusesBean.setLocation(detailAddress);
+                                mView.updateNotifyItemChanged(indexOfWeiboList[0]);
+                            }
                         }
                     }
 
