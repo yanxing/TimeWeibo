@@ -20,6 +20,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity {
 
@@ -48,7 +49,7 @@ public class MainActivity extends BaseActivity {
     public static final int MESSAGE = 1;
     public static final int DISCOVER = 2;
     public static final int ME = 3;
-
+    public static final String REFRESH ="refresh";
 
     @Override
     protected int getLayoutResID() {
@@ -89,7 +90,11 @@ public class MainActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.home:
-                mViewPager.setCurrentItem(HOME);
+                if (mViewPager.getCurrentItem()==0){
+                    EventBus.getDefault().post(REFRESH);
+                }else {
+                    mViewPager.setCurrentItem(HOME);
+                }
                 break;
             case R.id.message:
                 mViewPager.setCurrentItem(MESSAGE);

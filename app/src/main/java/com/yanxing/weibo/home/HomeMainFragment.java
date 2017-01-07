@@ -63,6 +63,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
     private boolean mPullUpFresh = false;
     private int mCurrentPage = 1;
     private static final int QUESTION_LOCATION = 1;
+    public static final String REFRESH ="refresh";
 
     @Override
     protected int getLayoutResID() {
@@ -144,6 +145,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 mPullDownFresh = true;
+                mCurrentPage=1;
                 mPresenter.getFollowWeiboList(mCurrentPage, 20);
             }
         });
@@ -208,6 +210,13 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
 
     public void onEvent(View view){
         showToast(view.toString());
+    }
+
+    public void onEvent(String event){
+        if (event.equals(REFRESH)){
+            mRecyclerView.setAdapter(mRecyclerViewAdapter);//回到顶部
+            mPtrFrameLayout.autoRefresh(true);
+        }
     }
 
     @Override
