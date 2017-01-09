@@ -15,4 +15,10 @@
     <string name="repost">条转发</string>
     <string name="save_image">保存图片</string>
     <string name="yi_save">已保存到相册</string>
+    <string name="weibo">微博</string>
+    <string name="following">关注</string>
+    <string name="fans">粉丝</string>
+    <string name="introduction">简介</string>
+    <string name="photo">照片</string>
+    <string name="collect">收藏</string>
 </resources>

@@ -9,6 +9,7 @@ import com.yanxing.titlebarlibrary.TitleBar;
 import com.yanxing.weibo.adapter.FragmentAdapter;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.util.CommonUtil;
 import com.yanxing.weibo.util.MyOnPageChangeListener;
 import com.yanxing.weibo.discover.DiscoverMainFragment;
 import com.yanxing.weibo.home.HomeMainFragment;
@@ -123,6 +124,7 @@ public class MainActivity extends BaseActivity {
         mDiscover.setImageDrawable(getResources().getDrawable(index == DISCOVER ? R.mipmap.discover_press : R.mipmap.discover));
         mMe.setImageDrawable(getResources().getDrawable(index == ME ? R.mipmap.me_press : R.mipmap.me));
         mTitleBar.setVisibility(View.VISIBLE);
+        CommonUtil.setStatusBarDarkMode(true,this);
         if (index == HOME) {
             mTitleBar.setTitle(getString(R.string.home));
         } else if (index == MESSAGE) {
@@ -130,7 +132,8 @@ public class MainActivity extends BaseActivity {
         } else if (index == DISCOVER) {
             mTitleBar.setVisibility(View.GONE);
         } else if (index == ME) {
-            mTitleBar.setTitle(getString(R.string.me));
+            mTitleBar.setVisibility(View.GONE);
+            CommonUtil.setStatusBarDarkMode(false,this);
         }
     }
 

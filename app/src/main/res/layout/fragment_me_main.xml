@@ -1,7 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+    android:background="@color/white">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="240dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:paddingTop="@dimen/margin24"
+            android:background="@mipmap/user_bg4"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin10"
+                android:src="@mipmap/setting"/>
+        </RelativeLayout>
+
+         <com.facebook.drawee.view.SimpleDraweeView
+             android:id="@+id/simple_drawee_view"
+             android:layout_width="80dp"
+             android:layout_height="80dp"
+             app:actualImageScaleType="focusCrop"
+             android:layout_centerHorizontal="true"
+             app:placeholderImage="@mipmap/user_head_default"
+             android:layout_alignParentBottom="true"
+             app:roundedCornerRadius="180dp"
+             app:roundingBorderColor="@color/line_x"
+             app:roundingBorderWidth="1px"/>
+        <!--<ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/user_head_default"/>-->
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin4"
+        android:text="yanxing"
+        android:textColor="@color/colorMainDark"
+        android:textSize="@dimen/text_normal_xxx"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin6"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/following"
+            android:textSize="@dimen/text_small_xx"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin4"
+            android:text="2017"
+            android:textSize="@dimen/text_small_xx"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin16"
+            android:text="@string/fans"
+            android:textSize="@dimen/text_small_xx"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin4"
+            android:text="19"
+            android:textSize="@dimen/text_small_xx"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/line_xx"
+        android:layout_marginTop="@dimen/margin10"
+        android:paddingBottom="@dimen/margin11"
+        android:paddingTop="@dimen/margin11">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="@string/introduction"
+            android:textSize="@dimen/text_normal"/>
+
+        <View
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:background="@color/line"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/photo"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_normal"/>
+
+        <View
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:background="@color/line"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/collect"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_normal"/>
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/weiBoList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:scrollbarSize="4dp"
+        android:scrollbarThumbVertical="@drawable/scrollbar_thumb_vertical_shape"
+        android:scrollbarStyle="outsideOverlay"/>
 </LinearLayout>

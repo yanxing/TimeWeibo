@@ -3,6 +3,7 @@ package com.yanxing.weibo.me;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseFragment;
 import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.util.CommonUtil;
 
 /**
  * 个人中心

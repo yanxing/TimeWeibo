@@ -39,5 +39,6 @@
     <!--本应用中距屏幕左边距-->
     <dimen name="padding16">16dp</dimen>
     <dimen name="padding4">4dp</dimen>
+    <dimen name="margin11">11dp</dimen>
 
 </resources>
