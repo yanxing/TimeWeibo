@@ -17,7 +17,6 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -26,11 +25,9 @@ import rx.schedulers.Schedulers;
  */
 public class HomeMainPresenter extends BasePresenter<HomeMainView> {
 
-    private RetrofitManage mRetrofitManage;
     private Context mContext;
 
     public HomeMainPresenter(HomeMainView homeMainView, Context context) {
-        mRetrofitManage = RetrofitManage.getInstance();
         this.mView = homeMainView;
         mContext = context;
     }
@@ -54,8 +51,8 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
      */
     public void getFollowWeiboList(int currentPage, int pageSize, boolean useCache) {
         CacheInterceptor cacheInterceptor = new CacheInterceptor(mContext, useCache);
-        mRetrofitManage.setCacheInterceptor(cacheInterceptor);
-        final StatusesApi statusesApi = mRetrofitManage.initRetrofit(mContext).create(StatusesApi.class);
+        RetrofitManage.getInstance().setCacheInterceptor(cacheInterceptor);
+        final StatusesApi statusesApi = RetrofitManage.getInstance().getRetrofit(mContext).create(StatusesApi.class);
         statusesApi.getFriendsTimeline(0, 0, pageSize, currentPage, 0, 0, 0)
                 .compose(mView.<FriendTimeLine>rxLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -98,7 +95,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
 
                     @Override
                     public Observable<GeoToAddress> call(FriendTimeLine.StatusesBean statusesBean) {
-                        LocationApi locationApi = mRetrofitManage.initRetrofit(mContext).create(LocationApi.class);
+                        LocationApi locationApi = RetrofitManage.getInstance().getRetrofit(mContext).create(LocationApi.class);
                         List<Double> coordinates = statusesBean.getGeo().getCoordinates();
                         return locationApi.getGeoToAddress(ConstantAPI.GEO_TO_ADDRESS, coordinates.get(1)
                                 + "," + coordinates.get(0));

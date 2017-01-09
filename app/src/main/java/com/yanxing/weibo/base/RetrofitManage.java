@@ -19,13 +19,14 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * 单例Retrofit，配置缓存、微博token和服务器地址
+ * 配置缓存、微博token和服务器地址
  * Created by lishuangxiang on 2016/12/26.
  */
 public class RetrofitManage {
 
     private CacheInterceptor mCacheInterceptor;
     private Cache mCache;
+    private Retrofit.Builder mBuilder;
 
     private RetrofitManage() {
         File file = new File(FileUtil.getStoragePath() + ConstantValue.CACHE);
@@ -33,6 +34,10 @@ public class RetrofitManage {
             file.mkdirs();
         }
         mCache = new Cache(file, ConstantValue.MAX_DISK_CACHE_VERYLOW_SIZE);
+        mBuilder=new Retrofit.Builder();
+        mBuilder.baseUrl(ConstantAPI.API_SERVER)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create());
     }
 
     public static RetrofitManage getInstance() {
@@ -44,12 +49,12 @@ public class RetrofitManage {
     }
 
     /**
-     * 初始化Retrofit对象，请求添加token参数和默认缓存策略（无网络读取缓存，有网络不使用缓存）
+     * 获取Retrofit，添加请求token参数和默认缓存策略（无网络读取缓存，有网络不使用缓存）
      *
      * @param context
      * @return
      */
-    public Retrofit initRetrofit(Context context) {
+    public Retrofit getRetrofit(Context context) {
         if (mCacheInterceptor == null) {
             mCacheInterceptor = new CacheInterceptor(context, false);
         }
@@ -59,13 +64,11 @@ public class RetrofitManage {
                 .addInterceptor(mCacheInterceptor)
                 .cache(mCache)
                 .build();
+        return getRetrofit(client);
+    }
 
-        return new Retrofit.Builder()
-                .baseUrl(ConstantAPI.API_SERVER)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
+    public Retrofit getRetrofit(OkHttpClient okHttpClient) {
+        return mBuilder.client(okHttpClient).build();
     }
 
     public void setCacheInterceptor(CacheInterceptor cacheInterceptor) {

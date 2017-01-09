@@ -16,13 +16,11 @@ import rx.schedulers.Schedulers;
  */
 public class WeiboDetailPresenter extends BasePresenter<WeiboDetailView> {
 
-    private RetrofitManage mRetrofitManage;
     private Context mContext;
 
     public WeiboDetailPresenter(WeiboDetailView weiboDetailView, Context context) {
         this.mView = weiboDetailView;
         mContext = context;
-        mRetrofitManage = RetrofitManage.getInstance();
     }
 
 
@@ -34,7 +32,7 @@ public class WeiboDetailPresenter extends BasePresenter<WeiboDetailView> {
      * @param pageSize    页条数
      */
     public void getWeiboCommentList(long weiboID, int currentPage, int pageSize) {
-        CommentsApi commentsApi = mRetrofitManage.initRetrofit(mContext).create(CommentsApi.class);
+        CommentsApi commentsApi = RetrofitManage.getInstance().getRetrofit(mContext).create(CommentsApi.class);
         commentsApi.getWeiboComments(weiboID, 0, 0, pageSize, currentPage, 0)
                 .compose(mView.<WeiboComment>rxLifecycle())
                 .subscribeOn(Schedulers.io())
