@@ -20,6 +20,11 @@ public class ConstantAPI {
     public static final String STATUSES_FRIENDS_TIMELINE = "statuses/friends_timeline.json";
 
     /**
+     * 获取某个（授权）用户最新发表的微博列表
+     */
+    public static final String STATUSES_USERS_TIMELINE = "statuses/user_timeline.json";
+
+    /**
      * 根据地理信息坐标返回实际地址
      */
     public static final String GEO_TO_ADDRESS = "geo_to_address.json";
@@ -34,7 +39,11 @@ public class ConstantAPI {
     /**
      * 用户相关
      */
-    public static final String USER="user/{path}";
+    public static final String USER="users/{path}";
+    /**
+     * 根据用户ID获取用户信息
+     */
+    public static final String SHOW="show.json";
 
 
 

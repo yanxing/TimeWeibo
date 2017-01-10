@@ -1,9 +1,13 @@
 package com.yanxing.weibo.weiboapi;
 
 import com.yanxing.weibo.weiboapi.model.FriendTimeLine;
+import com.yanxing.weibo.weiboapi.model.UserTimeLine;
+
+import java.util.Map;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -31,4 +35,19 @@ public interface StatusesApi {
             , @Query("base_app") int base_app
             , @Query("feature") int feature
             , @Query("trim_user") int trim_user);
+
+    /**
+     * 获取某个用户最新发表的微博列表，接口升级后：uid与screen_name只能为当前授权用户；
+     * @param uid 需要查询的用户ID
+     * @param screenName 需要查询的用户昵称,参数uid与screen_name二者必选其一，且只能选其一
+     * @param since_id 若指定此参数，则返回ID比since_id大的微博（即比since_id时间晚的微博），默认为0。
+     * @param max_id   若指定此参数，则返回ID小于或等于max_id的微博，默认为0。
+     * @param count    单页返回的记录条数，最大不超过100，默认为20。
+     * @param page     返回结果的页码，默认为1。
+     * @param base_app 是否只获取当前应用的数据。0为否（所有数据），1为是（仅当前应用），默认为0。
+     * @param feature  过滤类型ID，0：全部、1：原创、2：图片、3：视频、4：音乐，默认为0。
+     * @param trim_user 返回值中user字段开关，0：返回完整user字段、1：user字段仅返回user_id，默认为0。
+     * @return
+     */
+    @GET(ConstantAPI.STATUSES_USERS_TIMELINE)
 }

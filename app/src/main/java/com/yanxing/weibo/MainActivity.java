@@ -2,6 +2,7 @@ package com.yanxing.weibo;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity {
     public static final int MESSAGE = 1;
     public static final int DISCOVER = 2;
     public static final int ME = 3;
+    private long exitTime = 0;
     public static final String REFRESH ="refresh";
 
     @Override
@@ -136,6 +138,24 @@ public class MainActivity extends BaseActivity {
             CommonUtil.setStatusBarDarkMode(false,this);
         }
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            showToast(getString(R.string.zai_an_yi_ci_tui_chu_app));
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+        }
+    }
+
 
     @Override
     protected BasePresenter initPresenter() {

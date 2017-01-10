@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/click_white_dark_selector"
+              android:orientation="vertical"
+              android:paddingTop="@dimen/padding8">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding16">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin2"
+            android:layout_toRightOf="@id/simple_drawee_view"
+            android:text="yanxing"
+            android:textColor="@color/colorMainDark"
+            android:textSize="@dimen/text_normal"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginTop="@dimen/margin4"
+            android:layout_toRightOf="@id/simple_drawee_view"
+            android:text="昨天 19:30"
+            android:textColor="@color/colorMainGray"
+            android:textSize="@dimen/text_small_x"/>
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginTop="@dimen/margin4"
+            android:layout_toRightOf="@id/time"
+            android:text="在上海南京东路步行街"
+            android:visibility="gone"
+            android:textColor="@color/colorMainGray"
+            android:textSize="@dimen/text_small_x"/>
+        <ImageView
+            android:id="@+id/hasImage"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_toRightOf="@id/address"
+            android:layout_below="@id/name"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/margin6"
+            android:layout_marginLeft="@dimen/margin8"
+            android:src="@mipmap/has_image"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin6"
+        android:lineSpacingExtra="@dimen/margin4"
+        android:paddingLeft="@dimen/padding16"
+        android:paddingRight="@dimen/padding16"
+        android:text="三部门联合发布禁寄物品管理系统新规”18+1“项物品禁止寄递"
+        android:textColor="@color/colorMainDark"/>
+
+    <View
+        style="@style/LineLow"
+        android:layout_marginTop="@dimen/margin6"/>
+
+    <TextView
+        android:id="@+id/textChild"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/click_grey_dark_selector"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingLeft="@dimen/padding16"
+        android:paddingRight="@dimen/padding16"
+        android:paddingTop="@dimen/padding8"
+        android:text="三部门联合发布禁寄物品管理系统新规”18+1“项物品禁止寄递"
+        android:textColor="@color/colorGray_x"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding16"
+        android:paddingRight="@dimen/padding16">
+
+        <LinearLayout
+            style="@style/WeiboItemPraise">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@mipmap/praise"/>
+
+            <TextView
+                android:id="@+id/attitudesCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin4"
+                android:text="122"
+                android:textSize="@dimen/text_small_x"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/WeiboItemPraise">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@mipmap/comments"/>
+
+            <TextView
+                android:id="@+id/commentCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin4"
+                android:text="122"
+                android:textSize="@dimen/text_small_x"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/WeiboItemPraise">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@mipmap/repost"/>
+
+            <TextView
+                android:id="@+id/repostCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin4"
+                android:text="122"
+                android:textSize="@dimen/text_small_x"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

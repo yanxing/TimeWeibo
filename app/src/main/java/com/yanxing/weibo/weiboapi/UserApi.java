@@ -2,8 +2,12 @@ package com.yanxing.weibo.weiboapi;
 
 import com.yanxing.weibo.weiboapi.model.User;
 
+import java.util.Map;
+
+import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
+import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -13,10 +17,9 @@ import rx.Observable;
 public interface UserApi{
 
     /**
-     * 根据用户ID获取用户信息
-     * @param uid 需要查询的用户ID
+     * 用户相关
      * @return
      */
-    @POST(value = ConstantAPI.USER)
-    Observable<User> getUserInfo(@Query("uid") String uid);
+    @GET(value = ConstantAPI.USER)
+    Observable<User> getUserInfo(@Path("path") String path, @QueryMap Map<String, String> map);
 }

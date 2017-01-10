@@ -19,5 +19,5 @@ public interface BaseView<T> {
      * 取消Rx中的订阅
      * @return
      */
-    Observable.Transformer<T, T> rxLifecycle();
+    <V> Observable.Transformer<V, V> rxLifecycle();
 }

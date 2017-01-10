@@ -189,10 +189,13 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
         if (mPullDownFresh) {
             mWeiboList.clear();
         }
-        mWeiboList.addAll(friendTimeLine.getStatuses());
-        mRecyclerViewAdapter.update(mWeiboList);
+        if (friendTimeLine.getStatuses()!=null&&friendTimeLine.getStatuses().size()>0){
+            mWeiboList.addAll(friendTimeLine.getStatuses());
+            mRecyclerViewAdapter.update(mWeiboList);
+            mPresenter.getGeoToAddress(mWeiboList);
+        }
         mPtrFrameLayout.refreshComplete();
-        mPresenter.getGeoToAddress(mWeiboList);
+
     }
 
     @Override
@@ -210,7 +213,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
     }
 
     @Override
-    public Observable.Transformer<FriendTimeLine, FriendTimeLine> rxLifecycle() {
+    public <V> Observable.Transformer<V, V> rxLifecycle() {
         return this.bindToLifecycle();
     }
 
