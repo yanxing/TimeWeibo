@@ -50,4 +50,5 @@ public interface StatusesApi {
      * @return
      */
     @GET(ConstantAPI.STATUSES_USERS_TIMELINE)
+    Observable<FriendTimeLine> getUserTimeline(@QueryMap Map<String,String> map);
 }
