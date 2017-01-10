@@ -27,6 +27,14 @@ public class ConstantAPI {
      * 获取某条微博的评论列表
      */
     public static final String COMMENTS="comments/show.json";
+    /**
+     * 地理信息
+     */
+    public static final String LOCATION="location/geo/{path}";
+    /**
+     * 用户相关
+     */
+    public static final String USER="user/{path}";
 
 
 

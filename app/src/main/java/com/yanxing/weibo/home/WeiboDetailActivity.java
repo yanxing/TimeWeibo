@@ -283,7 +283,7 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
     }
 
     @Override
-    public <T> Observable.Transformer<T, T> rxLifecycle() {
+    public Observable.Transformer<WeiboComment, WeiboComment> rxLifecycle() {
         return this.bindToLifecycle();
     }
 }

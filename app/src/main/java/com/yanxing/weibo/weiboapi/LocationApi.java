@@ -19,7 +19,7 @@ public interface LocationApi {
      * @param coordinate
      * @return
      */
-    @GET(value = "location/geo/{path}")
+    @GET(value = ConstantAPI.LOCATION)
     Observable<GeoToAddress>  getGeoToAddress(@Path("path") String path
             ,@Query("coordinate") String coordinate);
 }

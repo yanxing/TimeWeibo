@@ -10,6 +10,7 @@ import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
+import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BasePresenter;
 import com.yanxing.weibo.util.AccessTokenUtil;
 import com.yanxing.weibo.util.ConstantValue;
@@ -22,10 +23,6 @@ public class WeiboAuthPresenter extends BasePresenter<WeiboView> {
 
     private WeiboView mWeiboView;
     private SsoHandler mSsoHandler;
-
-    public static final int SUCCESS = -1;
-    public static final int CANCEL = 0;
-    public static final int EXCEPTION = 1;
 
     public WeiboAuthPresenter(WeiboView weiboView) {
         this.mWeiboView = weiboView;
@@ -46,21 +43,21 @@ public class WeiboAuthPresenter extends BasePresenter<WeiboView> {
                 Oauth2AccessToken oauth2AccessToken = Oauth2AccessToken.parseAccessToken(values);
                 if (oauth2AccessToken.isSessionValid()) {
                     AccessTokenUtil.writeAccessToken(context, oauth2AccessToken);
-                    mWeiboView.setAuth(SUCCESS, null);
+                    mWeiboView.onSuccess();
                 } else {
                     String code = values.getString("code");
-                    mWeiboView.setAuth(Integer.valueOf(code), null);
+                    mWeiboView.setError(context.getString(R.string.auth_error)+Integer.valueOf(code));
                 }
             }
 
             @Override
             public void onWeiboException(WeiboException e) {
-                mWeiboView.setAuth(EXCEPTION, e);
+                mWeiboView.setError(context.getString(R.string.auth_error)+e.getMessage());
             }
 
             @Override
             public void onCancel() {
-                mWeiboView.setAuth(CANCEL, null);
+                mWeiboView.setError(context.getString(R.string.auth_cancel));
             }
         });
 

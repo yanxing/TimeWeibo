@@ -2,8 +2,6 @@ package com.yanxing.weibo.util;
 
 import com.facebook.common.util.ByteConstants;
 
-import retrofit2.http.PUT;
-
 /**
  * Created by lishuangxiang on 2016/11/22.
  */

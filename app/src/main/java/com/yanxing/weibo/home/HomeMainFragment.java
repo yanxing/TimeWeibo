@@ -200,12 +200,18 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
         mRecyclerViewAdapter.update(position);
     }
 
+
     @Override
     public void setError(String error) {
         mPullUpFresh = true;
         mPtrFrameLayout.refreshComplete();
         LogUtil.d(TAG, error);
         showToast(error);
+    }
+
+    @Override
+    public Observable.Transformer<FriendTimeLine, FriendTimeLine> rxLifecycle() {
+        return this.bindToLifecycle();
     }
 
     public void onEvent(View view){
@@ -217,11 +223,6 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
             mRecyclerView.setAdapter(mRecyclerViewAdapter);//回到顶部
             mPtrFrameLayout.autoRefresh(true);
         }
-    }
-
-    @Override
-    public <T> Observable.Transformer<T, T> rxLifecycle() {
-        return this.bindToLifecycle();
     }
 
     @Override

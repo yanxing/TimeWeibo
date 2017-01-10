@@ -7,13 +7,13 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.sina.weibo.sdk.exception.WeiboException;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseFragment;
 import com.yanxing.weibo.util.PermissionUtil;
 import com.yanxing.weibo.view.ConfirmDialog;
 
 import de.greenrobot.event.EventBus;
+import rx.Observable;
 
 /**
  * 微博授权
@@ -51,20 +51,9 @@ public class WeiboAuthFragment extends BaseFragment<WeiboView, WeiboAuthPresente
     }
 
     @Override
-    public void setAuth(int code, WeiboException e) {
-        if (code==WeiboAuthPresenter.SUCCESS){
-            showToast(getString(R.string.auth_success));
-            EventBus.getDefault().post("auth");
-        }else{
-            if (code==WeiboAuthPresenter.CANCEL){
-                showToast(getString(R.string.auth_cancel));
-            }else if (code==WeiboAuthPresenter.EXCEPTION){
-                showToast(getString(R.string.auth_error)+e.getMessage());
-            }else {
-                showToast(getString(R.string.auth_error)+code);
-            }
-            showConfirmDialog();
-        }
+    public void onSuccess() {
+        showToast(getString(R.string.auth_success));
+        EventBus.getDefault().post("auth");
     }
      /**
      * 提示再次授权
@@ -101,5 +90,20 @@ public class WeiboAuthFragment extends BaseFragment<WeiboView, WeiboAuthPresente
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mPresenter.authorizeCallBack(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void setData(Object data) {
+
+    }
+
+    @Override
+    public void setError(String error) {
+        showToast(error);
+    }
+
+    @Override
+    public Observable.Transformer rxLifecycle() {
+        return null;
     }
 }

@@ -19,7 +19,7 @@ public class WeiboDetailPresenter extends BasePresenter<WeiboDetailView> {
     private Context mContext;
 
     public WeiboDetailPresenter(WeiboDetailView weiboDetailView, Context context) {
-        this.mView = weiboDetailView;
+        this.mBaseView = weiboDetailView;
         mContext = context;
     }
 
@@ -34,7 +34,7 @@ public class WeiboDetailPresenter extends BasePresenter<WeiboDetailView> {
     public void getWeiboCommentList(long weiboID, int currentPage, int pageSize) {
         CommentsApi commentsApi = RetrofitManage.getInstance().getRetrofit(mContext).create(CommentsApi.class);
         commentsApi.getWeiboComments(weiboID, 0, 0, pageSize, currentPage, 0)
-                .compose(mView.<WeiboComment>rxLifecycle())
+                .compose(mBaseView.<WeiboComment>rxLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<WeiboComment>() {
@@ -44,12 +44,12 @@ public class WeiboDetailPresenter extends BasePresenter<WeiboDetailView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.setError(e.getMessage());
+                        mBaseView.setError(e.getMessage());
                     }
 
                     @Override
                     public void onNext(WeiboComment weiboComment) {
-                        mView.setData(weiboComment);
+                        mBaseView.setData(weiboComment);
                     }
                 });
     }

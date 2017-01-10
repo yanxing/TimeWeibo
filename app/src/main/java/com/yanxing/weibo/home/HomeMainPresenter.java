@@ -28,7 +28,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
     private Context mContext;
 
     public HomeMainPresenter(HomeMainView homeMainView, Context context) {
-        this.mView = homeMainView;
+        this.mBaseView = homeMainView;
         mContext = context;
     }
 
@@ -54,7 +54,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
         RetrofitManage.getInstance().setCacheInterceptor(cacheInterceptor);
         final StatusesApi statusesApi = RetrofitManage.getInstance().getRetrofit(mContext).create(StatusesApi.class);
         statusesApi.getFriendsTimeline(0, 0, pageSize, currentPage, 0, 0, 0)
-                .compose(mView.<FriendTimeLine>rxLifecycle())
+                .compose(mBaseView.<FriendTimeLine>rxLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<FriendTimeLine>() {
@@ -65,12 +65,12 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.setError(e.getMessage());
+                        mBaseView.setError(e.getMessage());
                     }
 
                     @Override
                     public void onNext(FriendTimeLine friendTimeLine) {
-                        mView.setData(friendTimeLine);
+                        mBaseView.setData(friendTimeLine);
                     }
                 });
     }
@@ -101,7 +101,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
                                 + "," + coordinates.get(0));
                     }
                 })
-                .compose(mView.<GeoToAddress>rxLifecycle())
+                .compose(mBaseView.<GeoToAddress>rxLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<GeoToAddress>() {
@@ -120,7 +120,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
                             if (placeBean!=null){
                                 String detailAddress=placeBean.getTitle();
                                 statusesBean.setLocation(detailAddress);
-                                mView.updateNotifyItemChanged(indexOfWeiboList[0]);
+                                mBaseView.updateNotifyItemChanged(indexOfWeiboList[0]);
                             }
                         }
                     }
@@ -132,7 +132,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
                             if (statusesBean.getAnnotations()!=null&&statusesBean.getAnnotations().size()>0){
                                 String detailAddress=statusesBean.getAnnotations().get(0).getPlace().getTitle();
                                 statusesBean.setLocation(geoToAddress.getGeos().get(0).getCity_name()+"·"+detailAddress);
-                                mView.updateNotifyItemChanged(indexOfWeiboList[0]);
+                                mBaseView.updateNotifyItemChanged(indexOfWeiboList[0]);
                             }
                         }
                     }
@@ -148,6 +148,6 @@ public class HomeMainPresenter extends BasePresenter<HomeMainView> {
         FriendTimeLine friendTimeLine = ParseJsonUtil.convertJson(
                 ParseJsonUtil.getJsonFileString(context, "weibotest.json")
                 , FriendTimeLine.class);
-        mView.setData(friendTimeLine);
+        mBaseView.setData(friendTimeLine);
     }
 }
