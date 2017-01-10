@@ -3,9 +3,12 @@ package com.yanxing.weibo.me;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +17,7 @@ import com.yanxing.adapterlibrary.RecyclerViewAdapter;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseFragment;
 import com.yanxing.weibo.home.WeiboDetailActivity;
+import com.yanxing.weibo.util.LogUtil;
 import com.yanxing.weibo.util.TimeUtil;
 import com.yanxing.weibo.util.WeiboTextUtil;
 import com.yanxing.weibo.weiboapi.model.FriendTimeLine;
@@ -21,8 +25,12 @@ import com.yanxing.weibo.weiboapi.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 import rx.Observable;
 
 /**
@@ -49,10 +57,14 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
     @BindView(R.id.weiBoList)
     RecyclerView mWeiBoList;
 
-    private List<FriendTimeLine.StatusesBean> mUserWeiboList=new ArrayList<>();
+    @BindView(R.id.ptrFrameLayout)
+    PtrClassicFrameLayout mPtrFrameLayout;
+
+    private List<FriendTimeLine.StatusesBean> mUserWeiboList = new ArrayList<>();
     private RecyclerViewAdapter<FriendTimeLine.StatusesBean> mRecyclerViewAdapter;
-    private int mCurrentPage=1;
-    private int mPageSize=20;
+    private int mCurrentPage = 1;
+    private int mPageSize = 20;
+    private boolean mTag;
 
     @Override
     protected int getLayoutResID() {
@@ -62,7 +74,14 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
     @Override
     protected void afterInstanceView() {
         mPresenter.getMeInfo();
-        mPresenter.getMeWeiboList(mCurrentPage,mPageSize);
+        mPresenter.getMeWeiboList(mCurrentPage, mPageSize);
+        mPtrFrameLayout.setPtrHandler(new PtrDefaultHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                mCurrentPage = 1;
+                mPresenter.getMeWeiboList(mCurrentPage, mPageSize);
+            }
+        });
     }
 
     @Override
@@ -78,7 +97,7 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
         mFollow.setText(String.valueOf(data.getFriends_count()));
         mFans.setText(String.valueOf(data.getFollowers_count()));
         mWeiBoList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerViewAdapter=new RecyclerViewAdapter<FriendTimeLine.StatusesBean>(mUserWeiboList,R.layout.adapter_me_main) {
+        mRecyclerViewAdapter = new RecyclerViewAdapter<FriendTimeLine.StatusesBean>(mUserWeiboList, R.layout.adapter_me_main) {
             @Override
             public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, final int position) {
                 holder.setText(R.id.name, mUserWeiboList.get(position).getUser().getName());
@@ -102,7 +121,7 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
                     ImageView imageView = (ImageView) holder.findViewById(R.id.hasImage);
                     if (list != null && list.size() > 0) {
                         imageView.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         imageView.setVisibility(View.GONE);
                     }
                 } else {
@@ -112,7 +131,7 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
                     ImageView imageView = (ImageView) holder.findViewById(R.id.hasImage);
                     if (list != null && list.size() > 0) {
                         imageView.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         imageView.setVisibility(View.GONE);
                     }
                 }
@@ -120,9 +139,9 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent=new Intent(getActivity(),WeiboDetailActivity.class);
-                        Bundle bundle=new Bundle();
-                        bundle.putParcelable("weibo",mUserWeiboList.get(position));
+                        Intent intent = new Intent(getActivity(), WeiboDetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("weibo", mUserWeiboList.get(position));
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }
@@ -144,14 +163,26 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
 
     @Override
     public void setUserTimeLine(FriendTimeLine userTimeLine) {
-        if (userTimeLine==null){
+        mPtrFrameLayout.refreshComplete();
+        if (userTimeLine == null) {
             return;
         }
-        if (userTimeLine.getStatuses()!=null&&userTimeLine.getStatuses().size()>0){
+        if (userTimeLine.getStatuses() != null && userTimeLine.getStatuses().size() > 0) {
             mUserWeiboList.clear();
             mUserWeiboList.addAll(userTimeLine.getStatuses());
             mRecyclerViewAdapter.update(mUserWeiboList);
+            mTag = true;
         }
-//        showToast("由于微博接口限制，最多只能获取10条数据");
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        try{
+            super.setUserVisibleHint(isVisibleToUser);
+        }catch (Exception ex){
+        }
+        if (isAdded()&&isVisibleToUser & mTag) {
+            showToast(getString(R.string.weibo_limit));
+        }
     }
 }
