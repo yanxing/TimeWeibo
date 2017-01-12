@@ -72,7 +72,6 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
     @Override
     protected void afterInstanceView() {
         mPresenter.getMeInfo();
-        mPresenter.getMeWeiboList(mCurrentPage, mPageSize);
         mPtrFrameLayout.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
@@ -159,6 +158,7 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
             }
         };
         mWeiBoList.setAdapter(mRecyclerViewAdapter);
+        mPresenter.getMeWeiboList(mCurrentPage, mPageSize);
     }
 
     @Override

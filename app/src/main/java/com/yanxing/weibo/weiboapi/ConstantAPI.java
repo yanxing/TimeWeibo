@@ -44,6 +44,14 @@ public class ConstantAPI {
      * 根据用户ID获取用户信息
      */
     public static final String SHOW="show.json";
+    /**
+     * 评论相关
+     */
+    public static final String COMMENT="comments/{path}";
+    /**
+     * 我收到的评论列表
+     */
+    public static final String COMMENT_TO_ME="to_me.json";
 
 
 

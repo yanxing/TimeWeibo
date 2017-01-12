@@ -63,7 +63,6 @@ public class MainActivity extends BaseActivity {
             case R.id.home:
                 if (replace(new HomeMainFragment())){
                     setTab(HOME);
-                    replace(new HomeMainFragment());
                 }else {
                     EventBus.getDefault().post(REFRESH);
                 }

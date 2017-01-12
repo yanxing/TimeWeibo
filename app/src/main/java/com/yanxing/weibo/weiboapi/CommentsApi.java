@@ -1,9 +1,14 @@
 package com.yanxing.weibo.weiboapi;
 
+import com.yanxing.weibo.weiboapi.model.Comment;
 import com.yanxing.weibo.weiboapi.model.WeiboComment;
 
+import java.util.Map;
+
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -29,4 +34,13 @@ public interface CommentsApi {
             , @Query("count") int count
             , @Query("page") int page
             , @Query("filter_by_author") int filter_by_author);
+
+    /**
+     * 评论相关
+     * @param path
+     * @param map
+     * @return
+     */
+    @GET(ConstantAPI.COMMENT)
+    Observable<Comment> getComments(@Path("path") String path, @QueryMap Map<String,String> map);
 }

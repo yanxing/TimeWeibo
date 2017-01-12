@@ -96,7 +96,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/margin4"
-                            android:text="2017"
+                            android:text="0"
                             android:textSize="@dimen/text_small_xx"/>
 
                         <TextView
@@ -111,7 +111,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/margin4"
-                            android:text="19"
+                            android:text="0"
                             android:textSize="@dimen/text_small_xx"/>
                     </LinearLayout>
 

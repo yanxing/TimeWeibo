@@ -23,4 +23,6 @@
     <string name="collect">收藏</string>
     <string name="zai_an_yi_ci_tui_chu_app">再按一次退出程序</string>
     <string name="weibo_limit">由于微博接口限制，最多只能获取5条数据</string>
+    <string name="comment1">评论</string>
+    <string name="allcomment">所有评论</string>
 </resources>

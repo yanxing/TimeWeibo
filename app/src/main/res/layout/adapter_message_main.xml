@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingTop="@dimen/padding4"
+              android:paddingLeft="@dimen/padding14"
+              android:background="@drawable/click_white_dark_selector"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="horizontal">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/head"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        app:actualImageScaleType="focusCrop"
+        app:placeholderImage="@mipmap/user_head_default"
+        app:roundedCornerRadius="180dp"
+        app:roundingBorderColor="@color/line_x"
+        app:roundingBorderWidth="1px"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin4"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorMainDark"
+                android:text="言行"/>
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01-12"
+                android:textColor="@color/colorMainGray"
+                android:textSize="@dimen/text_small_xx"/>
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding4"
+            android:paddingRight="@dimen/padding16"
+            android:textColor="@color/colorMainDark"
+            android:text="回复我的"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="@dimen/margin8"
+            android:background="@color/line"/>
+    </LinearLayout>
+
+
+</LinearLayout>

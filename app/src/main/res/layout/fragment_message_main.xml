@@ -1,7 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical">
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/commentTip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/line_xxx"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingLeft="@dimen/padding14"
+            android:paddingTop="@dimen/padding8"
+            android:text="@string/comment1"
+            android:textSize="@dimen/text_middle"
+            android:textColor="@color/colorMainGray"
+            android:visibility="gone"/>
+        <View style="@style/Line"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/commentList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"/>
+
+        <LinearLayout
+            android:id="@+id/allComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/line_xxx"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding8"
+            android:paddingTop="@dimen/padding8"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/allcomment"
+                android:textSize="@dimen/text_middle"
+                android:textColor="@color/colorMainGray"/>
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="@dimen/margin2"
+                android:src="@mipmap/right_arrow"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
