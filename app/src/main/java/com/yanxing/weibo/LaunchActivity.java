@@ -10,6 +10,7 @@ import com.yanxing.weibo.auth.WeiboAuthFragment;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
 import com.yanxing.weibo.util.AccessTokenUtil;
+import com.yanxing.weibo.util.LogUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -44,6 +45,7 @@ public class LaunchActivity extends BaseActivity {
                 .setDuration(2000)
                 .start();
         final Oauth2AccessToken oauth2AccessToken = AccessTokenUtil.readAccessToken(this);
+        LogUtil.d(TAG,oauth2AccessToken.getToken());
         Observable.timer(2000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Long>bindToLifecycle())

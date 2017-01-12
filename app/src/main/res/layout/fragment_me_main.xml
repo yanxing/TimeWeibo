@@ -11,7 +11,7 @@
     app:ptr_duration_to_close_header="2000"
     app:ptr_keep_header_when_refresh="true"
     app:ptr_pull_to_fresh="true"
-    app:ptr_ratio_of_header_height_to_refresh="1.2">
+    app:ptr_ratio_of_header_height_to_refresh="1.4">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -21,6 +21,7 @@
 
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">

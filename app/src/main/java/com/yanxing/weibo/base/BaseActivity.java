@@ -18,6 +18,8 @@ public abstract class BaseActivity<V extends BaseView, T extends BasePresenter<V
 
     public T mPresenter;
 
+    protected String TAG=getClass().getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

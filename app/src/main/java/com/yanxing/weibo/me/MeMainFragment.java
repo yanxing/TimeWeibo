@@ -1,9 +1,11 @@
 package com.yanxing.weibo.me;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -57,6 +59,9 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
     @BindView(R.id.weiBoList)
     RecyclerView mWeiBoList;
 
+    @BindView(R.id.appBarLayout)
+    AppBarLayout mAppBarLayout;
+
     @BindView(R.id.ptrFrameLayout)
     PtrClassicFrameLayout mPtrFrameLayout;
 
@@ -80,6 +85,17 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
             public void onRefreshBegin(PtrFrameLayout frame) {
                 mCurrentPage = 1;
                 mPresenter.getMeWeiboList(mCurrentPage, mPageSize);
+            }
+        });
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                //只有在最顶部才能下拉刷新
+                if (verticalOffset!=0){
+                    mPtrFrameLayout.setEnabled(false);
+                }else {
+                    mPtrFrameLayout.setEnabled(true);
+                }
             }
         });
     }
