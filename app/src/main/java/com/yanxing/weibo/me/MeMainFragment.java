@@ -1,16 +1,12 @@
 package com.yanxing.weibo.me;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +15,6 @@ import com.yanxing.adapterlibrary.RecyclerViewAdapter;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseFragment;
 import com.yanxing.weibo.home.WeiboDetailActivity;
-import com.yanxing.weibo.util.LogUtil;
 import com.yanxing.weibo.util.TimeUtil;
 import com.yanxing.weibo.util.WeiboTextUtil;
 import com.yanxing.weibo.weiboapi.model.FriendTimeLine;
@@ -27,7 +22,6 @@ import com.yanxing.weibo.weiboapi.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
@@ -69,7 +63,6 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
     private RecyclerViewAdapter<FriendTimeLine.StatusesBean> mRecyclerViewAdapter;
     private int mCurrentPage = 1;
     private int mPageSize = 20;
-    private boolean mTag;
 
     @Override
     protected int getLayoutResID() {
@@ -83,6 +76,7 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
         mPtrFrameLayout.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
+                mPresenter.getMeInfo();
                 mCurrentPage = 1;
                 mPresenter.getMeWeiboList(mCurrentPage, mPageSize);
             }
@@ -187,17 +181,6 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
             mUserWeiboList.clear();
             mUserWeiboList.addAll(userTimeLine.getStatuses());
             mRecyclerViewAdapter.update(mUserWeiboList);
-            mTag = true;
-        }
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        try{
-            super.setUserVisibleHint(isVisibleToUser);
-        }catch (Exception ex){
-        }
-        if (isAdded()&&isVisibleToUser & mTag) {
             showToast(getString(R.string.weibo_limit));
         }
     }

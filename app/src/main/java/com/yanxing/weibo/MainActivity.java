@@ -1,24 +1,18 @@
 package com.yanxing.weibo;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.yanxing.titlebarlibrary.TitleBar;
-import com.yanxing.weibo.adapter.FragmentAdapter;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.message.MessageMainFragment;
 import com.yanxing.weibo.util.CommonUtil;
-import com.yanxing.weibo.util.MyOnPageChangeListener;
 import com.yanxing.weibo.discover.DiscoverMainFragment;
 import com.yanxing.weibo.home.HomeMainFragment;
 import com.yanxing.weibo.me.MeMainFragment;
-import com.yanxing.weibo.message.MessageMainFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -28,9 +22,6 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.titleBar)
     TitleBar mTitleBar;
-
-    @BindView(R.id.viewPager)
-    ViewPager mViewPager;
 
     @BindView(R.id.home)
     ImageView mHome;
@@ -61,58 +52,54 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void afterInstanceView() {
-        addHMDM();
-        mViewPager.addOnPageChangeListener(new MyOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                setTab(position);
-            }
-        });
-    }
-
-    /**
-     * 添加主页、信息、发现、我
-     */
-    public void addHMDM() {
-        List<Fragment> fragments = new ArrayList<Fragment>();
-        HomeMainFragment homeMainFragment = new HomeMainFragment();
-        MessageMainFragment messageMainFragment = new MessageMainFragment();
-        DiscoverMainFragment discoverMainFragment = new DiscoverMainFragment();
-        MeMainFragment meMainFragment = new MeMainFragment();
-        fragments.add(homeMainFragment);
-        fragments.add(messageMainFragment);
-        fragments.add(discoverMainFragment);
-        fragments.add(meMainFragment);
-        FragmentAdapter fragmentStatePagerAdapter = new
-                FragmentAdapter(getSupportFragmentManager(), fragments);
-        mViewPager.setAdapter(fragmentStatePagerAdapter);
-        mViewPager.setCurrentItem(0);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.mainContent, new HomeMainFragment(), HomeMainFragment.class.getName())
+                .commit();
     }
 
     @OnClick({R.id.home, R.id.message, R.id.send, R.id.discover, R.id.me})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.home:
-                if (mViewPager.getCurrentItem()==0){
-                    EventBus.getDefault().post(REFRESH);
+                if (replace(new HomeMainFragment())){
+                    setTab(HOME);
+                    replace(new HomeMainFragment());
                 }else {
-                    mViewPager.setCurrentItem(HOME);
+                    EventBus.getDefault().post(REFRESH);
                 }
                 break;
             case R.id.message:
-                mViewPager.setCurrentItem(MESSAGE);
+                setTab(MESSAGE);
+                replace(new MessageMainFragment());
                 break;
             case R.id.send:
 
 
                 break;
             case R.id.discover:
-                mViewPager.setCurrentItem(DISCOVER);
+                setTab(DISCOVER);
+                replace(new DiscoverMainFragment());
                 break;
             case R.id.me:
-                mViewPager.setCurrentItem(ME);
+                setTab(ME);
+                replace(new MeMainFragment());
                 break;
         }
+    }
+
+    /**
+     * 替换新的Fragment,如果是这个Fragment，则不替换，返回false
+     */
+    private boolean replace(Fragment fragment) {
+        final String tag = fragment.getClass().toString();
+        if (getSupportFragmentManager().findFragmentByTag(tag)!=null){
+            return false;
+        }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainContent, fragment, tag)
+                .commit();
+        return true;
     }
 
     /**
@@ -138,6 +125,7 @@ public class MainActivity extends BaseActivity {
             CommonUtil.setStatusBarDarkMode(false,this);
         }
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -155,7 +143,6 @@ public class MainActivity extends BaseActivity {
             finish();
         }
     }
-
 
     @Override
     protected BasePresenter initPresenter() {

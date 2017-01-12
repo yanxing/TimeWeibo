@@ -8,7 +8,6 @@ import com.yanxing.weibo.base.BasePresenter;
  * 消息主界面，私信、@我、评论
  * Created by lishuangxiang on 2016/12/22.
  */
-
 public class MessageMainFragment extends BaseFragment {
 
     @Override
