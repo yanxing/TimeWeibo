@@ -45,7 +45,7 @@ public class LaunchActivity extends BaseActivity {
                 .setDuration(2000)
                 .start();
         final Oauth2AccessToken oauth2AccessToken = AccessTokenUtil.readAccessToken(this);
-        LogUtil.d(TAG,oauth2AccessToken.getToken());
+        LogUtil.d(TAG,oauth2AccessToken.getToken()+" "+oauth2AccessToken.getUid());
         Observable.timer(2000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Long>bindToLifecycle())

@@ -1,7 +1,6 @@
 package com.yanxing.weibo.message;
 
 import android.net.Uri;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 import rx.Observable;
 
 /**
@@ -36,6 +38,9 @@ public class MessageMainFragment extends BaseFragment<MessageView,MessagePresent
 
     @BindView(R.id.allComment)
     View mAllComment;
+
+    @BindView(R.id.ptrFrameLayout)
+    PtrClassicFrameLayout mPtrClassicFrameLayout;
 
     private RecyclerViewAdapter<Comment.CommentsBean> mRecyclerViewAdapter;
     private List<Comment.CommentsBean> mComments=new ArrayList<>();
@@ -65,7 +70,13 @@ public class MessageMainFragment extends BaseFragment<MessageView,MessagePresent
             }
         };
         mCommentList.setAdapter(mRecyclerViewAdapter);
-        mPresenter.getComments(1,6);
+        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                mPresenter.getComments(1,6);
+            }
+        });
+        mPtrClassicFrameLayout.autoRefresh(true);
     }
 
     @Override
@@ -75,6 +86,7 @@ public class MessageMainFragment extends BaseFragment<MessageView,MessagePresent
 
     @Override
     public void setData(Comment data) {
+        mPtrClassicFrameLayout.refreshComplete();
         if (data!=null&&data.getComments()!=null&&data.getComments().size()>0){
             mComments.clear();
             mComments.addAll(data.getComments());

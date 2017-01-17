@@ -59,6 +59,9 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
     @BindView(R.id.ptrFrameLayout)
     PtrClassicFrameLayout mPtrFrameLayout;
 
+    @BindView(R.id.tip)
+    TextView mTip;
+
     private List<FriendTimeLine.StatusesBean> mUserWeiboList = new ArrayList<>();
     private RecyclerViewAdapter<FriendTimeLine.StatusesBean> mRecyclerViewAdapter;
     private int mCurrentPage = 1;
@@ -181,7 +184,7 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
             mUserWeiboList.clear();
             mUserWeiboList.addAll(userTimeLine.getStatuses());
             mRecyclerViewAdapter.update(mUserWeiboList);
-            showToast(getString(R.string.weibo_limit));
+            mTip.setVisibility(View.VISIBLE);
         }
     }
 }
