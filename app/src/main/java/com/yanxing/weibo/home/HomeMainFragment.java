@@ -24,6 +24,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.yanxing.adapterlibrary.RecyclerViewAdapter;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseFragment;
+import com.yanxing.weibo.common.CommentActivity;
 import com.yanxing.weibo.util.LogUtil;
 import com.yanxing.weibo.util.PermissionUtil;
 import com.yanxing.weibo.util.RecyclerViewUtil;
@@ -156,6 +157,14 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                         startAnimator(imageView,position);
                     }
                 });
+                //评论
+                holder.findViewById(R.id.comment_layout).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(getActivity(), CommentActivity.class);
+                        startActivity(intent);
+                    }
+                });
             }
         };
         //先加载本地缓存数据
@@ -229,7 +238,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 mWeiboList.get(mPosition).setIsAttitudes(0);//当前微博被登录用户赞
                 mWeiboList.get(mPosition).setAttitudes_count(mWeiboList.get(mPosition).getAttitudes_count()-1);
             }
-            mRecyclerViewAdapter.update(mPosition);
+            mRecyclerViewAdapter.update(mWeiboList);
         }
     }
 

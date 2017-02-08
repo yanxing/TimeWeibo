@@ -42,5 +42,5 @@ public interface CommentsApi {
      * @return
      */
     @GET(ConstantAPI.COMMENT)
-    Observable<Comment> getComments(@Path("path") String path, @QueryMap Map<String,String> map);
+    <T> Observable<T> getComments(@Path("path") String path, @QueryMap Map<String,String> map,Class<T> model);
 }

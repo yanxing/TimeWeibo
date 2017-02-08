@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.yanxing.adapterlibrary.RecyclerViewAdapter;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.common.BrowseImageActivity;
+import com.yanxing.weibo.common.CommentActivity;
 import com.yanxing.weibo.util.RecyclerViewUtil;
 import com.yanxing.weibo.util.TimeUtil;
 import com.yanxing.weibo.util.WeiboTextUtil;
@@ -256,7 +258,8 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
         return new WeiboDetailPresenter(this, getApplicationContext());
     }
 
-    @OnClick({R.id.simple_drawee_view, R.id.atWeibo,R.id.commentCount,R.id.praise})
+    @OnClick({R.id.simple_drawee_view, R.id.atWeibo,R.id.commentCount
+            ,R.id.praise,R.id.write_comment})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.simple_drawee_view:
@@ -273,6 +276,10 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
                 break;
             case R.id.praise://赞
                 startAnimator(mPraise,mIsPraise);
+                break;
+            case R.id.write_comment://写评论
+                Intent intent=new Intent(getApplicationContext(), CommentActivity.class);
+                startActivity(intent);
                 break;
         }
     }

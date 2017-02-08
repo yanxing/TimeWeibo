@@ -104,7 +104,7 @@
 
         <LinearLayout
             android:id="@+id/praise_layout"
-            style="@style/WeiboItemPraise">
+            style="@style/WeiboItemPraiseNoBg">
 
             <ImageView
                 android:id="@+id/praise"
@@ -123,7 +123,8 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/WeiboItemPraise">
+            android:id="@+id/comment_layout"
+            style="@style/WeiboItemPraiseNoBg">
 
             <ImageView
                 android:layout_width="16dp"
@@ -140,7 +141,7 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/WeiboItemPraise">
+            style="@style/WeiboItemPraiseNoBg">
 
             <ImageView
                 android:layout_width="18dp"
