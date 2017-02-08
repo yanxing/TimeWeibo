@@ -1,5 +1,9 @@
 package com.yanxing.weibo.home;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +11,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -73,6 +79,9 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
     @BindView(R.id.view_load)
     ProgressWheel mProgressWheel;
 
+    @BindView(R.id.praise)
+    ImageView mPraise;
+
     private RecyclerViewAdapter<String> mRecyclerViewImageAdapter;
     private RecyclerView.LayoutParams mParams;
     private RecyclerViewAdapter<WeiboComment.CommentsBean> mRecyclerViewCommentAdapter;
@@ -87,6 +96,11 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
     private boolean mPullUpFresh = false;
     private int mCurrentPage = 1;
     private long mWeiboID;
+    private long mPraiseCount;
+    /**
+     * true已被点赞，false未被点赞
+     */
+    private boolean mIsPraise=true;
 
     @Override
     protected int getLayoutResID() {
@@ -104,6 +118,10 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
         mAttitudesCount.setText(weibo.getAttitudes_count() + getString(R.string.praise));
         mCommentCount.setText(weibo.getComments_count() + getString(R.string.comment));
         mRepostCount.setText(weibo.getReposts_count() + getString(R.string.repost));
+        mPraiseCount =weibo.getAttitudes_count();
+        if (weibo.getIsAttitudes()==0){
+            mIsPraise=false;
+        }
         //该微博为转发微博
         if (weibo.getRetweeted_status() != null) {
             mAtWeibo.setVisibility(View.VISIBLE);
@@ -238,7 +256,7 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
         return new WeiboDetailPresenter(this, getApplicationContext());
     }
 
-    @OnClick({R.id.simple_drawee_view, R.id.atWeibo,R.id.commentCount})
+    @OnClick({R.id.simple_drawee_view, R.id.atWeibo,R.id.commentCount,R.id.praise})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.simple_drawee_view:
@@ -253,6 +271,58 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
                 mPresenter.getWeiboCommentList(mWeiboID, mCurrentPage, 50);
                 mPullDownFresh = true;
                 break;
+            case R.id.praise://赞
+                startAnimator(mPraise,mIsPraise);
+                break;
+        }
+    }
+
+    /**
+     * 缩放动画
+     *
+     * @param target
+     * @param praise true已被点赞，false未被点赞
+     * @return
+     */
+    public void startAnimator(ImageView target,boolean praise) {
+        if (praise){
+            target.setImageDrawable(getResources().getDrawable(R.mipmap.praise));
+        }else {
+            target.setImageDrawable(getResources().getDrawable(R.mipmap.praised));
+        }
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(target, View.SCALE_X, 1.0f, 1.6f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(target, View.SCALE_Y, 1.0f, 1.6f);
+
+        ObjectAnimator scaleX1 = ObjectAnimator.ofFloat(target, View.SCALE_X, 1.6f, 1.0f);
+        ObjectAnimator scaleY1 = ObjectAnimator.ofFloat(target, View.SCALE_Y, 1.6f, 1.0f);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(500);
+        animatorSet.setInterpolator(new LinearInterpolator());
+        animatorSet.playTogether(scaleX, scaleY,scaleX1,scaleY1);
+        animatorSet.setTarget(target);
+        animatorSet.start();
+        animatorSet.addListener(new AnimEndListener(target,praise));
+    }
+
+    private class AnimEndListener extends AnimatorListenerAdapter {
+
+        private ImageView mTarget;
+
+        public AnimEndListener(ImageView target,boolean praise) {
+            this.mTarget = target;
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            if (mIsPraise){
+                mTarget.setImageDrawable(getResources().getDrawable(R.mipmap.praise));
+                mAttitudesCount.setText((--mPraiseCount) + getString(R.string.praise));
+            }else {
+                mTarget.setImageDrawable(getResources().getDrawable(R.mipmap.praised));
+                mAttitudesCount.setText((++mPraiseCount) + getString(R.string.praise));
+            }
+            mIsPraise=!mIsPraise;
         }
     }
 
@@ -266,6 +336,7 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
         mAttitudesCount.setText(statusBean.getAttitudes_count() + getString(R.string.praise));
         mCommentCount.setText(statusBean.getComments_count() + getString(R.string.comment));
         mRepostCount.setText(statusBean.getReposts_count() + getString(R.string.repost));
+        mPraiseCount =statusBean.getAttitudes_count();
         if (weiboComment.getComments()!=null&&weiboComment.getComments().size()>0) {
             mPullUpFresh = true;
             if (mPullDownFresh) {

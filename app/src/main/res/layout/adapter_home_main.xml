@@ -103,11 +103,14 @@
         android:paddingRight="@dimen/padding16">
 
         <LinearLayout
+            android:id="@+id/praise_layout"
             style="@style/WeiboItemPraise">
 
             <ImageView
+                android:id="@+id/praise"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
+                android:layout_marginBottom="1dp"
                 android:src="@mipmap/praise"/>
 
             <TextView
@@ -116,7 +119,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin4"
-                android:text="122"
                 android:textSize="@dimen/text_small_x"/>
         </LinearLayout>
 
@@ -134,7 +136,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin4"
-                android:text="122"
                 android:textSize="@dimen/text_small_x"/>
         </LinearLayout>
 
@@ -152,7 +153,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin4"
-                android:text="122"
                 android:textSize="@dimen/text_small_x"/>
         </LinearLayout>
     </LinearLayout>

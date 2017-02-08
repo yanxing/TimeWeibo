@@ -1,6 +1,10 @@
 package com.yanxing.weibo.home;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -10,6 +14,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -78,7 +85,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
         mRecyclerViewAdapter = new RecyclerViewAdapter<FriendTimeLine.StatusesBean>(mWeiboList,
                 R.layout.adapter_home_main) {
             @Override
-            public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, final int position) {
+            public void onBindViewHolder(final RecyclerViewAdapter.MyViewHolder holder, final int position) {
                 holder.setText(R.id.name, mWeiboList.get(position).getUser().getName());
                 SimpleDraweeView head = (SimpleDraweeView) holder.findViewById(R.id.simple_drawee_view);
                 head.setImageURI(Uri.parse(mWeiboList.get(position).getUser().getAvatar_large()));
@@ -135,6 +142,20 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                         startActivity(intent);
                     }
                 });
+                //点赞
+                ImageView imageView= (ImageView) holder.findViewById(R.id.praise);
+                if (mWeiboList.get(position).getIsAttitudes()==0){//当前用户没有被赞
+                    imageView.setImageDrawable(getResources().getDrawable(R.mipmap.praise));
+                }else{
+                    imageView.setImageDrawable(getResources().getDrawable(R.mipmap.praised));
+                }
+                holder.findViewById(R.id.praise_layout).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ImageView imageView= (ImageView) holder.findViewById(R.id.praise);
+                        startAnimator(imageView,position);
+                    }
+                });
             }
         };
         //先加载本地缓存数据
@@ -162,6 +183,54 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
             }
         });
         mPtrFrameLayout.autoRefresh(true);
+    }
+
+    /**
+     * 缩放动画
+     *
+     * @param target
+     * @return
+     */
+    public void startAnimator(ImageView target,int position) {
+        if (mWeiboList.get(position).getIsAttitudes()==0){//未被登录用户赞
+            target.setImageDrawable(getResources().getDrawable(R.mipmap.praised));
+        }else {
+            target.setImageDrawable(getResources().getDrawable(R.mipmap.praise));
+        }
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(target, View.SCALE_X, 1.0f, 1.6f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(target, View.SCALE_Y, 1.0f, 1.6f);
+
+        ObjectAnimator scaleX1 = ObjectAnimator.ofFloat(target, View.SCALE_X, 1.6f, 1.0f);
+        ObjectAnimator scaleY1 = ObjectAnimator.ofFloat(target, View.SCALE_Y, 1.6f, 1.0f);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(500);
+        animatorSet.setInterpolator(new LinearInterpolator());
+        animatorSet.playTogether(scaleX, scaleY,scaleX1,scaleY1);
+        animatorSet.setTarget(target);
+        animatorSet.start();
+        animatorSet.addListener(new AnimEndListener(position));
+    }
+
+    private class AnimEndListener extends AnimatorListenerAdapter {
+
+        private int mPosition;
+
+        public AnimEndListener(int position) {
+            mPosition=position;
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            if (mWeiboList.get(mPosition).getIsAttitudes()==0){//未被登录用户赞
+                mWeiboList.get(mPosition).setIsAttitudes(1);//当前微博被登录用户赞
+                mWeiboList.get(mPosition).setAttitudes_count(mWeiboList.get(mPosition).getAttitudes_count()+1);
+            }else {
+                mWeiboList.get(mPosition).setIsAttitudes(0);//当前微博被登录用户赞
+                mWeiboList.get(mPosition).setAttitudes_count(mWeiboList.get(mPosition).getAttitudes_count()-1);
+            }
+            mRecyclerViewAdapter.update(mPosition);
+        }
     }
 
     /**

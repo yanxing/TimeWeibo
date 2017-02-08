@@ -146,6 +146,7 @@ public class FriendTimeLine {
         private long reposts_count;
         private long comments_count;
         private long attitudes_count;
+        private int isAttitudes;//默认0代表当前登录用户没有赞这条微博，1代表赞了
         private boolean isLongText;
         private long mlevel;
         private VisibleBean visible;
@@ -569,6 +570,14 @@ public class FriendTimeLine {
 //        public void setText_tag_tips(List<?> text_tag_tips) {
 //            this.text_tag_tips = text_tag_tips;
 //        }
+
+        public int getIsAttitudes() {
+            return isAttitudes;
+        }
+
+        public void setIsAttitudes(int isAttitudes) {
+            this.isAttitudes = isAttitudes;
+        }
 
         public static class Geo implements Parcelable {
 

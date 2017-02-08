@@ -10,6 +10,60 @@ import org.junit.Test;
  */
 public class TestJson {
 
+
+    @Test
+    public void testT(){
+        String test="{\n" +
+                "    \"Data\": [\n" +
+                "        {\n" +
+                "            \"Age\": 25,\n" +
+                "            \"ApplyStatus\": 0,\n" +
+                "            \"AttNums\": 48,\n" +
+                "            \"Company\": \"\",\n" +
+                "            \"FansNums\": 67,\n" +
+                "            \"Gender\": 0,\n" +
+                "            \"IsAtt\": 0,\n" +
+                "            \"IsAuthentication\": 0,\n" +
+                "            \"IsBlack\": 0,\n" +
+                "            \"IsForbid\": 0,\n" +
+                "            \"IsOfficial\": 0,\n" +
+                "            \"IsShowV\": 0,\n" +
+                "            \"Job\": \"\",\n" +
+                "            \"Mobile\": \"18291479008\",\n" +
+                "            \"NBaoNums\": 0,\n" +
+                "            \"NBi\": 0,\n" +
+                "            \"NickName\": \"不羁的北风\",\n" +
+                "            \"RegisterTime\": \"2016/6/15 0:00:00\",\n" +
+                "            \"RoomSource\": 0,\n" +
+                "            \"UserDescription\": \"无论你处于什么位置或状态，都不必太过在意，人生就是一场马拉松。\",\n" +
+                "            \"UserId\": 11026,\n" +
+                "            \"UserLevel\": 10,\n" +
+                "            \"UserPortrait\": \"https://staticqiniu.newzhibo.cn/images/20161217/20161217233246047a6ed6.jpg\",\n" +
+                "            \"VNums\": 0,\n" +
+                "            \"WeekStarRankGift\": [],\n" +
+                "            \"YxToken\": \"42e499e591496cb71d9a11ae109dc962\",\n" +
+                "            \"list\": [],\n" +
+                "            \"msgList\": [],\n" +
+                "            \"rechargeList\": []\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"IsSingle\": 0,\n" +
+                "    \"PageCount\": 0,\n" +
+                "    \"PageSize\": 0,\n" +
+                "    \"ReturnCode\": 0,\n" +
+                "    \"ReturnMsgID\": \"\",\n" +
+                "    \"UserID\": \"11026\"\n" +
+                "}";
+
+        test="{\"Data\":null,\"IsSingle\":0,\"PageCount\":0,\"PageSize\":0,\"ReturnCode\":1203,\"ReturnMsgID\":\"20170116094656\",\"UserID\":\"\"}";
+        com.yanxing.weibo.Test result=ParseJsonUtil.convertJson(test, com.yanxing.weibo.Test.class);
+        if (result.getData()==null){
+            System.out.println("result is null");
+        }else {
+            System.out.println(result.getData().get(0).getUserDescription());
+        }
+    }
+
     @Test
     public void testCommentJson(){
         WeiboComment result=ParseJsonUtil.convertJson("{\n" +
