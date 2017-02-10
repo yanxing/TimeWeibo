@@ -36,7 +36,7 @@ public class MessagePresenter extends BasePresenter<MessageView> {
         Map<String,String> map=new HashMap<>();
         map.put("page",String.valueOf(currentPage));
         map.put("count",String.valueOf(pageSize));
-        commentsApi.getComments(ConstantAPI.COMMENT_TO_ME,map,Comment.class)
+        commentsApi.getComments(ConstantAPI.COMMENT_TO_ME,map)
                 .compose(mBaseView.<Comment>rxLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

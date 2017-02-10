@@ -17,6 +17,7 @@
         app:title_main_color="@color/colorMainDark"/>
     <View style="@style/Line"/>
     <EditText
+        android:id="@+id/comment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"

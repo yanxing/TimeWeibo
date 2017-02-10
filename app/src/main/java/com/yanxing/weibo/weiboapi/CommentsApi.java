@@ -15,7 +15,7 @@ import rx.Observable;
  * 评论接口相关
  * Created by lishuangxiang on 2017/1/4.
  */
-public interface CommentsApi {
+public interface CommentsApi{
 
 
     /**
@@ -42,5 +42,5 @@ public interface CommentsApi {
      * @return
      */
     @GET(ConstantAPI.COMMENT)
-    <T> Observable<T> getComments(@Path("path") String path, @QueryMap Map<String,String> map,Class<T> model);
+    Observable<Comment> getComments(@Path("path") String path, @QueryMap Map<String,String> map);
 }

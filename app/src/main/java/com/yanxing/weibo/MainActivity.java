@@ -1,5 +1,6 @@
 package com.yanxing.weibo;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import com.yanxing.titlebarlibrary.TitleBar;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.common.SendWeiboOrCommentActivity;
 import com.yanxing.weibo.message.MessageMainFragment;
 import com.yanxing.weibo.util.CommonUtil;
 import com.yanxing.weibo.discover.DiscoverMainFragment;
@@ -72,8 +74,9 @@ public class MainActivity extends BaseActivity {
                 replace(new MessageMainFragment());
                 break;
             case R.id.send:
-
-
+                Intent intent=new Intent(getApplicationContext(), SendWeiboOrCommentActivity.class);
+                intent.putExtra("type",0);
+                startActivity(intent);
                 break;
             case R.id.discover:
                 setTab(DISCOVER);

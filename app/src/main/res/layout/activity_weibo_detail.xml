@@ -204,6 +204,7 @@
             android:textSize="@dimen/text_middle"/>
 
         <ImageView
+            android:id="@+id/forward"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginLeft="@dimen/margin16"

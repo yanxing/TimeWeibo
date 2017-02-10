@@ -27,4 +27,7 @@
     <string name="allcomment">所有评论</string>
     <string name="send_comment">发送</string>
     <string name="write_comment">写评论</string>
+    <string name="send_weibo">发微博</string>
+    <string name="send_comment1">发评论</string>
+    <string name="forward_weibo">转发微博</string>
 </resources>

@@ -141,6 +141,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/forward_layout"
             style="@style/WeiboItemPraiseNoBg">
 
             <ImageView

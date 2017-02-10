@@ -14,9 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +22,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.yanxing.adapterlibrary.RecyclerViewAdapter;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseFragment;
-import com.yanxing.weibo.common.CommentActivity;
+import com.yanxing.weibo.common.SendWeiboOrCommentActivity;
 import com.yanxing.weibo.util.LogUtil;
 import com.yanxing.weibo.util.PermissionUtil;
 import com.yanxing.weibo.util.RecyclerViewUtil;
@@ -161,7 +159,17 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 holder.findViewById(R.id.comment_layout).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent=new Intent(getActivity(), CommentActivity.class);
+                        Intent intent=new Intent(getActivity(), SendWeiboOrCommentActivity.class);
+                        intent.putExtra("type",1);
+                        startActivity(intent);
+                    }
+                });
+                //转发
+                holder.findViewById(R.id.forward_layout).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(getActivity(), SendWeiboOrCommentActivity.class);
+                        intent.putExtra("type",2);
                         startActivity(intent);
                     }
                 });
