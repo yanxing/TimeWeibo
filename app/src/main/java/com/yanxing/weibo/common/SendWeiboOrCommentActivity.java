@@ -13,6 +13,8 @@ import com.yanxing.weibo.util.CommonUtil;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -40,14 +42,14 @@ public class SendWeiboOrCommentActivity extends BaseActivity {
         mTitleBar.setOnClickBackLayout(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtil.hideInputKeyBoard(getApplicationContext(),mComment);
+                CommonUtil.hideInputKeyBoard(getApplicationContext(), mComment);
                 Observable.timer(200, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .compose(SendWeiboOrCommentActivity.this.<Long>bindToLifecycle())
                         .subscribe(new Action1<Long>() {
                             @Override
                             public void call(Long aLong) {
-                               finish();
+                                finish();
                             }
                         });
             }
@@ -58,20 +60,51 @@ public class SendWeiboOrCommentActivity extends BaseActivity {
     /**
      * 初始界面
      */
-    public void setUI(){
-        Intent intent=getIntent();
-        int type=intent.getIntExtra("type",0);
-        if (type==0){//发微博
+    public void setUI() {
+        Intent intent = getIntent();
+        int type = intent.getIntExtra("type", 0);
+        if (type == WeiboOperate.SEND_WEIBO.getIntValue()) {//发微博
             mTitleBar.setTitle(getString(R.string.send_weibo));
-        }else if (type==1){//发评论
+            mComment.setHint(R.string.share_weibo);
+        } else if (type == WeiboOperate.COMMENT.getIntValue()) {//发评论
             mTitleBar.setTitle(getString(R.string.send_comment1));
-        }else if (type==2){//转发微博
+            mComment.setHint(R.string.write_comment);
+        } else if (type == WeiboOperate.FORWARD_WEIBO.getIntValue()) {//转发微博
             mTitleBar.setTitle(getString(R.string.forward_weibo));
+            mComment.setHint(R.string.forward_weibo_hint);
         }
     }
 
     @Override
     protected BasePresenter initPresenter() {
         return null;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (getIntent().getBooleanExtra("anim", false)) {
+            overridePendingTransition(R.anim.activity_close, 0);
+        }
+    }
+
+    @OnClick({R.id.select_image, R.id.at, R.id.topic, R.id.emotion, R.id.send})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.select_image:
+                break;
+            case R.id.at:
+
+                break;
+            case R.id.topic:
+
+                break;
+            case R.id.emotion:
+
+                break;
+            case R.id.send:
+
+                break;
+        }
     }
 }

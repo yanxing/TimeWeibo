@@ -24,6 +24,7 @@ import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.common.BrowseImageActivity;
 import com.yanxing.weibo.common.SendWeiboOrCommentActivity;
+import com.yanxing.weibo.common.WeiboOperate;
 import com.yanxing.weibo.util.RecyclerViewUtil;
 import com.yanxing.weibo.util.TimeUtil;
 import com.yanxing.weibo.util.WeiboTextUtil;
@@ -278,11 +279,11 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
                 startAnimator(mPraise,mIsPraise);
                 break;
             case R.id.write_comment://写评论
-                intent.putExtra("type",1);
+                intent.putExtra("type", WeiboOperate.COMMENT.getIntValue());
                 startActivity(intent);
                 break;
             case R.id.forward://转发微博
-                intent.putExtra("type",2);
+                intent.putExtra("type",WeiboOperate.FORWARD_WEIBO.getIntValue());
                 startActivity(intent);
         }
     }
@@ -343,6 +344,9 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
     public void setData(WeiboComment weiboComment) {
         mProgressWheel.setVisibility(View.GONE);
         WeiboComment.StatusBean statusBean=weiboComment.getStatus();
+        if (statusBean==null){
+            statusBean=new WeiboComment.StatusBean();
+        }
         mAttitudesCount.setText(statusBean.getAttitudes_count() + getString(R.string.praise));
         mCommentCount.setText(statusBean.getComments_count() + getString(R.string.comment));
         mRepostCount.setText(statusBean.getReposts_count() + getString(R.string.repost));

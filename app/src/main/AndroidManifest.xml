@@ -55,7 +55,8 @@
         <activity
             android:name=".common.SendWeiboOrCommentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateVisible"/>
+            android:theme="@style/Launch"
+            android:windowSoftInputMode="adjustResize|stateVisible"/>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.yanxing.provider"

@@ -2,6 +2,7 @@ package com.yanxing.weibo;
 
 import org.junit.Test;
 
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.regex.Pattern;
 
@@ -29,5 +30,6 @@ public class ExampleUnitTest {
 //        System.out.println(System.currentTimeMillis()/1000);
         Calendar currentCalendar = Calendar.getInstance();
         System.out.println(currentCalendar.get(Calendar.YEAR));
+        System.out.println(URLEncoder.encode("李开复","UTF-8"));
     }
 }

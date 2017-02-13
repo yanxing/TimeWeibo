@@ -23,6 +23,7 @@ import com.yanxing.adapterlibrary.RecyclerViewAdapter;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseFragment;
 import com.yanxing.weibo.common.SendWeiboOrCommentActivity;
+import com.yanxing.weibo.common.WeiboOperate;
 import com.yanxing.weibo.util.LogUtil;
 import com.yanxing.weibo.util.PermissionUtil;
 import com.yanxing.weibo.util.RecyclerViewUtil;
@@ -160,7 +161,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                     @Override
                     public void onClick(View v) {
                         Intent intent=new Intent(getActivity(), SendWeiboOrCommentActivity.class);
-                        intent.putExtra("type",1);
+                        intent.putExtra("type", WeiboOperate.COMMENT.getIntValue());
                         startActivity(intent);
                     }
                 });
@@ -169,7 +170,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                     @Override
                     public void onClick(View v) {
                         Intent intent=new Intent(getActivity(), SendWeiboOrCommentActivity.class);
-                        intent.putExtra("type",2);
+                        intent.putExtra("type",WeiboOperate.FORWARD_WEIBO.getIntValue());
                         startActivity(intent);
                     }
                 });

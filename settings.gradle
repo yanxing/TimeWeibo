@@ -1,1 +1,1 @@
-include ':app', ':adapterlibrary', ':titlebarlibrary'
+include ':app', ':adapterlibrary', ':titlebarlibrary', ':sortlistviewlibrary'

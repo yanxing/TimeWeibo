@@ -3,7 +3,8 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
     <com.yanxing.titlebarlibrary.TitleBar
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
@@ -12,14 +13,15 @@
         app:backgroundColor="@color/colorPrimary"
         app:title_main="@string/comment1"
         app:title_main_center="true"
-        app:title_right="@string/send_comment"
-        app:titleRightColor="@color/green"
         app:title_main_color="@color/colorMainDark"/>
     <View style="@style/Line"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <EditText
         android:id="@+id/comment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:background="@color/white"
         android:gravity="left"
         android:textColor="@color/colorMainDark"
@@ -28,6 +30,56 @@
         android:paddingTop="@dimen/padding8"
         android:textSize="@dimen/text_normal"
         android:textColorHint="@color/colorHintGray"
-        android:textCursorDrawable="@null"
-        android:layout_weight="1"/>
+        android:textCursorDrawable="@null"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="@color/line_xx"
+            android:paddingTop="@dimen/padding8"
+            android:paddingBottom="@dimen/padding6"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+            <ImageView
+                android:id="@+id/select_image"
+                android:layout_width="26dp"
+                android:layout_height="27dp"
+                android:layout_marginLeft="@dimen/margin16"
+                android:src="@mipmap/add_image"/>
+            <ImageView
+                android:id="@+id/at"
+                android:layout_width="25dp"
+                android:layout_height="24dp"
+                android:layout_toRightOf="@id/select_image"
+                android:layout_marginLeft="@dimen/margin24"
+                android:layout_marginTop="@dimen/margin1"
+                android:src="@mipmap/at"/>
+            <ImageView
+                android:id="@+id/topic"
+                android:layout_width="23dp"
+                android:layout_height="24dp"
+                android:layout_toRightOf="@id/at"
+                android:layout_marginTop="@dimen/margin2"
+                android:layout_marginLeft="@dimen/margin24"
+                android:src="@mipmap/topic"/>
+            <ImageView
+                android:id="@+id/emotion"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_toRightOf="@id/topic"
+                android:layout_marginTop="@dimen/margin2"
+                android:layout_marginLeft="@dimen/margin24"
+                android:src="@mipmap/emotion"/>
+            <ImageView
+                android:id="@+id/send"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin16"
+                android:gravity="center_vertical"
+                android:src="@mipmap/send"/>
+        </RelativeLayout>
+    </RelativeLayout>
 </LinearLayout>

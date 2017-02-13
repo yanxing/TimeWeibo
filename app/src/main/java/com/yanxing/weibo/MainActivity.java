@@ -10,6 +10,7 @@ import com.yanxing.titlebarlibrary.TitleBar;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
 import com.yanxing.weibo.common.SendWeiboOrCommentActivity;
+import com.yanxing.weibo.common.WeiboOperate;
 import com.yanxing.weibo.message.MessageMainFragment;
 import com.yanxing.weibo.util.CommonUtil;
 import com.yanxing.weibo.discover.DiscoverMainFragment;
@@ -75,8 +76,10 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.send:
                 Intent intent=new Intent(getApplicationContext(), SendWeiboOrCommentActivity.class);
-                intent.putExtra("type",0);
+                intent.putExtra("type", WeiboOperate.SEND_WEIBO.getIntValue());
+                intent.putExtra("anim",true);
                 startActivity(intent);
+                overridePendingTransition(R.anim.activity_open,0);
                 break;
             case R.id.discover:
                 setTab(DISCOVER);

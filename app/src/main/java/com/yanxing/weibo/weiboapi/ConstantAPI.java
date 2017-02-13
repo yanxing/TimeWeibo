@@ -52,6 +52,10 @@ public class ConstantAPI {
      * 我收到的评论列表
      */
     public static final String COMMENT_TO_ME="to_me.json";
+    /**
+     * @ 用户时的联想建议
+     */
+    public static final String AT_USERS="search/suggestions/at_users.json";
 
 
 
