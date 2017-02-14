@@ -3,12 +3,15 @@ package com.yanxing.sortlistviewlibrary;
 import java.util.List;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 
 public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexer {
@@ -50,6 +53,7 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
 			view = LayoutInflater.from(mContext).inflate(R.layout.adapter_city_list, null);
 			viewHolder.tvTitle = (TextView) view.findViewById(R.id.title);
 			viewHolder.tvLetter = (TextView) view.findViewById(R.id.catalog);
+			viewHolder.mSimpleDraweeView= (SimpleDraweeView) view.findViewById(R.id.simple_drawee_view);
 			view.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) view.getTag();
@@ -65,7 +69,7 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
 		} else {
 			viewHolder.tvLetter.setVisibility(View.GONE);
 		}
-
+        viewHolder.mSimpleDraweeView.setImageURI(Uri.parse(list.get(position).getHeadURL()));
 		viewHolder.tvTitle.setText(this.list.get(position).getName());
 
 		return view;
@@ -75,6 +79,7 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
 	final static class ViewHolder {
 		TextView tvLetter;
 		TextView tvTitle;
+        SimpleDraweeView mSimpleDraweeView;
 	}
 
 	/**

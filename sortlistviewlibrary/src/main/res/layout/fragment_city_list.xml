@@ -17,19 +17,19 @@
             android:id="@+id/filter_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dip"
+            android:layout_marginTop="2dp"
             android:background="@drawable/circle_white_shape"
             android:drawableLeft="@mipmap/search"
-            android:hint="输入城市名、拼音或首字母查询"
+            android:hint="@string/search"
             android:paddingLeft="@dimen/padding8"
-            android:paddingBottom="@dimen/padding8"
+            android:paddingBottom="@dimen/padding6"
             android:paddingRight="@dimen/padding8"
-            android:paddingTop="@dimen/padding8"
-            android:singleLine="true"
+            android:paddingTop="@dimen/padding6"
+            android:maxLines="1"
             android:textColorHint="@color/colorHintGray"
             android:drawablePadding="@dimen/padding4"
             android:textCursorDrawable="@null"
-            android:textSize="@dimen/text_high" />
+            android:textSize="@dimen/text_normal" />
     </LinearLayout>
 
     <FrameLayout
@@ -57,7 +57,7 @@
             android:paddingTop="@dimen/padding14"
             android:paddingBottom="@dimen/padding14"
             android:gravity="center_vertical"
-            android:text="没有匹配的城市"
+            android:text="@string/no_math"
             android:textColor="#454545"
             android:paddingLeft="@dimen/padding16"
             android:visibility="gone" />

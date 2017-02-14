@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -53,6 +55,14 @@ public class CityListFragment extends Fragment implements SectionIndexer {
 	 */
 	private PinyinComparator pinyinComparator;
 
+	Callback mCallback;
+
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		mCallback =(Callback) getActivity();
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container
 			, @Nullable Bundle savedInstanceState) {
@@ -85,7 +95,6 @@ public class CityListFragment extends Fragment implements SectionIndexer {
 				if (position != -1) {
 					sortListView.setSelection(position);
 				}
-
 			}
 		});
 
@@ -96,16 +105,12 @@ public class CityListFragment extends Fragment implements SectionIndexer {
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
 				// 这里要利用adapter.getItem(position)来获取当前position所对应的对象
-				Bundle bundle=new Bundle();
-				bundle.putString("city",((GroupMemberBean) adapter.getItem(position)).getName());
-				Intent intent=new Intent();
-				intent.putExtras(bundle);
-//				setResult(RESULT_OK,intent);
-//				finish();
+				mCallback.select(((GroupMemberBean) adapter.getItem(position)).getName());
 			}
 		});
-
-		SourceDateList = filledData(getResources().getStringArray(R.array.hot),getResources().getStringArray(R.array.city));
+        Bundle bundle=getArguments();
+		List<String> list=bundle.getStringArrayList("user");
+		SourceDateList = filledData(list);
 
 		// 根据a-z进行排序源数据
 		Collections.sort(SourceDateList, pinyinComparator);
@@ -180,24 +185,23 @@ public class CityListFragment extends Fragment implements SectionIndexer {
 
 	/**
 	 * 为ListView填充数据
-	 * @param hot 热门
-	 * @param city
+	 * @param list
 	 * @return
 	 */
-	private List<GroupMemberBean> filledData(String[] hot,String[] city) {
+	private List<GroupMemberBean> filledData(List<String> list) {
 		List<GroupMemberBean> mSortList = new ArrayList<GroupMemberBean>();
-		for (int i=0;i<hot.length;i++){
-			GroupMemberBean sortModel = new GroupMemberBean();
-			sortModel.setName(hot[i]);
-			sortModel.setSortLetters(SideBar.HOT);
-			mSortList.add(sortModel);
-		}
 
-		for (int i = 0; i < city.length; i++) {
+		for (int i = 0; i < list.size(); i++) {
 			GroupMemberBean sortModel = new GroupMemberBean();
-			sortModel.setName(city[i]);
+			String content=list.get(i);
+			if (!content.contains(",")){
+				continue;
+			}
+			String temp[]=content.split(",");
+			sortModel.setName(temp[0]);
+			sortModel.setHeadURL(temp[1]);
 			// 汉字转换成拼音
-			String pinyin = characterParser.getSelling(city[i]);
+			String pinyin = characterParser.getSelling(list.get(i));
 			String sortString = pinyin.substring(0, 1).toUpperCase();
 
 			// 正则表达式，判断首字母是否是英文字母
@@ -268,5 +272,9 @@ public class CityListFragment extends Fragment implements SectionIndexer {
 			}
 		}
 		return -1;
+	}
+
+	public interface Callback{
+		void select(String name);
 	}
 }

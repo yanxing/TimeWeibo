@@ -2,6 +2,8 @@ package com.yanxing.weibo.weiboapi;
 
 import com.yanxing.weibo.weiboapi.model.Following;
 
+import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -19,6 +21,7 @@ public interface FriendshipsApi {
      * @param trim_status 返回值中user字段中的status字段开关，0：返回完整status字段、1：status字段仅返回status_id，默认为1。
      * @return
      */
+    @GET(ConstantAPI.FRIENDS)
     Observable<Following> getFollowing(@Query("uid") String uid, @Query("count") int count, @Query("cursor") int cursor
                             , @Query("trim_status") int trim_status);
 

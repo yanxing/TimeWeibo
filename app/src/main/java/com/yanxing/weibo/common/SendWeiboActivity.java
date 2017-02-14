@@ -1,0 +1,181 @@
+package com.yanxing.weibo.common;
+
+import android.content.Intent;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import com.yanxing.adapterlibrary.RecyclerViewAdapter;
+import com.yanxing.titlebarlibrary.TitleBar;
+import com.yanxing.weibo.R;
+import com.yanxing.weibo.base.BaseActivity;
+import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.util.CommonUtil;
+import com.yanxing.weibo.util.EmotionUtil;
+import com.yanxing.weibo.util.WeiboTextUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+
+/**
+ * 发评论,发微博
+ * Created by lishuangxiang on 2017/2/8.
+ */
+public class SendWeiboActivity extends BaseActivity {
+
+    @BindView(R.id.titleBar)
+    TitleBar mTitleBar;
+
+    @BindView(R.id.comment)
+    EditText mComment;
+
+    @BindView(R.id.emotionList)
+    RecyclerView mEmotionList;
+
+    private boolean mShowEmotion = false;
+    private boolean mFirst = true;
+
+    @Override
+    protected int getLayoutResID() {
+        return R.layout.activity_comment;
+    }
+
+    @Override
+    protected void afterInstanceView() {
+        EventBus.getDefault().register(this);
+        //先隐藏输入法，再停顿200ms关闭当前页，为了防止回到上个界面有一闪空白效果
+        mTitleBar.setOnClickBackLayout(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtil.hideInputKeyBoard(getApplicationContext(), mComment);
+                Observable.timer(200, TimeUnit.MILLISECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(SendWeiboActivity.this.<Long>bindToLifecycle())
+                        .subscribe(new Action1<Long>() {
+                            @Override
+                            public void call(Long aLong) {
+                                finish();
+                            }
+                        });
+            }
+        });
+        setUI();
+    }
+
+    /**
+     * 初始界面
+     */
+    public void setUI() {
+        Intent intent = getIntent();
+        int type = intent.getIntExtra("type", 0);
+        if (type == WeiboOperate.SEND_WEIBO.getIntValue()) {//发微博
+            mTitleBar.setTitle(getString(R.string.send_weibo));
+            mComment.setHint(R.string.share_weibo);
+        } else if (type == WeiboOperate.COMMENT.getIntValue()) {//发评论
+            mTitleBar.setTitle(getString(R.string.send_comment1));
+            mComment.setHint(R.string.write_comment);
+        } else if (type == WeiboOperate.FORWARD_WEIBO.getIntValue()) {//转发微博
+            mTitleBar.setTitle(getString(R.string.forward_weibo));
+            mComment.setHint(R.string.forward_weibo_hint);
+        }
+    }
+
+    @Override
+    protected BasePresenter initPresenter() {
+        return null;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (getIntent().getBooleanExtra("anim", false)) {
+            overridePendingTransition(R.anim.activity_close, 0);
+        }
+    }
+
+    @OnClick({R.id.select_image, R.id.at, R.id.topic, R.id.emotion, R.id.send})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.select_image:
+                break;
+            case R.id.at:
+                Intent intent = new Intent(getApplicationContext(), AtUsersActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.topic:
+                mComment.setText(WeiboTextUtil.formatWeiboText(getApplicationContext()
+                        , mComment.getText().toString() + "##", mComment));
+                mComment.setSelection(mComment.getText().toString().length() - 1);
+                break;
+            case R.id.emotion:
+                showEmotion();
+                break;
+            case R.id.send:
+
+                break;
+        }
+    }
+
+    /**
+     * 显示表情
+     */
+    public void showEmotion() {
+        if (mShowEmotion) {
+            mEmotionList.setVisibility(View.GONE);
+            CommonUtil.showInputKeyboard(getApplicationContext());
+            mShowEmotion=false;
+        } else {
+            mEmotionList.setVisibility(View.VISIBLE);
+            if (mFirst) {
+                mEmotionList.setLayoutManager(new GridLayoutManager(this, 8));
+                final List<Emotion> list = new ArrayList<>();
+                for (String key : EmotionUtil.map.keySet()) {
+                    Emotion emotion=new Emotion();
+                    emotion.setResourceID(EmotionUtil.getImageByName(key));
+                    emotion.setText(key);
+                    list.add(emotion);
+                }
+                mEmotionList.setAdapter(new RecyclerViewAdapter<Emotion>(list, R.layout.adapter_emotion) {
+                    @Override
+                    public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, final int position) {
+                        ImageView emotion = (ImageView) holder.findViewById(R.id.emotion);
+                        emotion.setImageDrawable(getResources().getDrawable(list.get(position).getResourceID()));
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mComment.setText(WeiboTextUtil.formatWeiboText(getApplicationContext()
+                                        , mComment.getText().toString() + list.get(position).getText(), mComment));
+                                mComment.setSelection(mComment.getText().toString().length());
+                            }
+                        });
+                    }
+                });
+                mFirst = false;
+            }
+            CommonUtil.hideInputKeyBoard(getApplicationContext(), mComment);
+            mShowEmotion=true;
+        }
+    }
+
+    public void onEvent(String name) {
+        mComment.setText(WeiboTextUtil.formatWeiboText(getApplicationContext(), "@" + name + " ", mComment));
+        mComment.setSelection(mComment.getText().toString().length());
+        CommonUtil.showInputKeyboard(getApplicationContext());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+}

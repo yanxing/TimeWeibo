@@ -64,4 +64,5 @@ dependencies {
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     compile project(path: ':adapterlibrary')
     compile project(':titlebarlibrary')
+    compile project(path: ':sortlistviewlibrary')
 }

@@ -56,7 +56,10 @@ public class ConstantAPI {
      * @ 用户时的联想建议
      */
     public static final String AT_USERS="search/suggestions/at_users.json";
-
+    /**
+     * 获取用户的关注列表
+     */
+    public static final String FRIENDS="friendships/friends.json";
 
 
 

@@ -45,6 +45,9 @@
         <activity
             android:name=".common.BrowseImageActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".common.AtUsersActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
@@ -53,7 +56,7 @@
             android:exported="false" >
         </activity>
         <activity
-            android:name=".common.SendWeiboOrCommentActivity"
+            android:name=".common.SendWeiboActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Launch"
             android:windowSoftInputMode="adjustResize|stateVisible"/>

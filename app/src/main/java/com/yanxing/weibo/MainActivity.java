@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import com.yanxing.titlebarlibrary.TitleBar;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
-import com.yanxing.weibo.common.SendWeiboOrCommentActivity;
+import com.yanxing.weibo.common.SendWeiboActivity;
 import com.yanxing.weibo.common.WeiboOperate;
 import com.yanxing.weibo.message.MessageMainFragment;
 import com.yanxing.weibo.util.CommonUtil;
@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity {
                 replace(new MessageMainFragment());
                 break;
             case R.id.send:
-                Intent intent=new Intent(getApplicationContext(), SendWeiboOrCommentActivity.class);
+                Intent intent=new Intent(getApplicationContext(), SendWeiboActivity.class);
                 intent.putExtra("type", WeiboOperate.SEND_WEIBO.getIntValue());
                 intent.putExtra("anim",true);
                 startActivity(intent);

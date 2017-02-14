@@ -23,7 +23,7 @@ import com.yanxing.adapterlibrary.RecyclerViewAdapter;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.common.BrowseImageActivity;
-import com.yanxing.weibo.common.SendWeiboOrCommentActivity;
+import com.yanxing.weibo.common.SendWeiboActivity;
 import com.yanxing.weibo.common.WeiboOperate;
 import com.yanxing.weibo.util.RecyclerViewUtil;
 import com.yanxing.weibo.util.TimeUtil;
@@ -261,7 +261,7 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
     @OnClick({R.id.simple_drawee_view, R.id.atWeibo,R.id.commentCount
             ,R.id.praise,R.id.write_comment,R.id.forward})
     public void onClick(View view) {
-        Intent intent=new Intent(getApplicationContext(), SendWeiboOrCommentActivity.class);
+        Intent intent=new Intent(getApplicationContext(), SendWeiboActivity.class);
         switch (view.getId()) {
             case R.id.simple_drawee_view:
 

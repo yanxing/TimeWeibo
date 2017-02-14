@@ -261,7 +261,7 @@ public class CommonUtil {
      */
     public static void showInputKeyboard(Context context){
         InputMethodManager imm = (InputMethodManager)context.getSystemService(context.INPUT_METHOD_SERVICE);
-        imm. toggleSoftInput (InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
+        imm.toggleSoftInput (InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     /**
