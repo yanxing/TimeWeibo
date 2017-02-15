@@ -262,6 +262,7 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
             ,R.id.praise,R.id.write_comment,R.id.forward})
     public void onClick(View view) {
         Intent intent=new Intent(getApplicationContext(), SendWeiboActivity.class);
+        intent.putExtra("ID",mWeiboID);
         switch (view.getId()) {
             case R.id.simple_drawee_view:
 

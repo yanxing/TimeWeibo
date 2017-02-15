@@ -3,6 +3,7 @@ package com.yanxing.weibo.common;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import com.yanxing.weibo.base.BasePresenter;
 import com.yanxing.weibo.util.CommonUtil;
 import com.yanxing.weibo.util.EmotionUtil;
 import com.yanxing.weibo.util.WeiboTextUtil;
+import com.yanxing.weibo.weiboapi.model.CreateComment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,8 @@ import rx.functions.Action1;
  * 发评论,发微博
  * Created by lishuangxiang on 2017/2/8.
  */
-public class SendWeiboActivity extends BaseActivity {
+public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPresenter> implements
+    SendWeiboView{
 
     @BindView(R.id.titleBar)
     TitleBar mTitleBar;
@@ -42,12 +45,13 @@ public class SendWeiboActivity extends BaseActivity {
     @BindView(R.id.emotionList)
     RecyclerView mEmotionList;
 
+    private long mWeiboID;
     private boolean mShowEmotion = false;
     private boolean mFirst = true;
 
     @Override
     protected int getLayoutResID() {
-        return R.layout.activity_comment;
+        return R.layout.activity_send_weibo;
     }
 
     @Override
@@ -70,6 +74,16 @@ public class SendWeiboActivity extends BaseActivity {
             }
         });
         setUI();
+        mComment.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mShowEmotion){
+                    mEmotionList.setVisibility(View.GONE);
+                    mShowEmotion=false;
+                }
+                return false;
+            }
+        });
     }
 
     /**
@@ -84,15 +98,17 @@ public class SendWeiboActivity extends BaseActivity {
         } else if (type == WeiboOperate.COMMENT.getIntValue()) {//发评论
             mTitleBar.setTitle(getString(R.string.send_comment1));
             mComment.setHint(R.string.write_comment);
+            mWeiboID=intent.getLongExtra("ID",0);
         } else if (type == WeiboOperate.FORWARD_WEIBO.getIntValue()) {//转发微博
             mTitleBar.setTitle(getString(R.string.forward_weibo));
             mComment.setHint(R.string.forward_weibo_hint);
+            mWeiboID=intent.getLongExtra("ID",0);
         }
     }
 
     @Override
-    protected BasePresenter initPresenter() {
-        return null;
+    protected SendWeiboPresenter initPresenter() {
+        return new SendWeiboPresenter(this,getApplicationContext());
     }
 
     @Override
@@ -121,7 +137,16 @@ public class SendWeiboActivity extends BaseActivity {
                 showEmotion();
                 break;
             case R.id.send:
-
+                String comment=mComment.getText().toString().trim();
+                if (comment.length()<=140){
+                    if (comment.isEmpty()){
+                        showToast(getString(R.string.no_empty));
+                    }else {
+                        mPresenter.createComment(mWeiboID,comment,0);
+                    }
+                }else {
+                    showToast(getString(R.string.bu_duo_140));
+                }
                 break;
         }
     }
@@ -130,12 +155,11 @@ public class SendWeiboActivity extends BaseActivity {
      * 显示表情
      */
     public void showEmotion() {
-        if (mShowEmotion) {
+        if (mShowEmotion) {//隐藏表情
             mEmotionList.setVisibility(View.GONE);
             CommonUtil.showInputKeyboard(getApplicationContext());
             mShowEmotion=false;
         } else {
-            mEmotionList.setVisibility(View.VISIBLE);
             if (mFirst) {
                 mEmotionList.setLayoutManager(new GridLayoutManager(this, 8));
                 final List<Emotion> list = new ArrayList<>();
@@ -163,6 +187,15 @@ public class SendWeiboActivity extends BaseActivity {
                 mFirst = false;
             }
             CommonUtil.hideInputKeyBoard(getApplicationContext(), mComment);
+            Observable.timer(300,TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(this.<Long>bindToLifecycle())
+                    .subscribe(new Action1<Long>() {
+                        @Override
+                        public void call(Long aLong) {
+                            mEmotionList.setVisibility(View.VISIBLE);
+                        }
+                    });
             mShowEmotion=true;
         }
     }
@@ -177,5 +210,20 @@ public class SendWeiboActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void setData(CreateComment data) {
+
+    }
+
+    @Override
+    public void setError(String error) {
+        showToast(error);
+    }
+
+    @Override
+    public <V> Observable.Transformer<V, V> rxLifecycle() {
+        return this.bindToLifecycle();
     }
 }

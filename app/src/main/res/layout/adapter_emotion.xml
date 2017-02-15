@@ -6,10 +6,10 @@
 
     <ImageView
         android:id="@+id/emotion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_marginTop="@dimen/padding8"
-        android:paddingBottom="@dimen/padding8"
+        android:layout_marginBottom="@dimen/padding8"
         android:layout_marginRight="@dimen/padding12"
         android:layout_marginLeft="@dimen/padding12"
         android:src="@mipmap/emotion"/>

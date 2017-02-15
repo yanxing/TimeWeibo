@@ -60,6 +60,10 @@ public class ConstantAPI {
      * 获取用户的关注列表
      */
     public static final String FRIENDS="friendships/friends.json";
+    /**
+     * 对一条微博评论
+     */
+    public static final String CREATE_COMMENT="comments/create.json";
 
 
 

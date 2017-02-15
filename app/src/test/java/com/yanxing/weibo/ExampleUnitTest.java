@@ -32,4 +32,5 @@ public class ExampleUnitTest {
         System.out.println(currentCalendar.get(Calendar.YEAR));
         System.out.println(URLEncoder.encode("李开复","UTF-8"));
     }
+
 }

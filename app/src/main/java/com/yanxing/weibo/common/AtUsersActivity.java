@@ -46,6 +46,7 @@ public class AtUsersActivity extends BaseActivity<AtUserView, AtUserPresenter>
 
     @Override
     public void setData(Following data) {
+        showToast(getString(R.string.api15));
         mLoad.setVisibility(View.GONE);
         final ArrayList<String> list=new ArrayList<>();
         Observable.from(data.getUsers())

@@ -1,11 +1,13 @@
 package com.yanxing.weibo.weiboapi;
 
 import com.yanxing.weibo.weiboapi.model.Comment;
+import com.yanxing.weibo.weiboapi.model.CreateComment;
 import com.yanxing.weibo.weiboapi.model.WeiboComment;
 
 import java.util.Map;
 
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -43,4 +45,16 @@ public interface CommentsApi{
      */
     @GET(ConstantAPI.COMMENT)
     Observable<Comment> getComments(@Path("path") String path, @QueryMap Map<String,String> map);
+
+    /**
+     * 给一条微博评论
+     * @param comment     评论内容
+     * @param id          需要评论的微博ID
+     * @param commentOri  当评论转发微博时，是否评论给原微博，0：否、1：是，默认为0。
+     * @param rip         开发者上报的操作用户真实IP，形如：211.156.0.1。
+     * @return
+     */
+    @POST(ConstantAPI.CREATE_COMMENT)
+    Observable<CreateComment> createComments(@Query("comment") String comment, @Query("id") String id
+            , @Query("comment_ori") int commentOri);
 }

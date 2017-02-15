@@ -161,6 +161,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                     @Override
                     public void onClick(View v) {
                         Intent intent=new Intent(getActivity(), SendWeiboActivity.class);
+                        intent.putExtra("ID",mWeiboList.get(position).getId());
                         intent.putExtra("type", WeiboOperate.COMMENT.getIntValue());
                         startActivity(intent);
                     }
@@ -170,6 +171,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                     @Override
                     public void onClick(View v) {
                         Intent intent=new Intent(getActivity(), SendWeiboActivity.class);
+                        intent.putExtra("ID",mWeiboList.get(position).getId());
                         intent.putExtra("type",WeiboOperate.FORWARD_WEIBO.getIntValue());
                         startActivity(intent);
                     }
