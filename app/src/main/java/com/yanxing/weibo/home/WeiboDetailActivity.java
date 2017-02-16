@@ -24,6 +24,7 @@ import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.common.BrowseImageActivity;
 import com.yanxing.weibo.common.SendWeiboActivity;
+import com.yanxing.weibo.common.UpdateComment;
 import com.yanxing.weibo.common.WeiboOperate;
 import com.yanxing.weibo.util.RecyclerViewUtil;
 import com.yanxing.weibo.util.TimeUtil;
@@ -39,6 +40,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import rx.Observable;
 
 /**
@@ -99,6 +101,7 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
     private int mCurrentPage = 1;
     private long mWeiboID;
     private long mPraiseCount;
+    private long mCommentCountL;
     /**
      * true已被点赞，false未被点赞
      */
@@ -111,6 +114,7 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
 
     @Override
     protected void afterInstanceView() {
+        EventBus.getDefault().register(this);
         Bundle bundle = getIntent().getExtras();
         FriendTimeLine.StatusesBean weibo = bundle.getParcelable("weibo");
         mHead.setImageURI(Uri.parse(weibo.getUser().getAvatar_large()));
@@ -118,7 +122,8 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
         mTime.setText(TimeUtil.getTimeDetail(TimeUtil.format(weibo.getCreated_at())));
         mWeibo.setText(WeiboTextUtil.formatWeiboText(this, weibo.getText(), mWeibo));
         mAttitudesCount.setText(weibo.getAttitudes_count() + getString(R.string.praise));
-        mCommentCount.setText(weibo.getComments_count() + getString(R.string.comment));
+        mCommentCountL=weibo.getComments_count();
+        mCommentCount.setText(mCommentCountL + getString(R.string.comment));
         mRepostCount.setText(weibo.getReposts_count() + getString(R.string.repost));
         mPraiseCount =weibo.getAttitudes_count();
         if (weibo.getIsAttitudes()==0){
@@ -281,6 +286,7 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
                 break;
             case R.id.write_comment://写评论
                 intent.putExtra("type", WeiboOperate.COMMENT.getIntValue());
+                intent.putExtra("index",getIntent().getIntExtra("index",0));
                 startActivity(intent);
                 break;
             case R.id.forward://转发微博
@@ -349,8 +355,11 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
             statusBean=new WeiboComment.StatusBean();
         }
         mAttitudesCount.setText(statusBean.getAttitudes_count() + getString(R.string.praise));
-        mCommentCount.setText(statusBean.getComments_count() + getString(R.string.comment));
+        mCommentCountL=statusBean.getComments_count();
+        mCommentCount.setText(mCommentCountL + getString(R.string.comment));
         mRepostCount.setText(statusBean.getReposts_count() + getString(R.string.repost));
+        int index=getIntent().getIntExtra("index",0);
+        EventBus.getDefault().post(new UpdateCount(index,statusBean.getAttitudes_count(),statusBean.getReposts_count(),statusBean.getComments_count()));
         mPraiseCount =statusBean.getAttitudes_count();
         if (weiboComment.getComments()!=null&&weiboComment.getComments().size()>0) {
             mPullUpFresh = true;
@@ -366,6 +375,27 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
     public void setError(String error) {
         mProgressWheel.setVisibility(View.GONE);
         showToast(error);
+    }
+
+    public void onEvent(UpdateComment updateComment){
+        if (updateComment.isSuccess()){
+            mCommentCount.setText((mCommentCountL+1) + getString(R.string.comment));
+            WeiboComment.CommentsBean commentsBean=new WeiboComment.CommentsBean();
+            commentsBean.setCreated_at(updateComment.getTime());
+            commentsBean.setText(updateComment.getContent());
+            WeiboComment.CommentsBean.UserBeanX userBeanX=new WeiboComment.CommentsBean.UserBeanX();
+            userBeanX.setName(updateComment.getName());
+            userBeanX.setAvatar_hd(updateComment.getHeadPic());
+            commentsBean.setUser(userBeanX);
+            mWeiboCommentList.add(0,commentsBean);
+            mRecyclerViewCommentAdapter.update(mWeiboCommentList);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Override

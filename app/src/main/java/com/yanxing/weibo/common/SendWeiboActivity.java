@@ -15,6 +15,7 @@ import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
 import com.yanxing.weibo.util.CommonUtil;
 import com.yanxing.weibo.util.EmotionUtil;
+import com.yanxing.weibo.util.ErrorCodeUtil;
 import com.yanxing.weibo.util.WeiboTextUtil;
 import com.yanxing.weibo.weiboapi.model.CreateComment;
 
@@ -48,6 +49,7 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
     private long mWeiboID;
     private boolean mShowEmotion = false;
     private boolean mFirst = true;
+    private int mType;
 
     @Override
     protected int getLayoutResID() {
@@ -91,15 +93,15 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
      */
     public void setUI() {
         Intent intent = getIntent();
-        int type = intent.getIntExtra("type", 0);
-        if (type == WeiboOperate.SEND_WEIBO.getIntValue()) {//发微博
+        mType= intent.getIntExtra("type", 0);
+        if (mType == WeiboOperate.SEND_WEIBO.getIntValue()) {//发微博
             mTitleBar.setTitle(getString(R.string.send_weibo));
             mComment.setHint(R.string.share_weibo);
-        } else if (type == WeiboOperate.COMMENT.getIntValue()) {//发评论
+        } else if (mType == WeiboOperate.COMMENT.getIntValue()) {//发评论
             mTitleBar.setTitle(getString(R.string.send_comment1));
             mComment.setHint(R.string.write_comment);
             mWeiboID=intent.getLongExtra("ID",0);
-        } else if (type == WeiboOperate.FORWARD_WEIBO.getIntValue()) {//转发微博
+        } else if (mType == WeiboOperate.FORWARD_WEIBO.getIntValue()) {//转发微博
             mTitleBar.setTitle(getString(R.string.forward_weibo));
             mComment.setHint(R.string.forward_weibo_hint);
             mWeiboID=intent.getLongExtra("ID",0);
@@ -214,6 +216,16 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
 
     @Override
     public void setData(CreateComment data) {
+        if (data.getError()!=null){
+            showToast(ErrorCodeUtil.getErrorCodeTip(data.getError_code()));
+        }else {
+            if (mType==WeiboOperate.COMMENT.getIntValue()){
+                int index=getIntent().getIntExtra("index",0);
+                EventBus.getDefault().post(new UpdateComment(data.getText(),data.getUser().getAvatar_large()
+                        ,index,data.getUser().getName(),true,data.getCreated_at()));
+                finish();
+            }
+        }
 
     }
 

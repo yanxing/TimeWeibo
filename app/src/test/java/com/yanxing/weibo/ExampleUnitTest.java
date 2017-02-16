@@ -1,10 +1,21 @@
 package com.yanxing.weibo;
 
+import com.yanxing.weibo.base.RetrofitManage;
+import com.yanxing.weibo.util.ParamsUtil;
+import com.yanxing.weibo.weiboapi.CommentsApi;
+import com.yanxing.weibo.weiboapi.interceptor.FixedParameterInterceptor;
+import com.yanxing.weibo.weiboapi.model.CreateComment;
+
 import org.junit.Test;
 
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.regex.Pattern;
+
+import okhttp3.OkHttpClient;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static org.junit.Assert.*;
 
@@ -32,5 +43,4 @@ public class ExampleUnitTest {
         System.out.println(currentCalendar.get(Calendar.YEAR));
         System.out.println(URLEncoder.encode("李开复","UTF-8"));
     }
-
 }

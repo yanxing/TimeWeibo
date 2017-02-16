@@ -1,5 +1,6 @@
 package com.yanxing.weibo.weiboapi.interceptor;
 
+import com.yanxing.weibo.util.LogUtil;
 import com.yanxing.weibo.weiboapi.ConstantAPI;
 
 import java.io.IOException;
@@ -8,6 +9,7 @@ import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * 拦截器，微博接口请求添加固定参数（token）
@@ -41,7 +43,10 @@ public class FixedParameterInterceptor implements Interceptor {
                 .method(oldRequest.method(), oldRequest.body())
                 .url(authorizedUrlBuilder.build())
                 .build();
-
-        return chain.proceed(newRequest);
+        Response response=chain.proceed(newRequest);
+        String content=response.body().string();
+        LogUtil.d("Retrofit",content);
+        return response.newBuilder().body(ResponseBody.create(newRequest.body()==null
+                ?null:newRequest.body().contentType(),content)).build();
     }
 }

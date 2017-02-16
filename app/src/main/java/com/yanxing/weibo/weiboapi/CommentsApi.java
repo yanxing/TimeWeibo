@@ -6,6 +6,9 @@ import com.yanxing.weibo.weiboapi.model.WeiboComment;
 
 import java.util.Map;
 
+import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -47,14 +50,16 @@ public interface CommentsApi{
     Observable<Comment> getComments(@Path("path") String path, @QueryMap Map<String,String> map);
 
     /**
-     * 给一条微博评论
-     * @param comment     评论内容
+     * 给一条微博评论,必须post方法
+     * @param comment     评论内容 URLEncode
      * @param id          需要评论的微博ID
      * @param commentOri  当评论转发微博时，是否评论给原微博，0：否、1：是，默认为0。
      * @param rip         开发者上报的操作用户真实IP，形如：211.156.0.1。
      * @return
      */
+    @FormUrlEncoded
     @POST(ConstantAPI.CREATE_COMMENT)
-    Observable<CreateComment> createComments(@Query("comment") String comment, @Query("id") String id
-            , @Query("comment_ori") int commentOri);
+    Observable<CreateComment> createComments(@Field(value = "comment",encoded = true) String comment, @Field("id") long id
+            , @Field("comment_ori") int commentOri);
+
 }

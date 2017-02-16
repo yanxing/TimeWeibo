@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.yanxing.weibo.base.BasePresenter;
 import com.yanxing.weibo.base.RetrofitManage;
-import com.yanxing.weibo.util.ParamsUtil;
 import com.yanxing.weibo.weiboapi.CommentsApi;
 import com.yanxing.weibo.weiboapi.model.CreateComment;
 
@@ -33,7 +32,7 @@ public class SendWeiboPresenter extends BasePresenter<SendWeiboView>{
      */
     public void createComment(long id,String comment,int commentOri){
         CommentsApi commentsApi= RetrofitManage.getInstance().getRetrofit(mContext).create(CommentsApi.class);
-        commentsApi.createComments(ParamsUtil.encode(comment),String.valueOf(id),0)
+        commentsApi.createComments(comment,id,0)
                 .compose(mBaseView.<CreateComment>rxLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

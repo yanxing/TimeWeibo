@@ -1,5 +1,6 @@
 package com.yanxing.weibo.weiboapi;
 
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -18,7 +19,7 @@ public interface SearchApi {
      * @param range   联想范围，0：只联想关注人、1：只联想关注人的备注、2：全部，默认为2。
      * @return
      */
-    @POST(value = ConstantAPI.AT_USERS)
+    @GET(value = ConstantAPI.AT_USERS)
     Observable getAtUsers(@Query("q") String q,@Query("count") int count,@Query("type") int type
             ,@Query("range") int range);
 }
