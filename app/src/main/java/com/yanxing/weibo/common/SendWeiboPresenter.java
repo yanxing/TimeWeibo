@@ -5,7 +5,9 @@ import android.content.Context;
 import com.yanxing.weibo.base.BasePresenter;
 import com.yanxing.weibo.base.RetrofitManage;
 import com.yanxing.weibo.weiboapi.CommentsApi;
+import com.yanxing.weibo.weiboapi.StatusesApi;
 import com.yanxing.weibo.weiboapi.model.CreateComment;
+import com.yanxing.weibo.weiboapi.model.StatusRepost;
 
 
 import rx.Subscriber;
@@ -54,4 +56,33 @@ public class SendWeiboPresenter extends BasePresenter<SendWeiboView>{
                    });
     }
 
+    /**
+     * 转发一条微博
+     * @param id         需要评论的微博ID
+     * @param content    添加的转发文本，必须做URLencode，内容不超过140个汉字，不填则默认为“转发微博”。
+     * @param commentOri 是否在转发的同时发表评论，0：否、1：评论给当前微博、2：评论给原微博、3：都评论，默认为0 。
+     */
+    public void repostWeibo(long id,String content,int commentOri){
+        final StatusesApi statusesApi=RetrofitManage.getInstance().getRetrofit(mContext).create(StatusesApi.class);
+        statusesApi.repostWeibo(id,content,commentOri)
+                .compose(mBaseView.<StatusRepost>rxLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<StatusRepost>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                         mBaseView.setError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(StatusRepost statusRepost) {
+                         mBaseView.setRepostWeibo(statusRepost);
+                    }
+                });
+    }
 }

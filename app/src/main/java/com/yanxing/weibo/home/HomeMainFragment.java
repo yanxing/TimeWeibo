@@ -24,6 +24,7 @@ import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseFragment;
 import com.yanxing.weibo.common.SendWeiboActivity;
 import com.yanxing.weibo.common.UpdateComment;
+import com.yanxing.weibo.common.UpdateRepost;
 import com.yanxing.weibo.common.WeiboOperate;
 import com.yanxing.weibo.util.LogUtil;
 import com.yanxing.weibo.util.PermissionUtil;
@@ -175,6 +176,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                     public void onClick(View v) {
                         Intent intent=new Intent(getActivity(), SendWeiboActivity.class);
                         intent.putExtra("ID",mWeiboList.get(position).getId());
+                        intent.putExtra("index",position);
                         intent.putExtra("type",WeiboOperate.FORWARD_WEIBO.getIntValue());
                         startActivity(intent);
                     }
@@ -315,11 +317,9 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
 
     public void onEvent(UpdateComment updateComment){
         if (updateComment.isSuccess()){
-            if (updateComment.getIndex()!=0){
-                FriendTimeLine.StatusesBean statusesBean=mWeiboList.get(updateComment.getIndex());
-                statusesBean.setComments_count(statusesBean.getComments_count()+1);
-                mRecyclerViewAdapter.update(mWeiboList);
-            }
+            FriendTimeLine.StatusesBean statusesBean=mWeiboList.get(updateComment.getIndex());
+            statusesBean.setComments_count(statusesBean.getComments_count()+1);
+            mRecyclerViewAdapter.update(mWeiboList);
         }
     }
 
@@ -329,6 +329,14 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
         statusesBean.setComments_count(updateCount.getCommentsCount());
         statusesBean.setReposts_count(updateCount.getRepostsCount());
         mRecyclerViewAdapter.update(mWeiboList);
+    }
+
+    public void onEvent(UpdateRepost updateRepost){
+        if (updateRepost.isSuccess()){
+            FriendTimeLine.StatusesBean statusesBean=mWeiboList.get(updateRepost.getIndex());
+            statusesBean.setComments_count(statusesBean.getReposts_count()+1);
+            mRecyclerViewAdapter.update(mWeiboList);
+        }
     }
 
     public void onEvent(String event){

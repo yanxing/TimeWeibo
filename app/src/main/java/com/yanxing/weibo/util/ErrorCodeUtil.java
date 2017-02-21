@@ -25,6 +25,25 @@ public class ErrorCodeUtil {
      * 返回错误代码代表的意思
      *
      * @param code 错误代码
+     * @param error 错误代码英文意思
+     * @return
+     */
+    public static String getErrorCodeTip(int code,String error) {
+        switch (code) {
+            //参数错误
+            case 10024:
+                return "请求已经超过限制";
+            case 20019:
+                return "内容重复";
+            default:
+                return error+code;
+        }
+    }
+
+    /**
+     * 返回错误代码代表的意思
+     *
+     * @param code 错误代码
      * @return
      */
     public static String getErrorCodeTip(int code) {

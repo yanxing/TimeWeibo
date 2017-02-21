@@ -13,11 +13,13 @@ import com.yanxing.titlebarlibrary.TitleBar;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.home.UpdateCount;
 import com.yanxing.weibo.util.CommonUtil;
 import com.yanxing.weibo.util.EmotionUtil;
 import com.yanxing.weibo.util.ErrorCodeUtil;
 import com.yanxing.weibo.util.WeiboTextUtil;
 import com.yanxing.weibo.weiboapi.model.CreateComment;
+import com.yanxing.weibo.weiboapi.model.StatusRepost;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,10 +143,20 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
             case R.id.send:
                 String comment=mComment.getText().toString().trim();
                 if (comment.length()<=140){
-                    if (comment.isEmpty()){
-                        showToast(getString(R.string.no_empty));
-                    }else {
-                        mPresenter.createComment(mWeiboID,comment,0);
+                    if (mType == WeiboOperate.SEND_WEIBO.getIntValue()) {//发微博
+                        if (comment.isEmpty()){
+                            showToast(getString(R.string.no_empty));
+                        }else {
+
+                        }
+                    } else if (mType == WeiboOperate.COMMENT.getIntValue()) {//发评论
+                        if (comment.isEmpty()){
+                            showToast(getString(R.string.no_empty));
+                        }else {
+                            mPresenter.createComment(mWeiboID,comment,0);
+                        }
+                    } else if (mType == WeiboOperate.FORWARD_WEIBO.getIntValue()) {//转发微博
+                        mPresenter.repostWeibo(mWeiboID,comment,0);
                     }
                 }else {
                     showToast(getString(R.string.bu_duo_140));
@@ -217,10 +229,10 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
     @Override
     public void setData(CreateComment data) {
         if (data.getError()!=null){
-            showToast(ErrorCodeUtil.getErrorCodeTip(data.getError_code()));
+            showToast(ErrorCodeUtil.getErrorCodeTip(data.getError_code(),data.getError()));
         }else {
             if (mType==WeiboOperate.COMMENT.getIntValue()){
-                int index=getIntent().getIntExtra("index",0);
+                int index=getIntent().getIntExtra("index",-1);
                 EventBus.getDefault().post(new UpdateComment(data.getText(),data.getUser().getAvatar_large()
                         ,index,data.getUser().getName(),true,data.getCreated_at()));
                 finish();
@@ -237,5 +249,18 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
     @Override
     public <V> Observable.Transformer<V, V> rxLifecycle() {
         return this.bindToLifecycle();
+    }
+
+    @Override
+    public void setRepostWeibo(StatusRepost statusRepost) {
+        if (statusRepost.getError()!=null){
+            showToast(ErrorCodeUtil.getErrorCodeTip(statusRepost.getError_code(),statusRepost.getError()));
+        }else {
+            if (mType==WeiboOperate.FORWARD_WEIBO.getIntValue()){
+                int index=getIntent().getIntExtra("index",-1);
+                EventBus.getDefault().post(new UpdateRepost(index,true));
+                finish();
+            }
+        }
     }
 }

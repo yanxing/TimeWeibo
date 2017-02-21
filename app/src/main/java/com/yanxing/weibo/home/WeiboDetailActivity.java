@@ -25,6 +25,7 @@ import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.common.BrowseImageActivity;
 import com.yanxing.weibo.common.SendWeiboActivity;
 import com.yanxing.weibo.common.UpdateComment;
+import com.yanxing.weibo.common.UpdateRepost;
 import com.yanxing.weibo.common.WeiboOperate;
 import com.yanxing.weibo.util.RecyclerViewUtil;
 import com.yanxing.weibo.util.TimeUtil;
@@ -102,6 +103,7 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
     private long mWeiboID;
     private long mPraiseCount;
     private long mCommentCountL;
+    private long mRepostCountL;
     /**
      * true已被点赞，false未被点赞
      */
@@ -124,7 +126,8 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
         mAttitudesCount.setText(weibo.getAttitudes_count() + getString(R.string.praise));
         mCommentCountL=weibo.getComments_count();
         mCommentCount.setText(mCommentCountL + getString(R.string.comment));
-        mRepostCount.setText(weibo.getReposts_count() + getString(R.string.repost));
+        mRepostCountL=weibo.getReposts_count();
+        mRepostCount.setText(mRepostCountL + getString(R.string.repost));
         mPraiseCount =weibo.getAttitudes_count();
         if (weibo.getIsAttitudes()==0){
             mIsPraise=false;
@@ -286,11 +289,12 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
                 break;
             case R.id.write_comment://写评论
                 intent.putExtra("type", WeiboOperate.COMMENT.getIntValue());
-                intent.putExtra("index",getIntent().getIntExtra("index",0));
+                intent.putExtra("index",getIntent().getIntExtra("index",-1));
                 startActivity(intent);
                 break;
             case R.id.forward://转发微博
                 intent.putExtra("type",WeiboOperate.FORWARD_WEIBO.getIntValue());
+                intent.putExtra("index",getIntent().getIntExtra("index",-1));
                 startActivity(intent);
         }
     }
@@ -357,9 +361,12 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
         mAttitudesCount.setText(statusBean.getAttitudes_count() + getString(R.string.praise));
         mCommentCountL=statusBean.getComments_count();
         mCommentCount.setText(mCommentCountL + getString(R.string.comment));
-        mRepostCount.setText(statusBean.getReposts_count() + getString(R.string.repost));
+        mRepostCountL=statusBean.getReposts_count();
+        mRepostCount.setText(mRepostCountL + getString(R.string.repost));
         int index=getIntent().getIntExtra("index",0);
-        EventBus.getDefault().post(new UpdateCount(index,statusBean.getAttitudes_count(),statusBean.getReposts_count(),statusBean.getComments_count()));
+        //更新这条微博首页的转发量、评论和赞
+        EventBus.getDefault().post(new UpdateCount(index,statusBean.getAttitudes_count()
+                ,statusBean.getReposts_count(),statusBean.getComments_count()));
         mPraiseCount =statusBean.getAttitudes_count();
         if (weiboComment.getComments()!=null&&weiboComment.getComments().size()>0) {
             mPullUpFresh = true;
@@ -379,7 +386,7 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
 
     public void onEvent(UpdateComment updateComment){
         if (updateComment.isSuccess()){
-            mCommentCount.setText((mCommentCountL+1) + getString(R.string.comment));
+            mCommentCount.setText((++mCommentCountL) + getString(R.string.comment));
             WeiboComment.CommentsBean commentsBean=new WeiboComment.CommentsBean();
             commentsBean.setCreated_at(updateComment.getTime());
             commentsBean.setText(updateComment.getContent());
@@ -389,6 +396,12 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
             commentsBean.setUser(userBeanX);
             mWeiboCommentList.add(0,commentsBean);
             mRecyclerViewCommentAdapter.update(mWeiboCommentList);
+        }
+    }
+
+    public void onEvent(UpdateRepost updateRepost){
+        if (updateRepost.isSuccess()){
+            mRepostCount.setText((++mRepostCountL) + getString(R.string.repost));
         }
     }
 
