@@ -335,7 +335,8 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
         if (updateRepost.isSuccess()){
             FriendTimeLine.StatusesBean statusesBean=mWeiboList.get(updateRepost.getIndex());
             statusesBean.setComments_count(statusesBean.getReposts_count()+1);
-            mRecyclerViewAdapter.update(mWeiboList);
+            mRecyclerView.setAdapter(mRecyclerViewAdapter);
+            mPtrFrameLayout.autoRefresh(true);
         }
     }
 

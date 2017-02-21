@@ -36,4 +36,6 @@
     <string name="api15">API限制只能获取15条信息</string>
     <string name="bu_duo_140">不能多于140个字</string>
     <string name="no_empty">不能为空</string>
+    <string name="comments_success">评论成功</string>
+    <string name="repost_success">转发成功</string>
 </resources>

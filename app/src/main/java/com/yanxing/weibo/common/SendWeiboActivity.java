@@ -235,6 +235,7 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
                 int index=getIntent().getIntExtra("index",-1);
                 EventBus.getDefault().post(new UpdateComment(data.getText(),data.getUser().getAvatar_large()
                         ,index,data.getUser().getName(),true,data.getCreated_at()));
+                showToast(getString(R.string.comments_success));
                 finish();
             }
         }
@@ -259,6 +260,7 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
             if (mType==WeiboOperate.FORWARD_WEIBO.getIntValue()){
                 int index=getIntent().getIntExtra("index",-1);
                 EventBus.getDefault().post(new UpdateRepost(index,true));
+                showToast(getString(R.string.repost_success));
                 finish();
             }
         }

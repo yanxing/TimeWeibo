@@ -45,8 +45,8 @@ public class StatusRepost {
     private String in_reply_to_screen_name;
     private Object geo;
     private String mid;
-    private int reposts_count;
-    private int comments_count;
+    private long reposts_count;
+    private long comments_count;
     private UserBean user;
     private RetweetedStatusBean retweeted_status;
     private List<?> annotations;
@@ -139,11 +139,11 @@ public class StatusRepost {
         this.mid = mid;
     }
 
-    public int getReposts_count() {
+    public long getReposts_count() {
         return reposts_count;
     }
 
-    public void setReposts_count(int reposts_count) {
+    public void setReposts_count(long reposts_count) {
         this.reposts_count = reposts_count;
     }
 
@@ -171,11 +171,11 @@ public class StatusRepost {
         this.error_code = error_code;
     }
 
-    public int getComments_count() {
+    public long getComments_count() {
         return comments_count;
     }
 
-    public void setComments_count(int comments_count) {
+    public void setComments_count(long comments_count) {
         this.comments_count = comments_count;
     }
 
@@ -234,7 +234,7 @@ public class StatusRepost {
          * bi_followers_count : 215
          */
 
-        private int id;
+        private long id;
         private String screen_name;
         private String name;
         private String province;
@@ -245,10 +245,10 @@ public class StatusRepost {
         private String profile_image_url;
         private String domain;
         private String gender;
-        private int followers_count;
-        private int friends_count;
-        private int statuses_count;
-        private int favourites_count;
+        private long followers_count;
+        private long friends_count;
+        private long statuses_count;
+        private long favourites_count;
         private String created_at;
         private boolean following;
         private boolean allow_all_act_msg;
@@ -259,14 +259,14 @@ public class StatusRepost {
         private String avatar_large;
         private String verified_reason;
         private boolean follow_me;
-        private int online_status;
-        private int bi_followers_count;
+        private long online_status;
+        private long bi_followers_count;
 
-        public int getId() {
+        public long getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(long id) {
             this.id = id;
         }
 
@@ -350,35 +350,35 @@ public class StatusRepost {
             this.gender = gender;
         }
 
-        public int getFollowers_count() {
+        public long getFollowers_count() {
             return followers_count;
         }
 
-        public void setFollowers_count(int followers_count) {
+        public void setFollowers_count(long followers_count) {
             this.followers_count = followers_count;
         }
 
-        public int getFriends_count() {
+        public long getFriends_count() {
             return friends_count;
         }
 
-        public void setFriends_count(int friends_count) {
+        public void setFriends_count(long friends_count) {
             this.friends_count = friends_count;
         }
 
-        public int getStatuses_count() {
+        public long getStatuses_count() {
             return statuses_count;
         }
 
-        public void setStatuses_count(int statuses_count) {
+        public void setStatuses_count(long statuses_count) {
             this.statuses_count = statuses_count;
         }
 
-        public int getFavourites_count() {
+        public long getFavourites_count() {
             return favourites_count;
         }
 
-        public void setFavourites_count(int favourites_count) {
+        public void setFavourites_count(long favourites_count) {
             this.favourites_count = favourites_count;
         }
 
@@ -462,19 +462,19 @@ public class StatusRepost {
             this.follow_me = follow_me;
         }
 
-        public int getOnline_status() {
+        public long getOnline_status() {
             return online_status;
         }
 
-        public void setOnline_status(int online_status) {
+        public void setOnline_status(long online_status) {
             this.online_status = online_status;
         }
 
-        public int getBi_followers_count() {
+        public long getBi_followers_count() {
             return bi_followers_count;
         }
 
-        public void setBi_followers_count(int bi_followers_count) {
+        public void setBi_followers_count(long bi_followers_count) {
             this.bi_followers_count = bi_followers_count;
         }
     }
@@ -509,8 +509,8 @@ public class StatusRepost {
         private String in_reply_to_screen_name;
         private Object geo;
         private String mid;
-        private int reposts_count;
-        private int comments_count;
+        private long reposts_count;
+        private long comments_count;
         private UserBeanX user;
         private List<?> annotations;
 
@@ -602,19 +602,19 @@ public class StatusRepost {
             this.mid = mid;
         }
 
-        public int getReposts_count() {
+        public long getReposts_count() {
             return reposts_count;
         }
 
-        public void setReposts_count(int reposts_count) {
+        public void setReposts_count(long reposts_count) {
             this.reposts_count = reposts_count;
         }
 
-        public int getComments_count() {
+        public long getComments_count() {
             return comments_count;
         }
 
-        public void setComments_count(int comments_count) {
+        public void setComments_count(long comments_count) {
             this.comments_count = comments_count;
         }
 
@@ -665,7 +665,7 @@ public class StatusRepost {
              * bi_followers_count : 199
              */
 
-            private int id;
+            private long id;
             private String screen_name;
             private String name;
             private String province;
@@ -676,10 +676,10 @@ public class StatusRepost {
             private String profile_image_url;
             private String domain;
             private String gender;
-            private int followers_count;
-            private int friends_count;
-            private int statuses_count;
-            private int favourites_count;
+            private long followers_count;
+            private long friends_count;
+            private long statuses_count;
+            private long favourites_count;
             private String created_at;
             private boolean following;
             private boolean allow_all_act_msg;
@@ -690,14 +690,14 @@ public class StatusRepost {
             private String avatar_large;
             private String verified_reason;
             private boolean follow_me;
-            private int online_status;
-            private int bi_followers_count;
+            private long online_status;
+            private long bi_followers_count;
 
-            public int getId() {
+            public long getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(long id) {
                 this.id = id;
             }
 
@@ -781,35 +781,35 @@ public class StatusRepost {
                 this.gender = gender;
             }
 
-            public int getFollowers_count() {
+            public long getFollowers_count() {
                 return followers_count;
             }
 
-            public void setFollowers_count(int followers_count) {
+            public void setFollowers_count(long followers_count) {
                 this.followers_count = followers_count;
             }
 
-            public int getFriends_count() {
+            public long getFriends_count() {
                 return friends_count;
             }
 
-            public void setFriends_count(int friends_count) {
+            public void setFriends_count(long friends_count) {
                 this.friends_count = friends_count;
             }
 
-            public int getStatuses_count() {
+            public long getStatuses_count() {
                 return statuses_count;
             }
 
-            public void setStatuses_count(int statuses_count) {
+            public void setStatuses_count(long statuses_count) {
                 this.statuses_count = statuses_count;
             }
 
-            public int getFavourites_count() {
+            public long getFavourites_count() {
                 return favourites_count;
             }
 
-            public void setFavourites_count(int favourites_count) {
+            public void setFavourites_count(long favourites_count) {
                 this.favourites_count = favourites_count;
             }
 
@@ -893,19 +893,19 @@ public class StatusRepost {
                 this.follow_me = follow_me;
             }
 
-            public int getOnline_status() {
+            public long getOnline_status() {
                 return online_status;
             }
 
-            public void setOnline_status(int online_status) {
+            public void setOnline_status(long online_status) {
                 this.online_status = online_status;
             }
 
-            public int getBi_followers_count() {
+            public long getBi_followers_count() {
                 return bi_followers_count;
             }
 
-            public void setBi_followers_count(int bi_followers_count) {
+            public void setBi_followers_count(long bi_followers_count) {
                 this.bi_followers_count = bi_followers_count;
             }
         }

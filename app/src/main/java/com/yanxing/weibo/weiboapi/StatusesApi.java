@@ -5,7 +5,10 @@ import com.yanxing.weibo.weiboapi.model.StatusRepost;
 
 import java.util.Map;
 
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import rx.Observable;
@@ -53,14 +56,15 @@ public interface StatusesApi {
     Observable<FriendTimeLine> getUserTimeline(@QueryMap Map<String,String> map);
 
     /**
-     * 转发一条微博
+     * 转发一条微博 必须post方法
      * @param id        要转发的微博ID
      * @param content   添加的转发文本，必须做URLencode，内容不超过140个汉字，不填则默认为“转发微博”
      * @param isComment 是否在转发的同时发表评论，0：否、1：评论给当前微博、2：评论给原微博、3：都评论，默认为0 。
      * @param rip       开发者上报的操作用户真实IP，形如：211.156.0.1。
      * @return
      */
-    @GET(ConstantAPI.STATUSES_REPOST)
-    Observable<StatusRepost> repostWeibo(@Query("id") long id,@Query("status") String content,
-                                             @Query("is_comment") int isComment);
+    @FormUrlEncoded
+    @POST(ConstantAPI.STATUSES_REPOST)
+    Observable<StatusRepost> repostWeibo(@Field("id") long id, @Field(value = "status" ,encoded = true) String content,
+                                         @Field("is_comment") int isComment);
 }
