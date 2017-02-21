@@ -130,6 +130,7 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.select_image:
+                showToast(getString(R.string.zan_bu_ke_yon));
                 break;
             case R.id.at:
                 Intent intent = new Intent(getApplicationContext(), AtUsersActivity.class);
