@@ -68,6 +68,10 @@ public class ConstantAPI {
      * 转发一条微博
      */
     public static final String STATUSES_REPOST="statuses/repost.json";
+    /**
+     * 发一条微博
+     */
+    public static final String STATUSES_UPDATE="statuses/update.json";
 
 
 

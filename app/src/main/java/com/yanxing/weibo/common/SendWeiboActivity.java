@@ -20,6 +20,7 @@ import com.yanxing.weibo.util.ErrorCodeUtil;
 import com.yanxing.weibo.util.WeiboTextUtil;
 import com.yanxing.weibo.weiboapi.model.CreateComment;
 import com.yanxing.weibo.weiboapi.model.StatusRepost;
+import com.yanxing.weibo.weiboapi.model.StatusesUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 /**
- * 发评论,发微博
+ * 发评论,发微博,转发微博
  * Created by lishuangxiang on 2017/2/8.
  */
 public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPresenter> implements
@@ -52,6 +53,7 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
     private boolean mShowEmotion = false;
     private boolean mFirst = true;
     private int mType;
+    private String ANNOTATIONS="[{\"source\":\"TimeWeiBo\"}]";;
 
     @Override
     protected int getLayoutResID() {
@@ -117,6 +119,7 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
 
     @Override
     public void finish() {
+        CommonUtil.hideInputKeyBoard(getApplicationContext(),mComment);
         super.finish();
         if (getIntent().getBooleanExtra("anim", false)) {
             overridePendingTransition(R.anim.activity_close, 0);
@@ -147,7 +150,7 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
                         if (comment.isEmpty()){
                             showToast(getString(R.string.no_empty));
                         }else {
-
+                            mPresenter.sendWeibo(comment,0,null,0.0f,0.0f,ANNOTATIONS);
                         }
                     } else if (mType == WeiboOperate.COMMENT.getIntValue()) {//发评论
                         if (comment.isEmpty()){
@@ -261,6 +264,19 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
                 int index=getIntent().getIntExtra("index",-1);
                 EventBus.getDefault().post(new UpdateRepost(index,true));
                 showToast(getString(R.string.repost_success));
+                finish();
+            }
+        }
+    }
+
+    @Override
+    public void setSendWeibo(StatusesUpdate sendWeibo) {
+        if (sendWeibo.getError()!=null){
+            showToast(ErrorCodeUtil.getErrorCodeTip(sendWeibo.getError_code(),sendWeibo.getError()));
+        }else {
+            if (mType==WeiboOperate.SEND_WEIBO.getIntValue()){
+                EventBus.getDefault().post("refresh");
+                showToast(getString(R.string.send_weibo_success));
                 finish();
             }
         }

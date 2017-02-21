@@ -31,10 +31,12 @@ public class ErrorCodeUtil {
     public static String getErrorCodeTip(int code,String error) {
         switch (code) {
             //参数错误
+            case 10017:
+                return code+"list_id不合法";
             case 10024:
-                return "请求已经超过限制";
+                return code+"请求已经超过限制";
             case 20019:
-                return "内容重复";
+                return code+"内容重复";
             default:
                 return error+code;
         }
