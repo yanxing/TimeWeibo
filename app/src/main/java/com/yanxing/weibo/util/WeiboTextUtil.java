@@ -1,6 +1,7 @@
 package com.yanxing.weibo.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -49,6 +50,10 @@ public class WeiboTextUtil {
     private static final String SCHEME_URL = "url:";
     private static final String SCHEME_URL_WEB = "web:";
     private static final String SCHEME_AT = "at:";
+    private static final String FULL_TEXT="全文";
+    private static final String WEB_LINK=" 网页链接";//前面有一个空格
+    private static final String ACTION="com.at.user";
+    private static final String WEB_ACTION="com.web.link";
 
     /**
      * 格式化微博文本
@@ -89,7 +94,7 @@ public class WeiboTextUtil {
         URLSpan[] urlSpans = spannable.getSpans(0, content.length(), URLSpan.class);
 
         for (URLSpan urlSpan : urlSpans) {
-            myClickableSpan = new MyClickableSpan();
+            myClickableSpan = new MyClickableSpan(urlSpan.getURL(),context);
             if (urlSpan.getURL().startsWith(SCHEME_AT)) {
                 int start = spannable.getSpanStart(urlSpan);
                 int end = spannable.getSpanEnd(urlSpan);
@@ -127,7 +132,7 @@ public class WeiboTextUtil {
     private static SpannableStringBuilder getUrlText(String source) {
         SpannableStringBuilder builder = new SpannableStringBuilder(source);
         builder.clear();
-        builder.append("全文");
+        builder.append(FULL_TEXT);
         return builder;
     }
 
@@ -137,7 +142,6 @@ public class WeiboTextUtil {
     private static SpannableStringBuilder getWebUrlText(Context context
             , String source, int size) {
         SpannableStringBuilder builder = new SpannableStringBuilder(source);
-        String tip = " 网页链接";
         Drawable drawable = context.getResources().getDrawable(R.mipmap.link);
         String prefix = " ";
         builder.replace(0, prefix.length(), prefix);
@@ -145,16 +149,35 @@ public class WeiboTextUtil {
         VerticalImageSpan imageSpan = new VerticalImageSpan(context,
                 ((BitmapDrawable) drawable).getBitmap());
         builder.setSpan(imageSpan, prefix.length(), source.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.append(tip);
+        builder.append(WEB_LINK);
         return builder;
     }
 
 
     private static class MyClickableSpan extends ClickableSpan {
+        private String text;
+        private Context context;
+
+        private MyClickableSpan(String value,Context context){
+            text=value;
+            this.context=context;
+        }
 
         @Override
         public void onClick(View widget) {
-            EventBus.getDefault().post(widget);
+            if (text.startsWith(SCHEME_AT)){//点击@的人
+                Intent intent=new Intent(ACTION);
+                intent.putExtra("screenName",text.substring(SCHEME_AT.length()+1,text.length()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }else if (text.startsWith(SCHEME_URL_WEB)){
+                Intent intent=new Intent(WEB_ACTION);
+                intent.putExtra("url",text.substring(SCHEME_URL_WEB.length(),text.length()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }else {
+                EventBus.getDefault().post(widget);
+            }
         }
 
         @Override
@@ -172,9 +195,6 @@ public class WeiboTextUtil {
             super(context, b);
         }
 
-        /**
-         * update the text line height
-         */
         @Override
         public int getSize(Paint paint, CharSequence text, int start, int end,
                            Paint.FontMetricsInt fontMetricsInt) {
@@ -194,9 +214,6 @@ public class WeiboTextUtil {
             return rect.right;
         }
 
-        /**
-         * see detail message in android.text.TextLine
-         */
         @Override
         public void draw(Canvas canvas, CharSequence text, int start, int end,
                          float x, int top, int y, int bottom, Paint paint) {

@@ -181,6 +181,15 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                         startActivity(intent);
                     }
                 });
+                //用户详情
+                head.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(getActivity(),UserDetailActivity.class);
+                        intent.putExtra("uid",String.valueOf(mWeiboList.get(position).getUser().getId()));
+                        startActivity(intent);
+                    }
+                });
             }
         };
         //先加载本地缓存数据

@@ -40,4 +40,6 @@
     <string name="repost_success">转发成功</string>
     <string name="send_weibo_success">发送成功</string>
     <string name="zan_bu_ke_yon">暂不可用</string>
+    <string name="api_limit">该用户未授权TimeWeiBo，因微博api限制不能查看此用户信息</string>
+    <string name="nickname">昵称</string>
 </resources>

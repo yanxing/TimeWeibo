@@ -1,17 +1,20 @@
 package com.yanxing.weibo;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.yanxing.titlebarlibrary.TitleBar;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
 import com.yanxing.weibo.common.SendWeiboActivity;
 import com.yanxing.weibo.common.WeiboOperate;
 import com.yanxing.weibo.message.MessageMainFragment;
+import com.yanxing.weibo.util.AccessTokenUtil;
 import com.yanxing.weibo.util.CommonUtil;
 import com.yanxing.weibo.discover.DiscoverMainFragment;
 import com.yanxing.weibo.home.HomeMainFragment;
@@ -62,6 +65,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick({R.id.home, R.id.message, R.id.send, R.id.discover, R.id.me})
     public void onClick(View view) {
+        Oauth2AccessToken accessToken=AccessTokenUtil.readAccessToken(getApplicationContext());
         switch (view.getId()) {
             case R.id.home:
                 if (replace(new HomeMainFragment())){
@@ -87,7 +91,11 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.me:
                 setTab(ME);
-                replace(new MeMainFragment());
+                MeMainFragment meMainFragment=new MeMainFragment();
+                Bundle bundle=new Bundle();
+                bundle.putString("uid",accessToken.getUid());
+                meMainFragment.setArguments(bundle);
+                replace(meMainFragment);
                 break;
         }
     }

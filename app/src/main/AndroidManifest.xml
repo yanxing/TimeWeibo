@@ -69,6 +69,22 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+        <activity
+            android:name=".home.UserDetailActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.at.user"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            </activity>
+        <activity
+            android:name=".common.WebActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.web.link"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

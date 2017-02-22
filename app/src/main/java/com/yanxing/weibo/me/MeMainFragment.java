@@ -24,13 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import rx.Observable;
 
 /**
- * 个人中心
+ * 个人中心,微博流用户详情共用
  * Created by lishuangxiang on 2016/12/22.
  */
 public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> implements MeMainView {
@@ -62,10 +63,19 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
     @BindView(R.id.tip)
     TextView mTip;
 
+    @BindView(R.id.back)
+    ImageView mBack;
+
+    @BindView(R.id.setting)
+    ImageView mSetting;
+
     private List<FriendTimeLine.StatusesBean> mUserWeiboList = new ArrayList<>();
     private RecyclerViewAdapter<FriendTimeLine.StatusesBean> mRecyclerViewAdapter;
     private int mCurrentPage = 1;
     private int mPageSize = 20;
+    private String mUid;
+    private String mScreenName=null;
+    private boolean mUserDetail=false;
 
     @Override
     protected int getLayoutResID() {
@@ -74,13 +84,19 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
 
     @Override
     protected void afterInstanceView() {
-        mPresenter.getMeInfo();
+        Bundle bundle=getArguments();
+        mUid=bundle.getString("uid");
+        mUserDetail=bundle.getBoolean("userDetail");
+        if (mUid==null){
+            mScreenName=bundle.getString("screenName");
+        }
+        mPresenter.getMeInfo(mUid,mScreenName);
         mPtrFrameLayout.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                mPresenter.getMeInfo();
+                mPresenter.getMeInfo(mUid,mScreenName);
                 mCurrentPage = 1;
-                mPresenter.getMeWeiboList(mCurrentPage, mPageSize);
+                mPresenter.getMeWeiboList(mUid,mScreenName,mCurrentPage, mPageSize);
             }
         });
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -94,6 +110,15 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
                 }
             }
         });
+        if (mUserDetail){
+            mBack.setVisibility(View.VISIBLE);
+            mSetting.setVisibility(View.GONE);
+        }
+    }
+
+    @OnClick(R.id.back)
+    public void onClick(){
+        getActivity().finish();
     }
 
     @Override
@@ -103,9 +128,18 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
 
     @Override
     public void setData(User data) {
-        mUserBg.setImageURI(Uri.parse(data.getCover_image_phone()));
+        if (data==null){
+            return;
+        }
+        if (data.getCover_image_phone()!=null){
+            mUserBg.setImageURI(Uri.parse(data.getCover_image_phone()));
+        }
         mHead.setImageURI(Uri.parse(data.getAvatar_large()));
         mName.setText(data.getName());
+        if (mUserDetail){
+            showToast(getString(R.string.api_limit));
+            return;
+        }
         mFollow.setText(String.valueOf(data.getFriends_count()));
         mFans.setText(String.valueOf(data.getFollowers_count()));
         mWeiBoList.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -161,11 +195,12 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
             }
         };
         mWeiBoList.setAdapter(mRecyclerViewAdapter);
-        mPresenter.getMeWeiboList(mCurrentPage, mPageSize);
+        mPresenter.getMeWeiboList(mUid,mScreenName,mCurrentPage, mPageSize);
     }
 
     @Override
     public void setError(String error) {
+        mPtrFrameLayout.refreshComplete();
         showToast(error);
     }
 

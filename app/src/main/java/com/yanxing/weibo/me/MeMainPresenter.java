@@ -26,21 +26,25 @@ import rx.schedulers.Schedulers;
 public class MeMainPresenter extends BasePresenter<MeMainView> {
 
     private Context mContext;
-    private Oauth2AccessToken mOauth2AccessToken;
 
     public MeMainPresenter(MeMainView meMainView, Context context){
         this.mBaseView =meMainView;
         mContext=context;
-        mOauth2AccessToken = AccessTokenUtil.readAccessToken(mContext);
     }
 
     /**
-     * 获取登录用户信息
+     * 获取用户信息
+     * 参数uid与screen_name二者必选其一，且只能选其一；
+     * 接口升级后，对未授权本应用的uid，将无法获取其个人简介、认证原因、粉丝数、关注数、微博数及最近一条微博内容。
      */
-    public void getMeInfo(){
+    public void getMeInfo(String uid,String screenName){
         UserApi userApi= RetrofitManage.getInstance().getRetrofit(mContext).create(UserApi.class);
         Map<String,String> map=new HashMap<>();
-        map.put("uid",mOauth2AccessToken.getUid());
+        if (uid!=null){
+            map.put("uid",uid);
+        }else {
+            map.put("screen_name",screenName);
+        }
         userApi.getUserInfo(ConstantAPI.SHOW,map)
                 .compose(mBaseView.<User>rxLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -64,14 +68,18 @@ public class MeMainPresenter extends BasePresenter<MeMainView> {
     }
 
     /**
-     * 获取用户微博，接口限制最多只能获取10条
+     * 获取用户微博，接口限制最多只能获取10条 参数uid与screen_name二者必选其一，且只能选其一；
      * @param currentPage
      * @param pageSize
      */
-    public void getMeWeiboList(int currentPage, int pageSize){
+    public void getMeWeiboList(String uid,String screenName,int currentPage, int pageSize){
         StatusesApi statusesApi=RetrofitManage.getInstance().getRetrofit(mContext).create(StatusesApi.class);
         Map<String,String> map=new HashMap<>();
-        map.put("uid",mOauth2AccessToken.getUid());
+        if (uid!=null){
+            map.put("uid",uid);
+        }else {
+            map.put("screen_name",screenName);
+        }
         map.put("page",String.valueOf(currentPage));
         map.put("count",String.valueOf(pageSize));
         statusesApi.getUserTimeline(map)

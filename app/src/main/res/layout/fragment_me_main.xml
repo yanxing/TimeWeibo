@@ -46,8 +46,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="200dp"
                             app:actualImageScaleType="focusCrop"/>
-
                         <ImageView
+                            android:id="@+id/back"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="@dimen/margin10"
+                            android:layout_marginTop="@dimen/margin24"
+                            android:visibility="gone"
+                            android:src="@mipmap/back"/>
+                        <ImageView
+                            android:id="@+id/setting"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -74,7 +83,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/margin4"
-                        android:text="yanxing"
+                        android:text="@string/nickname"
                         android:textColor="@color/colorMainDark"
                         android:textSize="@dimen/text_normal_xxx"/>
 

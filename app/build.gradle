@@ -65,4 +65,5 @@ dependencies {
     compile project(path: ':adapterlibrary')
     compile project(':titlebarlibrary')
     compile project(path: ':sortlistviewlibrary')
+    compile 'org.jsoup:jsoup:1.10.1'
 }
