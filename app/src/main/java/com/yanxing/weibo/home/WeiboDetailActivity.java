@@ -187,8 +187,8 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
                 image.setLayoutParams(mParams);
                 DraweeController controller = Fresco.newDraweeControllerBuilder()
                         //先加载缩略图，再加载中等图
-                        .setLowResImageRequest(ImageRequest.fromUri(imageList.get(position)))
-                        .setImageRequest(ImageRequest.fromUri(imageList.get(position)
+                        .setLowResImageRequest(ImageRequest.fromUri(mDataList.get(position)))
+                        .setImageRequest(ImageRequest.fromUri(mDataList.get(position)
                                 .replaceAll(ConstantAPI.THUMBNAIL_PIC, ConstantAPI.BMIDDLE_PIC)))
                         .setOldController(image.getController())
                         .setAutoPlayAnimations(true)
@@ -199,7 +199,7 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
                     public void onClick(View v) {
                         Intent intent=new Intent(getApplicationContext(), BrowseImageActivity.class);
                         Bundle bundle=new Bundle();
-                        bundle.putStringArrayList("imageUrl", (ArrayList<String>) imageList);
+                        bundle.putStringArrayList("imageUrl", (ArrayList<String>) mDataList);
                         bundle.putInt("currentIndex",position);
                         intent.putExtras(bundle);
                         startActivity(intent);
@@ -230,11 +230,11 @@ public class WeiboDetailActivity extends BaseActivity<WeiboDetailView, WeiboDeta
             @Override
             public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, int position) {
                 SimpleDraweeView head = (SimpleDraweeView) holder.findViewById(R.id.simple_drawee_view);
-                head.setImageURI(Uri.parse(mWeiboCommentList.get(position).getUser().getAvatar_hd()));
-                holder.setText(R.id.name, mWeiboCommentList.get(position).getUser().getName());
-                holder.setText(R.id.time, TimeUtil.getTimeDetail(TimeUtil.format(mWeiboCommentList.get(position).getCreated_at())));
+                head.setImageURI(Uri.parse(mDataList.get(position).getUser().getAvatar_hd()));
+                holder.setText(R.id.name, mDataList.get(position).getUser().getName());
+                holder.setText(R.id.time, TimeUtil.getTimeDetail(TimeUtil.format(mDataList.get(position).getCreated_at())));
                 TextView comment = (TextView) holder.findViewById(R.id.comment);
-                comment.setText(WeiboTextUtil.formatWeiboText(getApplicationContext(), mWeiboCommentList.get(position).getText(), comment));
+                comment.setText(WeiboTextUtil.formatWeiboText(getApplicationContext(), mDataList.get(position).getText(), comment));
             }
         };
         mComment.setLayoutManager(new LinearLayoutManager(this));

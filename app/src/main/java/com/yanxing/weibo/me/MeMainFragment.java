@@ -146,24 +146,24 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
         mRecyclerViewAdapter = new RecyclerViewAdapter<FriendTimeLine.StatusesBean>(mUserWeiboList, R.layout.adapter_me_main) {
             @Override
             public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, final int position) {
-                holder.setText(R.id.name, mUserWeiboList.get(position).getUser().getName());
-                holder.setText(R.id.text, mUserWeiboList.get(position).getText());
+                holder.setText(R.id.name, mDataList.get(position).getUser().getName());
+                holder.setText(R.id.text, mDataList.get(position).getText());
                 TextView weiboText = (TextView) holder.findViewById(R.id.text);
-                weiboText.setText(WeiboTextUtil.formatWeiboText(getActivity(), mUserWeiboList.get(position).getText(), weiboText));
-                holder.setText(R.id.attitudesCount, String.valueOf(mUserWeiboList.get(position).getAttitudes_count()));
-                holder.setText(R.id.commentCount, String.valueOf(mUserWeiboList.get(position).getComments_count()));
-                holder.setText(R.id.repostCount, String.valueOf(mUserWeiboList.get(position).getReposts_count()));
-                holder.setText(R.id.time, TimeUtil.getTimeDetail(TimeUtil.format(mUserWeiboList.get(position).getCreated_at())));
+                weiboText.setText(WeiboTextUtil.formatWeiboText(getActivity(), mDataList.get(position).getText(), weiboText));
+                holder.setText(R.id.attitudesCount, String.valueOf(mDataList.get(position).getAttitudes_count()));
+                holder.setText(R.id.commentCount, String.valueOf(mDataList.get(position).getComments_count()));
+                holder.setText(R.id.repostCount, String.valueOf(mDataList.get(position).getReposts_count()));
+                holder.setText(R.id.time, TimeUtil.getTimeDetail(TimeUtil.format(mDataList.get(position).getCreated_at())));
                 //该微博为转发微博
-                if (mUserWeiboList.get(position).getRetweeted_status() != null) {
+                if (mDataList.get(position).getRetweeted_status() != null) {
                     TextView atWeibo = (TextView) holder.findViewById(R.id.textChild);
                     atWeibo.setVisibility(View.VISIBLE);
-                    String content = "@" + mUserWeiboList.get(position).getRetweeted_status().getUser().getName() + " :" +
-                            mUserWeiboList.get(position).getRetweeted_status().getText();
+                    String content = "@" + mDataList.get(position).getRetweeted_status().getUser().getName() + " :" +
+                            mDataList.get(position).getRetweeted_status().getText();
                     atWeibo.setText(WeiboTextUtil.formatWeiboText(getActivity(), content, atWeibo));
                     //微博显示是否有图片策略：此微博是转发微博，原微博有图片，才标记此条微博有图片，无论转发时是否添加了图片
                     //此微博不是转发微博，有图片就显示此条微博含有图片，这里和微博显示一样
-                    List<?> list = mUserWeiboList.get(position).getRetweeted_status().getPic_urls();
+                    List<?> list = mDataList.get(position).getRetweeted_status().getPic_urls();
                     ImageView imageView = (ImageView) holder.findViewById(R.id.hasImage);
                     if (list != null && list.size() > 0) {
                         imageView.setVisibility(View.VISIBLE);
@@ -173,7 +173,7 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
                 } else {
                     TextView atWeibo = (TextView) holder.findViewById(R.id.textChild);
                     atWeibo.setVisibility(View.GONE);
-                    List<?> list = mUserWeiboList.get(position).getPic_urls();
+                    List<?> list = mDataList.get(position).getPic_urls();
                     ImageView imageView = (ImageView) holder.findViewById(R.id.hasImage);
                     if (list != null && list.size() > 0) {
                         imageView.setVisibility(View.VISIBLE);
@@ -187,7 +187,7 @@ public class MeMainFragment extends BaseFragment<MeMainView, MeMainPresenter> im
                     public void onClick(View view) {
                         Intent intent = new Intent(getActivity(), WeiboDetailActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putParcelable("weibo", mUserWeiboList.get(position));
+                        bundle.putParcelable("weibo", mDataList.get(position));
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }

@@ -88,33 +88,33 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 R.layout.adapter_home_main) {
             @Override
             public void onBindViewHolder(final RecyclerViewAdapter.MyViewHolder holder, final int position) {
-                holder.setText(R.id.name, mWeiboList.get(position).getUser().getName());
+                holder.setText(R.id.name, mDataList.get(position).getUser().getName());
                 SimpleDraweeView head = (SimpleDraweeView) holder.findViewById(R.id.simple_drawee_view);
-                head.setImageURI(Uri.parse(mWeiboList.get(position).getUser().getAvatar_large()));
-                holder.setText(R.id.text, mWeiboList.get(position).getText());
+                head.setImageURI(Uri.parse(mDataList.get(position).getUser().getAvatar_large()));
+                holder.setText(R.id.text, mDataList.get(position).getText());
                 TextView weiboText = (TextView) holder.findViewById(R.id.text);
-                weiboText.setText(WeiboTextUtil.formatWeiboText(getActivity(), mWeiboList.get(position).getText(), weiboText));
-                holder.setText(R.id.attitudesCount, String.valueOf(mWeiboList.get(position).getAttitudes_count()));
-                holder.setText(R.id.commentCount, String.valueOf(mWeiboList.get(position).getComments_count()));
-                holder.setText(R.id.repostCount, String.valueOf(mWeiboList.get(position).getReposts_count()));
-                holder.setText(R.id.time, TimeUtil.getTimeAgo(TimeUtil.format(mWeiboList.get(position).getCreated_at())));
+                weiboText.setText(WeiboTextUtil.formatWeiboText(getActivity(), mDataList.get(position).getText(), weiboText));
+                holder.setText(R.id.attitudesCount, String.valueOf(mDataList.get(position).getAttitudes_count()));
+                holder.setText(R.id.commentCount, String.valueOf(mDataList.get(position).getComments_count()));
+                holder.setText(R.id.repostCount, String.valueOf(mDataList.get(position).getReposts_count()));
+                holder.setText(R.id.time, TimeUtil.getTimeAgo(TimeUtil.format(mDataList.get(position).getCreated_at())));
                 TextView location= (TextView) holder.findViewById(R.id.address);
-                if (mWeiboList.get(position).getLocation()!=null){
+                if (mDataList.get(position).getLocation()!=null){
                     location.setVisibility(View.VISIBLE);
-                    location.setText(mWeiboList.get(position).getLocation());
+                    location.setText(mDataList.get(position).getLocation());
                 }else {
                     location.setVisibility(View.GONE);
                 }
                 //该微博为转发微博
-                if (mWeiboList.get(position).getRetweeted_status() != null) {
+                if (mDataList.get(position).getRetweeted_status() != null) {
                     TextView atWeibo = (TextView) holder.findViewById(R.id.textChild);
                     atWeibo.setVisibility(View.VISIBLE);
-                    String content = "@" + mWeiboList.get(position).getRetweeted_status().getUser().getName() + " :" +
-                            mWeiboList.get(position).getRetweeted_status().getText();
+                    String content = "@" + mDataList.get(position).getRetweeted_status().getUser().getName() + " :" +
+                            mDataList.get(position).getRetweeted_status().getText();
                     atWeibo.setText(WeiboTextUtil.formatWeiboText(getActivity(), content, atWeibo));
                     //微博显示是否有图片策略：此微博是转发微博，原微博有图片，才标记此条微博有图片，无论转发时是否添加了图片
                     //此微博不是转发微博，有图片就显示此条微博含有图片，这里和微博显示一样
-                    List<?> list = mWeiboList.get(position).getRetweeted_status().getPic_urls();
+                    List<?> list = mDataList.get(position).getRetweeted_status().getPic_urls();
                     ImageView imageView = (ImageView) holder.findViewById(R.id.hasImage);
                     if (list != null && list.size() > 0) {
                         imageView.setVisibility(View.VISIBLE);
@@ -124,7 +124,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 } else {
                     TextView atWeibo = (TextView) holder.findViewById(R.id.textChild);
                     atWeibo.setVisibility(View.GONE);
-                    List<?> list = mWeiboList.get(position).getPic_urls();
+                    List<?> list = mDataList.get(position).getPic_urls();
                     ImageView imageView = (ImageView) holder.findViewById(R.id.hasImage);
                     if (list != null && list.size() > 0) {
                         imageView.setVisibility(View.VISIBLE);
@@ -139,7 +139,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                     public void onClick(View view) {
                         Intent intent=new Intent(getActivity(),WeiboDetailActivity.class);
                         Bundle bundle=new Bundle();
-                        bundle.putParcelable("weibo",mWeiboList.get(position));
+                        bundle.putParcelable("weibo",mDataList.get(position));
                         intent.putExtra("index",position);
                         intent.putExtras(bundle);
                         startActivity(intent);
@@ -147,7 +147,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                 });
                 //点赞
                 ImageView imageView= (ImageView) holder.findViewById(R.id.praise);
-                if (mWeiboList.get(position).getIsAttitudes()==0){//当前用户没有被赞
+                if (mDataList.get(position).getIsAttitudes()==0){//当前用户没有被赞
                     imageView.setImageDrawable(getResources().getDrawable(R.mipmap.praise));
                 }else{
                     imageView.setImageDrawable(getResources().getDrawable(R.mipmap.praised));
@@ -164,7 +164,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                     @Override
                     public void onClick(View v) {
                         Intent intent=new Intent(getActivity(), SendWeiboActivity.class);
-                        intent.putExtra("ID",mWeiboList.get(position).getId());
+                        intent.putExtra("ID",mDataList.get(position).getId());
                         intent.putExtra("index",position);
                         intent.putExtra("type", WeiboOperate.COMMENT.getIntValue());
                         startActivity(intent);
@@ -175,7 +175,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                     @Override
                     public void onClick(View v) {
                         Intent intent=new Intent(getActivity(), SendWeiboActivity.class);
-                        intent.putExtra("ID",mWeiboList.get(position).getId());
+                        intent.putExtra("ID",mDataList.get(position).getId());
                         intent.putExtra("index",position);
                         intent.putExtra("type",WeiboOperate.FORWARD_WEIBO.getIntValue());
                         startActivity(intent);
@@ -186,7 +186,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainView, HomeMainPresent
                     @Override
                     public void onClick(View v) {
                         Intent intent=new Intent(getActivity(),UserDetailActivity.class);
-                        intent.putExtra("uid",String.valueOf(mWeiboList.get(position).getUser().getId()));
+                        intent.putExtra("uid",String.valueOf(mDataList.get(position).getUser().getId()));
                         startActivity(intent);
                     }
                 });

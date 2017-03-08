@@ -85,4 +85,7 @@ public interface StatusesApi {
     Observable<StatusesUpdate> sendWeibo(@Field(value = "status" ,encoded = true) String content,@Field("visible") int visible
             ,@Field("list_id") String list_id,@Field("lat") float lat,@Field("long") float longitude
             ,@Field("annotations") String annotations);
+
+    @GET(ConstantAPI.STATUSES_GO)
+    Observable<String> goWeibo(@Query("uid")long uid,@Query("id") long id);
 }
