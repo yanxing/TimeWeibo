@@ -59,14 +59,14 @@ public class MessageMainFragment extends BaseFragment<MessageView,MessagePresent
                 ,R.layout.adapter_message_main) {
             @Override
             public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, int position) {
-                holder.setText(R.id.name,mComments.get(position).getUser().getName());
+                holder.setText(R.id.name,mDataList.get(position).getUser().getName());
                 holder.setText(R.id.time,
-                        TimeUtil.getTimeDetail(TimeUtil.format(mComments.get(position).getCreated_at())));
+                        TimeUtil.getTimeDetail(TimeUtil.format(mDataList.get(position).getCreated_at())));
                 SimpleDraweeView head = (SimpleDraweeView) holder.findViewById(R.id.head);
-                head.setImageURI(Uri.parse(mComments.get(position).getUser().getProfile_image_url()));
+                head.setImageURI(Uri.parse(mDataList.get(position).getUser().getProfile_image_url()));
                 TextView comment = (TextView) holder.findViewById(R.id.comment);
                 comment.setText(WeiboTextUtil.formatWeiboText(getActivity()
-                        , mComments.get(position).getText(), comment));
+                        , mDataList.get(position).getText(), comment));
             }
         };
         mCommentList.setAdapter(mRecyclerViewAdapter);

@@ -72,6 +72,10 @@ public class ConstantAPI {
      * 发一条微博
      */
     public static final String STATUSES_UPDATE="statuses/update.json";
+    /**
+     * 根据ID跳转到单条微博页
+     */
+    public static final String STATUSES_GO="statuses/go";
 
 
 

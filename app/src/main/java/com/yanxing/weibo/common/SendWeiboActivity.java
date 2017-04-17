@@ -191,12 +191,12 @@ public class SendWeiboActivity extends BaseActivity<SendWeiboView,SendWeiboPrese
                     @Override
                     public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, final int position) {
                         ImageView emotion = (ImageView) holder.findViewById(R.id.emotion);
-                        emotion.setImageDrawable(getResources().getDrawable(list.get(position).getResourceID()));
+                        emotion.setImageDrawable(getResources().getDrawable(mDataList.get(position).getResourceID()));
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 mComment.setText(WeiboTextUtil.formatWeiboText(getApplicationContext()
-                                        , mComment.getText().toString() + list.get(position).getText(), mComment));
+                                        , mComment.getText().toString() + mDataList.get(position).getText(), mComment));
                                 mComment.setSelection(mComment.getText().toString().length());
                             }
                         });
