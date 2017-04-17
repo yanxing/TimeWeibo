@@ -381,7 +381,7 @@ public class CommonUtil {
      */
     public static int dp2px(Context context, int dip) {
         float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dip * scale + 0.5f * (dip >= 0 ? 1 : -1));
+        return (int) (dip * scale + 0.5f);
     }
 
     /**
@@ -389,7 +389,7 @@ public class CommonUtil {
      */
     public static int px2dp(Context context, int px) {
         float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (px / scale + 0.5f * (px >= 0 ? 1 : -1));
+        return (int) (px / scale + 0.5f);
     }
 
     /**
