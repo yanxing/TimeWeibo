@@ -21,6 +21,7 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.base.BasePresenterImpl;
 import com.yanxing.weibo.util.ConstantValue;
 import com.yanxing.weibo.util.FileUtil;
 import com.yanxing.weibo.util.FrescoUtil;
@@ -94,6 +95,11 @@ public class BrowseImageActivity extends BaseActivity {
                 });
             }
         }
+    }
+
+    @Override
+    protected BasePresenterImpl initPresenter() {
+        return null;
     }
 
     @OnClick(R.id.menu)
@@ -181,8 +187,4 @@ public class BrowseImageActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected BasePresenter initPresenter() {
-        return null;
-    }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.base.BasePresenterImpl;
 import com.yanxing.weibo.base.RetrofitManage;
 import com.yanxing.weibo.weiboapi.StatusesApi;
 
@@ -53,7 +54,7 @@ public class WeiboDetailWebActivity extends BaseActivity {
     }
 
     @Override
-    protected BasePresenter initPresenter() {
+    protected BasePresenterImpl initPresenter() {
         return null;
     }
 }

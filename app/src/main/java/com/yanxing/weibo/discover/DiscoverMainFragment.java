@@ -3,6 +3,7 @@ package com.yanxing.weibo.discover;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseFragment;
 import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.base.BasePresenterImpl;
 
 /**
  * 发现，搜索一些微博（热门微博，好像没有开放）
@@ -21,7 +22,7 @@ public class DiscoverMainFragment extends BaseFragment {
     }
 
     @Override
-    protected BasePresenter initPresenter() {
+    protected BasePresenterImpl initPresenter() {
         return null;
     }
 }

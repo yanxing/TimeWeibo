@@ -10,6 +10,7 @@ import com.yanxing.titlebarlibrary.TitleBar;
 import com.yanxing.weibo.R;
 import com.yanxing.weibo.base.BaseActivity;
 import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.base.BasePresenterImpl;
 import com.yanxing.weibo.view.ProgressWheel;
 
 import org.jsoup.Jsoup;
@@ -50,6 +51,7 @@ public class WebActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setWebViewClient(new WebViewClient() {
+            @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
@@ -98,7 +100,7 @@ public class WebActivity extends BaseActivity {
     }
 
     @Override
-    protected BasePresenter initPresenter() {
+    protected BasePresenterImpl initPresenter() {
         return null;
     }
 }

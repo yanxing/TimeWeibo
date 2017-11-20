@@ -3,6 +3,7 @@ package com.yanxing.weibo.common;
 import android.content.Context;
 
 import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.base.BasePresenterImpl;
 import com.yanxing.weibo.base.RetrofitManage;
 import com.yanxing.weibo.weiboapi.FriendshipsApi;
 import com.yanxing.weibo.weiboapi.model.Following;
@@ -14,7 +15,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by lishuangxiang on 2017/2/13.
  */
-public class AtUserPresenter extends BasePresenter<AtUserView> {
+public class AtUserPresenter extends BasePresenterImpl<AtUserView> {
 
     private Context mContext;
 

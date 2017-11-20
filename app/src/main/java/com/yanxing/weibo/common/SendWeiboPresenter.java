@@ -3,6 +3,7 @@ package com.yanxing.weibo.common;
 import android.content.Context;
 
 import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.base.BasePresenterImpl;
 import com.yanxing.weibo.base.RetrofitManage;
 import com.yanxing.weibo.weiboapi.CommentsApi;
 import com.yanxing.weibo.weiboapi.StatusesApi;
@@ -18,7 +19,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by lishuangxiang on 2017/2/15.
  */
-public class SendWeiboPresenter extends BasePresenter<SendWeiboView> {
+public class SendWeiboPresenter extends BasePresenterImpl<SendWeiboView> {
 
     private Context mContext;
 
