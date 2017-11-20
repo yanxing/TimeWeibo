@@ -2,7 +2,7 @@ package com.yanxing.weibo.message;
 
 import android.content.Context;
 
-import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.base.BasePresenterImpl;
 import com.yanxing.weibo.base.RetrofitManage;
 import com.yanxing.weibo.weiboapi.CommentsApi;
 import com.yanxing.weibo.weiboapi.ConstantAPI;
@@ -18,7 +18,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by 李双祥 on 2017/1/12.
  */
-public class MessagePresenter extends BasePresenter<MessageView> {
+public class MessagePresenter extends BasePresenterImpl<MessageView> {
     private Context mContext;
 
     public MessagePresenter(MessageView messageView, Context context) {

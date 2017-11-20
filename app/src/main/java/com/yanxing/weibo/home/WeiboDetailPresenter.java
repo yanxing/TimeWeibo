@@ -2,7 +2,7 @@ package com.yanxing.weibo.home;
 
 import android.content.Context;
 
-import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.base.BasePresenterImpl;
 import com.yanxing.weibo.base.RetrofitManage;
 import com.yanxing.weibo.weiboapi.CommentsApi;
 import com.yanxing.weibo.weiboapi.model.WeiboComment;
@@ -14,7 +14,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by lishuangxiang on 2017/1/4.
  */
-public class WeiboDetailPresenter extends BasePresenter<WeiboDetailView> {
+public class WeiboDetailPresenter extends BasePresenterImpl<WeiboDetailView> {
 
     private Context mContext;
 

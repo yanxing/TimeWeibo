@@ -2,16 +2,13 @@ package com.yanxing.weibo.me;
 
 import android.content.Context;
 
-import com.sina.weibo.sdk.auth.Oauth2AccessToken;
-import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.base.BasePresenterImpl;
 import com.yanxing.weibo.base.RetrofitManage;
-import com.yanxing.weibo.util.AccessTokenUtil;
 import com.yanxing.weibo.weiboapi.ConstantAPI;
 import com.yanxing.weibo.weiboapi.StatusesApi;
 import com.yanxing.weibo.weiboapi.UserApi;
 import com.yanxing.weibo.weiboapi.model.FriendTimeLine;
 import com.yanxing.weibo.weiboapi.model.User;
-import com.yanxing.weibo.weiboapi.model.UserTimeLine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +20,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by lishuangxiang on 2017/1/10.
  */
-public class MeMainPresenter extends BasePresenter<MeMainView> {
+public class MeMainPresenter extends BasePresenterImpl<MeMainView> {
 
     private Context mContext;
 

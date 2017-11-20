@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 /**
  * Created by lishuangxiang on 2016/9/13.
  */
-public abstract class BaseActivity<V extends BaseView, T extends BasePresenter<V>> extends RxFragmentActivity {
+public abstract class BaseActivity<V extends BaseView, T extends BasePresenterImpl<V>> extends RxFragmentActivity {
 
     public T mPresenter;
 

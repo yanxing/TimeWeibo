@@ -2,7 +2,7 @@ package com.yanxing.weibo.home;
 
 import android.content.Context;
 
-import com.yanxing.weibo.base.BasePresenter;
+import com.yanxing.weibo.base.BasePresenterImpl;
 import com.yanxing.weibo.base.RetrofitManage;
 import com.yanxing.weibo.util.ParseJsonUtil;
 import com.yanxing.weibo.weiboapi.ConstantAPI;
@@ -23,7 +23,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by 李双祥 on 2016/12/23.
  */
-public class HomeMainPresenter extends BasePresenter<HomeMainView> {
+public class HomeMainPresenter extends BasePresenterImpl<HomeMainView> {
 
     private Context mContext;
 
